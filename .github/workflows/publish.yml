@@ -66,16 +66,38 @@ jobs:
           registry-url: "https://npm.pkg.github.com"
           scope: "@talosprotocol"
 
+      - name: Get version from tag
+        id: version
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Publishing version: $VERSION"
+
+      - name: Update package.json version
+        run: npm version ${{ steps.version.outputs.version }} --no-git-tag-version --allow-same-version
+
       - name: Install dependencies
         run: npm ci
 
       - name: Build
         run: npm run build
 
+      - name: Check if version exists
+        id: check
+        continue-on-error: true
+        run: npm view @talosprotocol/contracts@${{ steps.version.outputs.version }} version
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Publish to GitHub Packages
+        if: steps.check.outcome == 'failure'
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Skip publish (already exists)
+        if: steps.check.outcome == 'success'
+        run: echo "Version ${{ steps.version.outputs.version }} already published, skipping"
 
   publish-pypi:
     name: Publish to PyPI
