@@ -9,6 +9,7 @@ fi
 
 if [ -d python ]; then
   cd python
+  pip install -e . -q 2>/dev/null || true
   pytest
   cd ..
 fi
