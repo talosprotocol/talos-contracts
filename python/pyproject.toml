@@ -1,14 +1,19 @@
 [project]
 name = "talos-contracts"
 version = "1.0.0"
-description = "Talos Protocol contracts - schemas, types, and helper functions"
+description = "Talos Protocol contracts - schemas, types, and helper functions for auditable AI agent security"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [
     {name = "Talos Protocol"}
 ]
-keywords = ["talos", "protocol", "contracts", "mcp", "security"]
+keywords = ["talos", "protocol", "contracts", "mcp", "security", "audit", "ai-agent"]
+
+[project.urls]
+Homepage = "https://github.com/talosprotocol/talos-contracts"
+Repository = "https://github.com/talosprotocol/talos-contracts"
+Documentation = "https://github.com/talosprotocol/talos-contracts#readme"
 
 dependencies = []
 
