@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  typescript:
+    name: TypeScript Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: typescript
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Run tests
+        run: npm test
+
+      - name: Pack artifact
+        run: npm pack
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: contracts-tgz
+          path: typescript/*.tgz
+
+  python:
+    name: Python Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -e ".[dev]"
+
+      - name: Run tests
+        run: pytest -v
+
+      - name: Build wheel
+        run: pip wheel . --no-deps -w dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: python-wheel
+          path: python/dist/*.whl
+
+  test-vectors:
+    name: Package Test Vectors
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create test vectors tarball
+        run: tar -czvf test_vectors.tar.gz test_vectors/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: test-vectors
+          path: test_vectors.tar.gz
