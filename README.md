@@ -8,7 +8,7 @@ This repository contains the shared kernel for the Talos Protocol ecosystem:
 
 - **Schemas**: JSON Schema definitions for audit events, gateway status, etc.
 - **Test Vectors**: Golden files for cross-language validation
-- **TypeScript Package**: `@talos-protocol/contracts`
+- **TypeScript Package**: `@talosprotocol/contracts`
 - **Python Package**: `talos-contracts`
 
 ## Philosophy

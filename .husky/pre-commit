@@ -1,30 +1,44 @@
-#!/bin/sh
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+set -e
+
 echo "🔍 Running pre-commit validation..."
 
-# 1. Build (includes type check)
-echo "Building..."
-cd typescript && npm run build
-if [ $? -ne 0 ]; then
-    echo "❌ Build failed"
-    exit 1
+# 1. TypeScript Validation
+echo "--- TypeScript ---"
+if [ -d "typescript" ]; then
+    cd typescript
+    
+    # Version bump
+    echo "📦 Syncing version..."
+    npm run version:sync
+
+    # Lint staged (typescript)
+    echo "✨ Running lint-staged (typescript)..."
+    npx lint-staged
+
+    # Build & Test
+    echo "🏗️  Building..."
+    npm run build
+    
+    echo "🧪 Running tests..."
+    npm run test
+    
+    # Stage version bump
+    git add package.json
+    
+    cd ..
 fi
 
-# 2. Tests
-echo "Running tests..."
-npm test
-if [ $? -ne 0 ]; then
-    echo "❌ Tests failed"
-    exit 1
+# 2. Python Validation
+echo "--- Python ---"
+if [ -d "python" ]; then
+    cd python
+    # Ideally checking linting here too, but for now just tests as per phase 0
+    echo "🧪 Running Python tests..."
+    pytest
+    cd ..
 fi
-cd ..
-
-# 3. Python tests
-echo "Running Python tests..."
-cd python && pytest -v
-if [ $? -ne 0 ]; then
-    echo "❌ Python tests failed"
-    exit 1
-fi
-cd ..
 
 echo "✅ All pre-commit checks passed"

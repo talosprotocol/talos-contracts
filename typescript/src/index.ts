@@ -1,5 +1,5 @@
 // typescript/src/index.ts
-// Public API exports for @talos-protocol/contracts
+// Public API exports for @talosprotocol/contracts
 
 // Base64url encoding
 export {

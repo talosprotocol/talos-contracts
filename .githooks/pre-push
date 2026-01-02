@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ -d typescript ]; then
+  cd typescript
+  npm test
+  cd ..
+fi
+
+if [ -d python ]; then
+  cd python
+  pytest
+  cd ..
+fi

@@ -1,5 +1,5 @@
 // typescript/test/vectors.test.ts
-// Vector-driven tests for @talos-protocol/contracts
+// Vector-driven tests for @talosprotocol/contracts
 
 import { describe, expect, test } from "vitest";
 import fs from "node:fs";

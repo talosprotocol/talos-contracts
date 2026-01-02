@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+
+# 1) TypeScript: version-sync + typecheck + test
+if [ -d typescript ]; then
+  cd typescript
+  node ../scripts/version-sync.mjs || echo "version-sync: skipped (no root package.json)"
+  npm run typecheck
+  npm test
+  cd ..
+fi
+
+# 2) Python: ruff + pytest
+if [ -d python ]; then
+  cd python
+  ruff check --fix .
+  ruff format .
+  pytest
+  cd ..
+fi
+
+# 3) Enforce correct package name (use grep if rg not installed)
+if command -v rg >/dev/null 2>&1; then
+  if rg -n "@talos-protocol/contracts" -S .; then
+    echo "ERROR: wrong contracts package name (@talos-protocol/contracts). Use @talosprotocol/contracts."
+    exit 1
+  fi
+else
+  if grep -rn "@talos-protocol/contracts" --include="*.ts" --include="*.py" --include="*.json" .; then
+    echo "ERROR: wrong contracts package name (@talos-protocol/contracts). Use @talosprotocol/contracts."
+    exit 1
+  fi
+fi
+
+echo "OK: pre-commit passed"

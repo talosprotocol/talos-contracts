@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import re
 
+
 class Base64UrlError(ValueError):
     """Error raised for invalid base64url encoding/decoding."""
+
     pass
 
 
@@ -18,20 +20,20 @@ _INV = {c: i for i, c in enumerate(_ALPHABET)}
 def base64url_encode(data: bytes) -> str:
     """
     Encode bytes to base64url string without padding.
-    
+
     Args:
         data: Bytes to encode
-        
+
     Returns:
         Base64url encoded string (no padding)
     """
     if not data:
         return ""
-    
+
     out: list[str] = []
     i = 0
     n = len(data)
-    
+
     while i + 3 <= n:
         x = (data[i] << 16) | (data[i + 1] << 8) | data[i + 2]
         out.append(_ALPHABET[(x >> 18) & 63])
@@ -39,7 +41,7 @@ def base64url_encode(data: bytes) -> str:
         out.append(_ALPHABET[(x >> 6) & 63])
         out.append(_ALPHABET[x & 63])
         i += 3
-    
+
     rem = n - i
     if rem == 1:
         x = data[i]
@@ -50,7 +52,7 @@ def base64url_encode(data: bytes) -> str:
         out.append(_ALPHABET[(x >> 10) & 63])
         out.append(_ALPHABET[(x >> 4) & 63])
         out.append(_ALPHABET[(x << 2) & 63])
-    
+
     return "".join(out)
 
 
@@ -64,34 +66,34 @@ def _decode_char(c: str) -> int:
 def base64url_decode(s: str) -> bytes:
     """
     Decode base64url string to bytes.
-    
+
     Rejects padding and non-canonical forms.
-    
+
     Args:
         s: Base64url encoded string (no padding)
-        
+
     Returns:
         Decoded bytes
-        
+
     Raises:
         Base64UrlError: If input is not valid canonical base64url
     """
     if s == "":
         return b""
-    
+
     if "=" in s:
         raise Base64UrlError("Padding is not allowed")
     if not _RE_VALID.match(s):
         raise Base64UrlError("Non-base64url characters present")
     if len(s) % 4 == 1:
         raise Base64UrlError("Invalid base64url length")
-    
+
     out = bytearray()
     i = 0
-    
+
     while i < len(s):
         remain = len(s) - i
-        
+
         if remain >= 4:
             a = _decode_char(s[i])
             b = _decode_char(s[i + 1])
@@ -115,9 +117,9 @@ def base64url_decode(s: str) -> bytes:
             i += 3
         else:
             raise Base64UrlError("Invalid base64url length")
-    
+
     # Strict canonical check: re-encode must match exactly
     if base64url_encode(bytes(out)) != s:
         raise Base64UrlError("Non-canonical base64url form")
-    
+
     return bytes(out)
