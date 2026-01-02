@@ -53,3 +53,7 @@ yarn-error.log*
 
 # OS
 Thumbs.db
+
+# Husky
+.husky/_
+
