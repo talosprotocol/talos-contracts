@@ -10,12 +10,12 @@ authors = [
 ]
 keywords = ["talos", "protocol", "contracts", "mcp", "security", "audit", "ai-agent"]
 
+dependencies = []
+
 [project.urls]
 Homepage = "https://github.com/talosprotocol/talos-contracts"
 Repository = "https://github.com/talosprotocol/talos-contracts"
 Documentation = "https://github.com/talosprotocol/talos-contracts#readme"
-
-dependencies = []
 
 [project.optional-dependencies]
 dev = [
