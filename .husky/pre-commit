@@ -1,0 +1,30 @@
+#!/bin/sh
+echo "🔍 Running pre-commit validation..."
+
+# 1. Build (includes type check)
+echo "Building..."
+cd typescript && npm run build
+if [ $? -ne 0 ]; then
+    echo "❌ Build failed"
+    exit 1
+fi
+
+# 2. Tests
+echo "Running tests..."
+npm test
+if [ $? -ne 0 ]; then
+    echo "❌ Tests failed"
+    exit 1
+fi
+cd ..
+
+# 3. Python tests
+echo "Running Python tests..."
+cd python && pytest -v
+if [ $? -ne 0 ]; then
+    echo "❌ Python tests failed"
+    exit 1
+fi
+cd ..
+
+echo "✅ All pre-commit checks passed"
