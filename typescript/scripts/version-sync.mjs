@@ -1,8 +1,5 @@
-/**
- * Version sync script for pre-commit hook
- * Auto-increments patch version on every commit
- */
 import fs from "node:fs";
+import path from "node:path";
 
 function bumpPatch(v) {
     const m = /^(\d+)\.(\d+)\.(\d+)(.*)?$/.exec(v);
@@ -14,20 +11,13 @@ function bumpPatch(v) {
     return `${major}.${minor}.${patch}${suffix}`;
 }
 
-function updateJson(path) {
-    const raw = fs.readFileSync(path, "utf8");
-    const obj = JSON.parse(raw);
-    if (!obj.version || typeof obj.version !== "string") return false;
-    const oldVersion = obj.version;
-    const next = bumpPatch(obj.version);
-    obj.version = next;
-    fs.writeFileSync(path, JSON.stringify(obj, null, 2) + "\n");
-    console.log(`📦 Version bumped: ${oldVersion} → ${next}`);
-    return true;
-}
+const root = process.cwd();
+const pkgPath = path.join(root, "package.json");
+if (!fs.existsSync(pkgPath)) process.exit(0);
 
-const changed = updateJson("package.json");
+const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
+if (!pkg.version) throw new Error("package.json missing version");
 
-if (!changed) {
-    console.log("ℹ️  No version field found in package.json");
-}
+pkg.version = bumpPatch(pkg.version);
+fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + "\n", "utf8");
+console.log(`version-sync: ${pkg.name ?? "package"} -> ${pkg.version}`);
