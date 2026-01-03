@@ -1,0 +1,19 @@
+{
+    "session_id": "sess_demo_001",
+    "capability": "cap_demo_token_example_replace_with_real_format",
+    "model": "llama3.1",
+    "messages": [
+        {
+            "role": "system",
+            "content": "You are a helpful assistant."
+        },
+        {
+            "role": "user",
+            "content": "Say hello in one sentence."
+        }
+    ],
+    "temperature": 0.2,
+    "max_tokens": 64,
+    "timeout_ms": 30000,
+    "client_request_id": "ui-0001"
+}

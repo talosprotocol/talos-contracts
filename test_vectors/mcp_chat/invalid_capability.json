@@ -1,0 +1,13 @@
+{
+    "session_id": "sess_demo_002",
+    "capability": "cap_invalid_or_not_authorized_for_tool_chat",
+    "model": "llama3.1",
+    "messages": [
+        {
+            "role": "user",
+            "content": "What is 2+2?"
+        }
+    ],
+    "max_tokens": 32,
+    "client_request_id": "ui-0002"
+}
