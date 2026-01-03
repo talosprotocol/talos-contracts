@@ -7,25 +7,27 @@ set -euo pipefail
 
 echo "Testing talos-contracts..."
 
-# TypeScript tests
+# TypeScript tests (run in subshell to preserve cwd)
 echo "--- TypeScript ---"
-cd typescript
-npm ci --silent
-npm run lint 2>/dev/null || true
-npm run typecheck 2>/dev/null || npm run build
-npm test -- --run
-if [[ "${TALOS_SKIP_BUILD:-false}" != "true" ]]; then
-  npm run build
-fi
-cd ..
+(
+  cd typescript
+  npm ci --silent
+  npm run lint 2>/dev/null || true
+  npm run typecheck 2>/dev/null || npm run build
+  npm test -- --run
+  if [[ "${TALOS_SKIP_BUILD:-false}" != "true" ]]; then
+    npm run build
+  fi
+)
 
-# Python tests
+# Python tests (run in subshell to preserve cwd)
 echo "--- Python ---"
-cd python
-pip install -e . -q
-ruff check talos_contracts tests 2>/dev/null || true
-ruff format --check talos_contracts tests 2>/dev/null || true
-pytest tests/ -q
-cd ..
+(
+  cd python
+  pip install -e . -q
+  ruff check talos_contracts tests 2>/dev/null || true
+  ruff format --check talos_contracts tests 2>/dev/null || true
+  pytest tests/ -q
+)
 
 echo "talos-contracts tests passed."
