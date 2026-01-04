@@ -57,3 +57,5 @@ Thumbs.db
 # Husky
 .husky/_
 
+conformance.xml
+junit.xml

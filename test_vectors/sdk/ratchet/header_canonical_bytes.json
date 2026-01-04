@@ -35,7 +35,7 @@
                 "pn": 0
             },
             "expected_canonical_json": "{\"dh\":\"QkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkI\",\"n\":0,\"pn\":0}",
-            "expected_canonical_b64u": "eyJkaCI6IlFrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSSIsIm4iOjAsInBuIjowfQ"
+            "expected_canonical_b64u": "eyJkaCI6IlFrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0kiLCJuIjowLCJwbiI6MH0"
         }
     ]
 }
