@@ -44,9 +44,21 @@ clean:
 	find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
 	@echo "Clean complete. Ready for fresh build."
 
-# No services to start for contracts
+# Conformance: Validate vectors against schemas
+conformance:
+	@echo "Validating conformance vectors..."
+	cd typescript && npm test -- --run
+
+# Doctor check
+doctor:
+	@echo "Checking environment..."
+	@node --version || echo "Node.js missing"
+	@npm --version || echo "npm missing"
+	@python3 --version || echo "Python3 missing"
+
+# Scripts wrapper
 start:
-	@echo "talos-contracts is a library, no services to start."
+	@./scripts/start.sh
 
 stop:
-	@echo "talos-contracts is a library, no services to stop."
+	@./scripts/stop.sh
