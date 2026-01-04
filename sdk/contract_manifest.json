@@ -1,0 +1,240 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Talos SDK Contract Manifest",
+    "description": "Machine-readable manifest for SDK conformance testing",
+    "version": "1.0.0",
+    "protocol_version": "1.0",
+    "required_modules": {
+        "identity": {
+            "classes": [
+                "Wallet"
+            ],
+            "methods": [
+                {
+                    "name": "generate",
+                    "static": true,
+                    "args": [
+                        "name?"
+                    ],
+                    "returns": "Wallet"
+                },
+                {
+                    "name": "from_seed",
+                    "static": true,
+                    "args": [
+                        "seed"
+                    ],
+                    "returns": "Wallet"
+                },
+                {
+                    "name": "to_did",
+                    "args": [],
+                    "returns": "string"
+                },
+                {
+                    "name": "sign",
+                    "args": [
+                        "message"
+                    ],
+                    "returns": "bytes"
+                },
+                {
+                    "name": "verify",
+                    "static": true,
+                    "args": [
+                        "message",
+                        "signature",
+                        "public_key"
+                    ],
+                    "returns": "bool"
+                }
+            ],
+            "properties": [
+                "address"
+            ]
+        },
+        "capabilities": {
+            "functions": [
+                {
+                    "name": "parse_capability",
+                    "args": [
+                        "token"
+                    ],
+                    "returns": "CapabilityToken"
+                },
+                {
+                    "name": "verify_capability",
+                    "args": [
+                        "token",
+                        "issuer_key"
+                    ],
+                    "returns": "bool"
+                },
+                {
+                    "name": "authorize_fast",
+                    "args": [
+                        "token",
+                        "tool",
+                        "action"
+                    ],
+                    "returns": "bool"
+                }
+            ]
+        },
+        "frame_codec": {
+            "classes": [
+                "Frame"
+            ],
+            "methods": [
+                {
+                    "name": "encode",
+                    "static": true,
+                    "args": [
+                        "payload",
+                        "frame_type"
+                    ],
+                    "returns": "bytes"
+                },
+                {
+                    "name": "decode",
+                    "static": true,
+                    "args": [
+                        "data"
+                    ],
+                    "returns": [
+                        "Frame",
+                        "bytes"
+                    ]
+                }
+            ]
+        },
+        "mcp_security": {
+            "functions": [
+                {
+                    "name": "sign_mcp_request",
+                    "args": [
+                        "wallet",
+                        "request",
+                        "session_id",
+                        "correlation_id",
+                        "tool",
+                        "action"
+                    ],
+                    "returns": "SignedFrame"
+                },
+                {
+                    "name": "verify_mcp_response",
+                    "args": [
+                        "frame",
+                        "expected_correlation_id"
+                    ],
+                    "returns": "bool"
+                }
+            ]
+        },
+        "transport": {
+            "classes": [
+                "Client"
+            ],
+            "methods": [
+                {
+                    "name": "connect",
+                    "static": true,
+                    "args": [
+                        "gateway_url",
+                        "wallet"
+                    ],
+                    "returns": "Client"
+                },
+                {
+                    "name": "send",
+                    "args": [
+                        "frame"
+                    ],
+                    "returns": "void"
+                },
+                {
+                    "name": "close",
+                    "args": [],
+                    "returns": "void"
+                },
+                {
+                    "name": "protocol_version",
+                    "args": [],
+                    "returns": "string"
+                },
+                {
+                    "name": "supported_protocol_range",
+                    "args": [],
+                    "returns": [
+                        "string",
+                        "string"
+                    ]
+                }
+            ]
+        },
+        "facade": {
+            "classes": [
+                "TalosClient"
+            ],
+            "methods": [
+                {
+                    "name": "connect",
+                    "args": [],
+                    "returns": "void"
+                },
+                {
+                    "name": "sign_and_send_mcp",
+                    "args": [
+                        "request",
+                        "tool",
+                        "action"
+                    ],
+                    "returns": "Response"
+                },
+                {
+                    "name": "close",
+                    "args": [],
+                    "returns": "void"
+                },
+                {
+                    "name": "protocol_version",
+                    "args": [],
+                    "returns": "string"
+                }
+            ]
+        }
+    },
+    "required_errors": [
+        "TALOS_DENIED",
+        "TALOS_INVALID_CAPABILITY",
+        "TALOS_PROTOCOL_MISMATCH",
+        "TALOS_FRAME_INVALID",
+        "TALOS_CRYPTO_ERROR",
+        "TALOS_INVALID_INPUT",
+        "TALOS_TRANSPORT_TIMEOUT",
+        "TALOS_TRANSPORT_ERROR"
+    ],
+    "optional_modules": {
+        "session": {
+            "functions": [
+                {
+                    "name": "seal_message",
+                    "args": [
+                        "message",
+                        "session_key"
+                    ],
+                    "returns": "bytes"
+                },
+                {
+                    "name": "unseal_message",
+                    "args": [
+                        "ciphertext",
+                        "session_key"
+                    ],
+                    "returns": "bytes"
+                }
+            ]
+        }
+    }
+}

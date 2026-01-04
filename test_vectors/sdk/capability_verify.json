@@ -1,0 +1,64 @@
+{
+    "version": "1.0",
+    "description": "Capability verification test vectors",
+    "vectors": [
+        {
+            "test_id": "verify_valid_capability",
+            "description": "Valid capability token should verify",
+            "inputs": {
+                "issuer_seed_hex": "0000000000000000000000000000000000000000000000000000000000000001",
+                "subject_did": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+                "scope": [
+                    {
+                        "tool": "filesystem",
+                        "actions": [
+                            "read",
+                            "write"
+                        ]
+                    }
+                ],
+                "exp": 1767504000,
+                "nonce": "unique-nonce-12345678"
+            },
+            "expected": {
+                "verify": true,
+                "authorize_fast_filesystem_read": true,
+                "authorize_fast_filesystem_delete": false
+            }
+        }
+    ],
+    "negative_cases": [
+        {
+            "test_id": "capability_expired",
+            "description": "Expired capability should fail",
+            "inputs": {
+                "token_with_exp": 1000000000
+            },
+            "expected_error": {
+                "code": "TALOS_INVALID_CAPABILITY",
+                "message_contains": "expired"
+            }
+        },
+        {
+            "test_id": "capability_bad_signature",
+            "description": "Capability with invalid signature should fail",
+            "inputs": {
+                "tampered_token": true
+            },
+            "expected_error": {
+                "code": "TALOS_INVALID_CAPABILITY",
+                "message_contains": "signature"
+            }
+        },
+        {
+            "test_id": "capability_wrong_issuer",
+            "description": "Verify with wrong issuer key should fail",
+            "inputs": {
+                "verify_with_wrong_issuer": true
+            },
+            "expected": {
+                "verify": false
+            }
+        }
+    ]
+}

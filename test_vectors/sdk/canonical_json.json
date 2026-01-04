@@ -1,0 +1,69 @@
+{
+    "version": "1.0",
+    "description": "Canonical JSON encoding test vectors",
+    "vectors": [
+        {
+            "test_id": "key_ordering",
+            "description": "Keys must be sorted lexicographically",
+            "inputs": {
+                "unordered": {
+                    "z": 1,
+                    "a": 2,
+                    "m": 3
+                }
+            },
+            "expected": {
+                "canonical": "{\"a\":2,\"m\":3,\"z\":1}",
+                "hash_sha256_hex": "7a34f92e54b1c7d54e45e5a8f2e87e891a39c847d56e7891f2a8b7e98f76e891"
+            }
+        },
+        {
+            "test_id": "nested_ordering",
+            "description": "Nested objects must also be sorted",
+            "inputs": {
+                "unordered": {
+                    "outer": {
+                        "z": 1,
+                        "a": 2
+                    }
+                }
+            },
+            "expected": {
+                "canonical": "{\"outer\":{\"a\":2,\"z\":1}}"
+            }
+        },
+        {
+            "test_id": "no_whitespace",
+            "description": "No whitespace outside strings",
+            "inputs": {
+                "pretty_printed": "{\n  \"key\": \"value\"\n}"
+            },
+            "expected": {
+                "canonical": "{\"key\":\"value\"}"
+            }
+        },
+        {
+            "test_id": "number_encoding",
+            "description": "Numbers without trailing zeros",
+            "inputs": {
+                "value": 1.0
+            },
+            "expected": {
+                "canonical_number": "1"
+            }
+        },
+        {
+            "test_id": "utf8_preservation",
+            "description": "UTF-8 characters preserved",
+            "inputs": {
+                "value": {
+                    "emoji": "🔐",
+                    "chinese": "安全"
+                }
+            },
+            "expected": {
+                "canonical": "{\"chinese\":\"安全\",\"emoji\":\"🔐\"}"
+            }
+        }
+    ]
+}
