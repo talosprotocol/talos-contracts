@@ -55,17 +55,28 @@
             "properties": {
                 "protocol_range": {
                     "type": "string",
-                    "description": "SemVer range of supported Talos protocols"
+                    "minLength": 1
                 },
                 "contract_hash": {
                     "type": "string",
-                    "description": "SHA256 of the canonical contracts bundle (Base64URL no padding)",
-                    "pattern": "^[A-Za-z0-9_-]{43}$"
+                    "description": "SHA256 of the canonical contract_manifest.json (Base64URL no padding)",
+                    "pattern": "^[A-Za-z0-9_-]+$"
                 },
                 "schedule_hash": {
                     "type": "string",
-                    "description": "SHA256 of the ratchet schedule (Base64URL no padding)",
-                    "pattern": "^[A-Za-z0-9_-]{43}$"
+                    "description": "SHA256 of the canonical ratchet_kdf_schedule.json (Base64URL no padding)",
+                    "pattern": "^[A-Za-z0-9_-]+$"
+                },
+                "features": {
+                    "type": "array",
+                    "description": "List of supported optional features",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "ratchet"
+                        ]
+                    },
+                    "uniqueItems": true
                 },
                 "contracts_version": {
                     "type": "string",

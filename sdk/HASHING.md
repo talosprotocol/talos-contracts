@@ -1,35 +1,44 @@
-# Talos Hashing Specification v1.0
+# Talos Compatibility Hashing
 
-## Schedule Hash Algorithm
+To ensure SDKs are built against the correct version of the Talos Contracts, we enforce strict cryptographic binding using **Contract Hashes**.
 
-**Used for**: Linking vectors and SDK conformance output to the exact KDF schedule version.
+## 1. The Source of Truth
+The canonical source of truth for the protocol definitions is:
+- **File**: `contract_manifest.json` (located in `talos-contracts` root or built artifact).
+- **Format**: JSON containing the full contract definitions (Errors, Events, Methods, Types).
 
-| Field | Value |
-|-------|-------|
-| Algorithm | SHA-256 |
-| Input | UTF-8 bytes of canonical JSON of `ratchet_kdf_schedule.json` |
-| Encoding | base64url no padding |
+## 2. Hashing Algorithm
+To compute the `CONTRACT_HASH`:
 
-## Worked Example
+1. **Canonicalize**: Transform `contract_manifest.json` into its **Canonical JSON** representation.
+    - Spec: [RFC 8785 (JCS)](https://tools.ietf.org/html/rfc8785).
+    - If JCS unavailable: Standard Python/Node JSON dump with `sort_keys=True`, `separators=(',', ':')`, `ensure_ascii=False`.
+2. **Hash**: Compute the **SHA-256** digest of the canonical bytes.
+3. **Encode**: Encode the 32-byte digest using **Base64URL** (RFC 4648) with **NO Padding**.
 
-### Input: `ratchet_kdf_schedule.json`
-```json
-{"$schema":"http://json-schema.org/draft-07/schema#","aead":{"aad_mode":"header_canonical_json_bytes","algorithm":"ChaCha20-Poly1305","nonce_len":12,"tag_len":16},"constants":{"CHAIN_KEY_LEN":32,"MAX_SKIP":1000,"MESSAGE_KEY_LEN":32,"NONCE_LEN":12,"ROOT_KEY_LEN":32},"kdf_steps":{"kdf_ck_chain":{"description":"Derive next chain key","ikm_mode":"ck","ikm_note":"Current chain key (32 bytes)","info_utf8":"talos-double-ratchet-chain","name":"chain_kdf","out_len":32,"salt_mode":"none","salt_note":"No salt (empty bytes)","split":{"next_chain_key":{"length":32,"offset":0}}},"kdf_ck_message":{"description":"Derive message key from chain key","ikm_mode":"ck","ikm_note":"Current chain key (32 bytes)","info_utf8":"talos-double-ratchet-message","name":"message_kdf","out_len":32,"salt_mode":"none","salt_note":"No salt (empty bytes)","split":{"message_key":{"length":32,"offset":0}}},"kdf_rk":{"description":"Derive new root key and chain key from DH output","ikm_mode":"concat(rk, dh_out)","ikm_note":"Concatenate root key (32 bytes) + DH output (32 bytes)","info_utf8":"talos-double-ratchet-root","name":"root_kdf","out_len":64,"salt_mode":"none","salt_note":"No salt (empty bytes)","split":{"chain_key":{"length":32,"offset":32},"root_key":{"length":32,"offset":0}}},"x3dh_init":{"description":"Derive initial root key from X3DH shared secret","ikm_mode":"raw_shared_secret","ikm_note":"X3DH shared secret (typically 96-128 bytes)","info_utf8":"x3dh-init","name":"initial_root_kdf","out_len":32,"salt_b64u":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","salt_mode":"explicit","salt_note":"32 zero bytes","split":{"root_key":{"length":32,"offset":0}}}},"protocol":"talos-double-ratchet","title":"Talos Ratchet KDF Schedule v1.1","version":"1.1.0"}
+### Example Implementation (Python)
+```python
+import hashlib
+import json
+import base64
+
+def compute_hash(data: dict) -> str:
+    # 1. Canonicalize
+    canonical_bytes = json.dumps(
+        data, 
+        sort_keys=True, 
+        separators=(',', ':'), 
+        ensure_ascii=False
+    ).encode("utf-8")
+    
+    # 2. Hash
+    digest = hashlib.sha256(canonical_bytes).digest()
+    
+    # 3. Encode (Base64URL no padding)
+    return base64.urlsafe_b64encode(digest).decode("utf-8").rstrip("=")
 ```
 
-### Computation Steps
-1. **Canonical JSON bytes** (UTF-8): `1847 bytes`
-2. **SHA-256 hash** (hex): `<computed at runtime>`
-3. **Base64URL no padding**: `<computed at runtime>`
-
-> **Note**: SDKs must compute the schedule hash using the exact canonical JSON bytes, not the pretty-printed file. Use `canonical_json_bytes(schedule_obj)` from the contracts artifact.
-
-## SDK Conformance Output
-
-Every SDK conformance runner must print:
-
-```
-SCHEDULE_HASH=<base64url_no_padding>
-```
-
-The conformance harness compares this to the `schedule_hash` field in vectors.
+## 3. Ratchet Schedule
+If the SDK supports the Ratchet feature, it must also include a `schedule_hash`.
+- **File**: `ratchet_kdf_schedule.json`.
+- **Algorithm**: Same as above (JCS -> SHA256 -> Base64URL No Padding).
