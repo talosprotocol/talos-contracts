@@ -1,0 +1,14 @@
+{
+    "version": "1.1.0",
+    "vectors": [
+        "../canonical_json.json",
+        "../ratchet/header_canonical_bytes.json",
+        "../ratchet/kdf_rk_step.json",
+        "../ratchet/kdf_ck_step.json",
+        "../capability_verify.json",
+        "../frame_codec.json",
+        "../mcp_sign_verify.json",
+        "../signing_verify.json",
+        "../ratchet/v1_1_0_roundtrip.json"
+    ]
+}

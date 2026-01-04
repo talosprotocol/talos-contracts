@@ -1,0 +1,14 @@
+{
+    "test_id": "kdf_rk_root_ratchet",
+    "inputs": {
+        "rk": "AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE",
+        "dh_out": "AgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgI",
+        "info": "talos-double-ratchet-root",
+        "ikm_mode": "concat(rk, dh_out)",
+        "out_len": 64
+    },
+    "expected": {
+        "new_rk": "e6usrE-CG-dbby9etOvEm01Dt13wWmlpNW5r8fsfkNs",
+        "new_ck": "7piJzJxsZOShFtazYC3K-GbfcV5I-AFOlJlsCGDKyvc"
+    }
+}

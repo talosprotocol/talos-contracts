@@ -10,14 +10,14 @@
                 "payload_utf8": "test payload"
             },
             "expected": {
-                "encoded_base64url": "eyJ2ZXJzaW9uIjoxLCJ0eXBlIjoiREFUQSIsImZsYWdzIjowLCJwYXlsb2FkIjoiZEdWemRDQndZWGxzYjJGayJ9"
+                "encoded_base64url": "eyJmbGFncyI6MCwicGF5bG9hZCI6ImRHVnpkQ0J3WVhsc2IyRmsiLCJ0eXBlIjoiREFUQSIsInZlcnNpb24iOjF9"
             }
         },
         {
             "test_id": "decode_handshake_frame",
             "description": "Decode a HANDSHAKE frame",
             "inputs": {
-                "encoded_base64url": "eyJ2ZXJzaW9uIjoxLCJ0eXBlIjoiSEFORFNIQUtFIiwiZmxhZ3MiOjAsInBheWxvYWQiOiJ0ZXN0In0"
+                "encoded_base64url": "eyJmbGFncyI6MCwicGF5bG9hZCI6ImRHVnpkQ0J3WVhsc2IyRmsiLCJ0eXBlIjoiSEFORFNIQUtFIiwidmVyc2lvbiI6MX0"
             },
             "expected": {
                 "frame_type": "HANDSHAKE",

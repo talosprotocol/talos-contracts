@@ -1,0 +1,90 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Talos Ratchet KDF Schedule v1.1",
+    "protocol": "talos-double-ratchet",
+    "version": "1.1.0",
+    "constants": {
+        "MAX_SKIP": 1000,
+        "ROOT_KEY_LEN": 32,
+        "CHAIN_KEY_LEN": 32,
+        "MESSAGE_KEY_LEN": 32,
+        "NONCE_LEN": 12
+    },
+    "kdf_steps": {
+        "x3dh_init": {
+            "name": "initial_root_kdf",
+            "description": "Derive initial root key from X3DH shared secret",
+            "salt_mode": "explicit",
+            "salt_b64u": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "salt_note": "32 zero bytes",
+            "ikm_mode": "raw_shared_secret",
+            "ikm_note": "X3DH shared secret (typically 96-128 bytes)",
+            "info_utf8": "x3dh-init",
+            "out_len": 32,
+            "split": {
+                "root_key": {
+                    "offset": 0,
+                    "length": 32
+                }
+            }
+        },
+        "kdf_rk": {
+            "name": "root_kdf",
+            "description": "Derive new root key and chain key from DH output",
+            "salt_mode": "none",
+            "salt_note": "No salt (empty bytes)",
+            "ikm_mode": "concat(rk, dh_out)",
+            "ikm_note": "Concatenate root key (32 bytes) + DH output (32 bytes)",
+            "info_utf8": "talos-double-ratchet-root",
+            "out_len": 64,
+            "split": {
+                "root_key": {
+                    "offset": 0,
+                    "length": 32
+                },
+                "chain_key": {
+                    "offset": 32,
+                    "length": 32
+                }
+            }
+        },
+        "kdf_ck_chain": {
+            "name": "chain_kdf",
+            "description": "Derive next chain key",
+            "salt_mode": "none",
+            "salt_note": "No salt (empty bytes)",
+            "ikm_mode": "ck",
+            "ikm_note": "Current chain key (32 bytes)",
+            "info_utf8": "talos-double-ratchet-chain",
+            "out_len": 32,
+            "split": {
+                "next_chain_key": {
+                    "offset": 0,
+                    "length": 32
+                }
+            }
+        },
+        "kdf_ck_message": {
+            "name": "message_kdf",
+            "description": "Derive message key from chain key",
+            "salt_mode": "none",
+            "salt_note": "No salt (empty bytes)",
+            "ikm_mode": "ck",
+            "ikm_note": "Current chain key (32 bytes)",
+            "info_utf8": "talos-double-ratchet-message",
+            "out_len": 32,
+            "split": {
+                "message_key": {
+                    "offset": 0,
+                    "length": 32
+                }
+            }
+        }
+    },
+    "aead": {
+        "algorithm": "ChaCha20-Poly1305",
+        "nonce_len": 12,
+        "tag_len": 16,
+        "aad_mode": "header_canonical_json_bytes"
+    }
+}

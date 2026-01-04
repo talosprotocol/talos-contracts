@@ -58,6 +58,17 @@ All SDKs must return/throw errors with at least this structure:
 | `TALOS_TRANSPORT_TIMEOUT` | Transport operation timed out | Connection or send timeout exceeded |
 | `TALOS_TRANSPORT_ERROR` | Transport-level failure | Connection refused, network error |
 
+### Ratchet & X3DH Errors (v1.1)
+
+| Code | Meaning | When Raised |
+| :--- | :--- | :--- |
+| `RATCHET_AUTH_FAILED` | AEAD authentication failed | Ciphertext/Tag validation failed (Wrong key/nonce/AAD) |
+| `RATCHET_MAX_SKIP_EXCEEDED` | Too many skipped messages | `skipped_keys` limit hit (DoS protection) |
+| `RATCHET_INVALID_HEADER` | Malformed message header | Invalid JSON, missing fields, or bad encoding |
+| `RATCHET_INVALID_DH_KEY` | Invalid DH key | Bad curve point or weak key |
+| `X3DH_INVALID_SIGNATURE` | Prekey signature invalid | Signed Prekey verification failed |
+| `X3DH_MISSING_PREKEY` | One-time prekey missing | Requested OTK not found in bundle |
+
 ---
 
 ## Negative Test Vector Expectations

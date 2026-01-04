@@ -1,0 +1,53 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Wire Message Canonical Micro-Vector",
+    "description": "Verifies canonical JSON serialization of complete ratchet messages",
+    "version": "1.1.0",
+    "test_cases": [
+        {
+            "id": "wire_message_ordered_1",
+            "description": "Full message with keys in arbitrary order",
+            "input_message": {
+                "nonce": "YWJjZGVmZ2hpams",
+                "ciphertext": "ZW5jcnlwdGVkX2RhdGFfYmxvYg",
+                "header": {
+                    "pn": 0,
+                    "n": 1,
+                    "dh": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                }
+            },
+            "expected_canonical_json": "{\"ciphertext\":\"ZW5jcnlwdGVkX2RhdGFfYmxvYg\",\"header\":{\"dh\":\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"n\":1,\"pn\":0},\"nonce\":\"YWJjZGVmZ2hpams\"}",
+            "expected_wire_message_b64u": "eyJjaXBoZXJ0ZXh0IjoiWlc1amNubHdkR1ZrWDJSaGRHRmZZbXh2WWciLCJoZWFkZXIiOnsiZGgiOiJBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBIiwibiI6MSwicG4iOjB9LCJub25jZSI6IllXSmpaR1ZtWjJocGFtcyJ9"
+        },
+        {
+            "id": "wire_message_ordered_2",
+            "description": "Full message with keys already sorted",
+            "input_message": {
+                "ciphertext": "ZW5jcnlwdGVkX2RhdGFfYmxvYg",
+                "header": {
+                    "dh": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                    "n": 1,
+                    "pn": 0
+                },
+                "nonce": "YWJjZGVmZ2hpams"
+            },
+            "expected_canonical_json": "{\"ciphertext\":\"ZW5jcnlwdGVkX2RhdGFfYmxvYg\",\"header\":{\"dh\":\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"n\":1,\"pn\":0},\"nonce\":\"YWJjZGVmZ2hpams\"}",
+            "expected_wire_message_b64u": "eyJjaXBoZXJ0ZXh0IjoiWlc1amNubHdkR1ZrWDJSaGRHRmZZbXh2WWciLCJoZWFkZXIiOnsiZGgiOiJBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBIiwibiI6MSwicG4iOjB9LCJub25jZSI6IllXSmpaR1ZtWjJocGFtcyJ9"
+        },
+        {
+            "id": "wire_message_nested_permutation",
+            "description": "Nested header keys in different order",
+            "input_message": {
+                "header": {
+                    "n": 5,
+                    "dh": "QkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkI",
+                    "pn": 3
+                },
+                "ciphertext": "Y3J5cHRvX2RhdGE",
+                "nonce": "dGVzdF9ub25jZQ"
+            },
+            "expected_canonical_json": "{\"ciphertext\":\"Y3J5cHRvX2RhdGE\",\"header\":{\"dh\":\"QkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkI\",\"n\":5,\"pn\":3},\"nonce\":\"dGVzdF9ub25jZQ\"}",
+            "expected_wire_message_b64u": "eyJjaXBoZXJ0ZXh0IjoiWTNKNWNIUnZYMlJoZEdFIiwiaGVhZGVyIjp7ImRoIjoiUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtJIiwibiI6NSwicG4iOjN9LCJub25jZSI6ImRHVnpkRjl1YjI1alpRIn0"
+        }
+    ]
+}

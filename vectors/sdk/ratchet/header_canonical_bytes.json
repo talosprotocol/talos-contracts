@@ -1,0 +1,9 @@
+{
+    "test_id": "header_canonical_sorting",
+    "input_header": {
+        "pn": 10,
+        "n": 5,
+        "dh": "uV_0W_7R_7R_7R_7R_7R_7R_7R_7R_7R_7R_7R_7R_U"
+    },
+    "expected_canonical_b64u": "eyJkaCI6InVWVzBXM1IzUjNSM1IzUjNSM1IzUjNSM1IzUjNSM1IzUjNSM1IzUjNSM1IzVVUyIsIm4iOjUsInBuIjoxMH0"
+}
