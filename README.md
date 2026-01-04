@@ -12,12 +12,12 @@ In a distributed agent system, ambiguity in protocol implementation leads to fra
 
 ```mermaid
 graph TD
-    subgraph "Source of Truth"
+    subgraph Source_of_Truth[Source of Truth]
         Schemas[JSON Schemas]
         Vectors[Test Vectors]
     end
 
-    subgraph "Consumers"
+    subgraph Consumers[Consumers]
         Py[SDK Python]
         TS[SDK TypeScript]
         Java[SDK Java]
