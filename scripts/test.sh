@@ -1,14 +1,15 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
 # =============================================================================
 # talos-contracts Test Script
 # =============================================================================
+set -euo pipefail
 
-echo "Testing talos-contracts..."
+log() { printf '%s\n' "$*"; }
+info() { printf 'ℹ️  %s\n' "$*"; }
+
+info "Testing talos-contracts..."
 
 # TypeScript tests (run in subshell to preserve cwd)
-echo "--- TypeScript ---"
+info "--- TypeScript ---"
 (
   cd typescript
   npm ci --silent
@@ -21,7 +22,7 @@ echo "--- TypeScript ---"
 )
 
 # Python tests (run in subshell to preserve cwd)
-echo "--- Python ---"
+info "--- Python ---"
 (
   cd python
   pip install -e . -q
@@ -30,4 +31,4 @@ echo "--- Python ---"
   pytest tests/ -q
 )
 
-echo "talos-contracts tests passed."
+log "✓ talos-contracts tests passed."
