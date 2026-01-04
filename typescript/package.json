@@ -1,6 +1,6 @@
 {
   "name": "@talosprotocol/contracts",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Talos Protocol contracts - schemas, types, and helper functions",
   "type": "module",
   "main": "./dist/index.js",
