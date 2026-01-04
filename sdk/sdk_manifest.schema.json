@@ -1,0 +1,68 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Talos SDK Manifest",
+    "type": "object",
+    "required": [
+        "name",
+        "version",
+        "license",
+        "homepage",
+        "repository",
+        "authors",
+        "talos_compatibility"
+    ],
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "version": {
+            "type": "string",
+            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[a-zA-Z0-9.]+)?$"
+        },
+        "license": {
+            "type": "string",
+            "enum": [
+                "MIT",
+                "Apache-2.0"
+            ]
+        },
+        "homepage": {
+            "type": "string",
+            "format": "uri"
+        },
+        "repository": {
+            "type": "string",
+            "format": "uri"
+        },
+        "authors": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "keywords": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "talos_compatibility": {
+            "type": "object",
+            "required": [
+                "protocol_range",
+                "contract_hash"
+            ],
+            "properties": {
+                "protocol_range": {
+                    "type": "string"
+                },
+                "contract_hash": {
+                    "type": "string"
+                },
+                "schedule_hash": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

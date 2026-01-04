@@ -1,49 +1,32 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Talos Error Codes v1.0",
-    "description": "Machine-readable error taxonomy for SDK build-time validation",
-    "codes": {
-        "authorization": [
-            "TALOS_DENIED",
-            "TALOS_INVALID_CAPABILITY"
-        ],
-        "protocol": [
-            "TALOS_PROTOCOL_MISMATCH",
-            "TALOS_FRAME_INVALID"
-        ],
-        "crypto": [
-            "TALOS_CRYPTO_ERROR",
-            "TALOS_INVALID_INPUT"
-        ],
-        "transport": [
-            "TALOS_TRANSPORT_TIMEOUT",
-            "TALOS_TRANSPORT_ERROR"
-        ],
-        "ratchet": [
-            "RATCHET_AUTH_FAILED",
-            "RATCHET_MAX_SKIP_EXCEEDED",
-            "RATCHET_INVALID_HEADER",
-            "RATCHET_INVALID_DH_KEY"
-        ],
-        "x3dh": [
-            "X3DH_INVALID_SIGNATURE",
-            "X3DH_MISSING_PREKEY"
-        ]
-    },
-    "all_codes": [
-        "TALOS_DENIED",
-        "TALOS_INVALID_CAPABILITY",
-        "TALOS_PROTOCOL_MISMATCH",
-        "TALOS_FRAME_INVALID",
-        "TALOS_CRYPTO_ERROR",
-        "TALOS_INVALID_INPUT",
-        "TALOS_TRANSPORT_TIMEOUT",
-        "TALOS_TRANSPORT_ERROR",
-        "RATCHET_AUTH_FAILED",
-        "RATCHET_MAX_SKIP_EXCEEDED",
-        "RATCHET_INVALID_HEADER",
-        "RATCHET_INVALID_DH_KEY",
-        "X3DH_INVALID_SIGNATURE",
-        "X3DH_MISSING_PREKEY"
+    "errors": [
+        {
+            "code": "TALOS_ERR_UNKNOWN",
+            "message": "Unknown error occurred"
+        },
+        {
+            "code": "TALOS_ERR_CRYPTO",
+            "message": "Cryptographic operation failed"
+        },
+        {
+            "code": "TALOS_ERR_FRAME",
+            "message": "Framing or decoding error"
+        },
+        {
+            "code": "TALOS_ERR_NETWORK",
+            "message": "Network transport error"
+        },
+        {
+            "code": "TALOS_ERR_VALIDATION",
+            "message": "Validation of data or schema failed"
+        },
+        {
+            "code": "TALOS_ERR_NOT_FOUND",
+            "message": "Resource not found"
+        },
+        {
+            "code": "TALOS_ERR_UNAUTHORIZED",
+            "message": "Unauthorized access"
+        }
     ]
 }
