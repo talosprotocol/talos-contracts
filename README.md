@@ -1,80 +1,80 @@
-# Talos Protocol Contracts
+# Talos Contracts & Specifications
 
-> **The source of truth for Talos Protocol schemas, types, and helper functions.**
+**Repo Role**: Source of truth for protocol specifications, test vectors, and release sets. Defines the interface that all SDKs must implement.
 
-## Overview
+## Abstract
+Reliable interoperability between independent implementations requires strict adherence to a common specification. This repository contains the canonical JSON schemas, protocol definitions (v1.x), and cryptographically generated test vectors used to validate Talos SDKs across Python, TypeScript, Java, and Go.
 
-This repository contains the shared kernel for the Talos Protocol ecosystem:
+## Introduction
+In a distributed agent system, ambiguity in protocol implementation leads to fragmentation. `talos-contracts` solves this by providing language-agnostic "contracts" (schemas) and a "vector runner" framework. SDKs do not define the protocol; they implement the contracts defined here.
 
-- **Schemas**: JSON Schema definitions for audit events, gateway status, etc.
-- **Test Vectors**: Golden files for cross-language validation
-- **TypeScript Package**: `@talosprotocol/contracts`
-- **Python Package**: `talos-contracts`
+## System Architecture
 
-## Philosophy
+```mermaid
+graph TD
+    subgraph "Source of Truth"
+        Schemas[JSON Schemas]
+        Vectors[Test Vectors]
+    end
 
-> **Contract-Driven Kernel**: All cursor, ordering, and integrity logic lives here. Consumer repos import helpers, never re-implement.
+    subgraph "Consumers"
+        Py[SDK Python]
+        TS[SDK TypeScript]
+        Java[SDK Java]
+        Go[SDK Go]
+    end
 
-## Packages
+    Schemas --> Py
+    Schemas --> TS
+    Schemas --> Java
+    Schemas --> Go
 
-### TypeScript
+    Vectors -.->|Validation| Py
+    Vectors -.->|Validation| TS
+    Vectors -.->|Validation| Java
+    Vectors -.->|Validation| Go
+```
 
+This repository is the upstream dependency for all logic-bearing components.
+
+## Technical Design
+### Modules
+- **test_vectors/**: Golden data for cryptographic primitives and handshake flows.
+- **tools/**: Generators (Python) for creating new vector sets.
+- **releases/**: Versioned snapshots of protocol definitions.
+
+### Data Formats
+- **Release Sets**: JSON files defining feature support (e.g., `v1.1.0.json`).
+- **Vectors**: `input` -> `expected` pairs for stateless verification.
+
+## Evaluation
+**Status**: Critical Path.
+- **Vector Coverage**: 100% of defined primitives.
+- **SDK Adherence**: See individual SDK repos for compliance rates against these vectors.
+
+## Usage
+### Quickstart
+List available vector release sets:
 ```bash
-cd typescript
-npm install
-npm test
-npm run build
+ls test_vectors/sdk/release_sets/
 ```
 
-### Python
+### Common Workflows
+1.  **Generate Vectors**: Use `tools/ratchet/generate_vectors.py`.
+2.  **Validate Schema**: Use `make typecheck`.
 
-```bash
-cd python
-pip install -e ".[dev]"
-pytest
-```
+## Operational Interface
+*   `make test`: Validates vector integrity.
+*   `make typecheck`: Validates JSON schemas.
+*   `make interop`: Runs cross-language compatibility tests.
+*   `scripts/test.sh`: CI entrypoint.
 
-## Helper Functions
+## Security Considerations
+*   **Threat Model**: Malicious actors trying to exploit implementation differences.
+*   **Guarantees**:
+    *   **Determinism**: All SDKs produce bitwise identical outputs for fixed inputs.
+    *   **Coverage**: Vectors cover edge cases (e.g., key exhaustion, out-of-order messages).
 
-| Function | Description |
-|----------|-------------|
-| `deriveCursor(timestamp, eventId)` | Derive cursor from timestamp and event ID |
-| `decodeCursor(cursor)` | Decode cursor to { timestamp, event_id } |
-| `compareCursor(a, b)` | Compare two cursors (-1, 0, 1) |
-| `assertCursorInvariant(event)` | Validate event cursor matches derived |
-| `isUuidV7(id)` | Check if string is valid UUIDv7 |
-| `base64urlEncode/Decode` | Strict base64url (no padding) |
-| `orderingCompare(a, b)` | Event ordering (timestamp DESC, event_id DESC) |
-
-## Test Vectors
-
-Located in `test_vectors/`:
-
-- `cursor_derivation.json` - Cursor derivation goldens
-- `base64url.json` - Base64url encoding/decoding cases
-- `uuidv7.json` - UUIDv7 validation cases
-- `ordering.json` - Event ordering comparison cases
-
-## Spec Clarifications
-
-### Cursor Derivation
-
-```
-cursor = base64url(utf8("{timestamp}:{event_id}"))
-```
-
-- `timestamp`: integer seconds, base-10 ASCII, no leading zeros (except "0")
-- `event_id`: UUIDv7 lowercase canonical form
-- `base64url`: URL-safe alphabet, **NO padding**
-
-### Ordering
-
-```
-(timestamp DESC, event_id DESC)
-```
-
-Higher timestamp first, then higher event_id (lexicographic).
-
-## License
-
-MIT
+## References
+1.  [Protocol v1.1 Spec](./PROTOCOL_V1.1.md) (Placeholder)
+2.  [Mathematical Security Proof](../talos-docs/Mathematical_Security_Proof.md)
