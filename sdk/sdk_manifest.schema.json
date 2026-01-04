@@ -54,13 +54,26 @@
             ],
             "properties": {
                 "protocol_range": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "SemVer range of supported Talos protocols"
                 },
                 "contract_hash": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "SHA256 of the canonical contracts bundle (Base64URL no padding)",
+                    "pattern": "^[A-Za-z0-9_-]{43}$"
                 },
                 "schedule_hash": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "SHA256 of the ratchet schedule (Base64URL no padding)",
+                    "pattern": "^[A-Za-z0-9_-]{43}$"
+                },
+                "contracts_version": {
+                    "type": "string",
+                    "description": "Exact version of talos-contracts built against"
+                },
+                "release_set": {
+                    "type": "string",
+                    "description": "Specific release set used for conformance"
                 }
             }
         }
