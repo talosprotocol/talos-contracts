@@ -1,0 +1,46 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://talosprotocol.org/schemas/error.json",
+    "title": "Talos Error Object",
+    "description": "Canonical error shape all SDKs must produce",
+    "type": "object",
+    "required": [
+        "code",
+        "message"
+    ],
+    "properties": {
+        "code": {
+            "type": "string",
+            "description": "Error code from ERROR_TAXONOMY",
+            "enum": [
+                "TALOS_DENIED",
+                "TALOS_INVALID_CAPABILITY",
+                "TALOS_PROTOCOL_MISMATCH",
+                "TALOS_FRAME_INVALID",
+                "TALOS_CRYPTO_ERROR",
+                "TALOS_INVALID_INPUT",
+                "TALOS_TRANSPORT_TIMEOUT",
+                "TALOS_TRANSPORT_ERROR"
+            ]
+        },
+        "message": {
+            "type": "string",
+            "description": "Human-readable message (non-empty, user-safe)",
+            "minLength": 1
+        },
+        "details": {
+            "type": "object",
+            "description": "Additional structured context (optional)",
+            "additionalProperties": true
+        },
+        "request_id": {
+            "type": "string",
+            "description": "Correlation ID if available (optional)"
+        },
+        "cause": {
+            "type": "string",
+            "description": "Underlying error message (optional, no stack traces)"
+        }
+    },
+    "additionalProperties": false
+}

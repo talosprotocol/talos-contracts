@@ -1,0 +1,71 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Talos SDK Vector Index",
+    "version": "1.0.0",
+    "description": "Index of test vectors for conformance testing",
+    "vectors": [
+        {
+            "id": "signing_verify",
+            "file": "signing_verify.json",
+            "required_protocol": "1.0",
+            "features": [
+                "identity"
+            ],
+            "description": "Ed25519 signing and verification"
+        },
+        {
+            "id": "frame_codec",
+            "file": "frame_codec.json",
+            "required_protocol": "1.0",
+            "features": [
+                "transport"
+            ],
+            "description": "Frame encoding and decoding"
+        },
+        {
+            "id": "capability_verify",
+            "file": "capability_verify.json",
+            "required_protocol": "1.0",
+            "features": [
+                "capabilities"
+            ],
+            "description": "Capability token verification"
+        },
+        {
+            "id": "canonical_json",
+            "file": "canonical_json.json",
+            "required_protocol": "1.0",
+            "features": [
+                "canonical"
+            ],
+            "description": "JSON canonicalization"
+        },
+        {
+            "id": "mcp_sign_verify",
+            "file": "mcp_sign_verify.json",
+            "required_protocol": "1.0",
+            "features": [
+                "mcp_security"
+            ],
+            "description": "MCP request signing and verification"
+        }
+    ],
+    "feature_sets": {
+        "core_v1": [
+            "identity",
+            "canonical",
+            "mcp_security"
+        ],
+        "transport_v1": [
+            "transport",
+            "frame_codec"
+        ],
+        "all_v1": [
+            "identity",
+            "canonical",
+            "mcp_security",
+            "transport",
+            "capabilities"
+        ]
+    }
+}

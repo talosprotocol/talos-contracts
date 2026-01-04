@@ -1,0 +1,322 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Talos SDK API Surface",
+    "version": "1.0.0",
+    "description": "Canonical API surface all SDKs must implement",
+    "modules": {
+        "identity": {
+            "classes": {
+                "Wallet": {
+                    "description": "Identity and signing wallet",
+                    "static_methods": {
+                        "generate": {
+                            "id": "wallet.generate",
+                            "parameters": [
+                                {
+                                    "name": "name",
+                                    "type": "string?",
+                                    "required": false
+                                }
+                            ],
+                            "returns": "Wallet",
+                            "deterministic": false,
+                            "errors": [
+                                "TALOS_CRYPTO_ERROR"
+                            ]
+                        },
+                        "from_seed": {
+                            "id": "wallet.from_seed",
+                            "parameters": [
+                                {
+                                    "name": "seed",
+                                    "type": "bytes[32]",
+                                    "required": true
+                                }
+                            ],
+                            "returns": "Wallet",
+                            "deterministic": true,
+                            "errors": [
+                                "TALOS_INVALID_INPUT"
+                            ]
+                        },
+                        "verify": {
+                            "id": "wallet.verify",
+                            "parameters": [
+                                {
+                                    "name": "message",
+                                    "type": "bytes",
+                                    "required": true
+                                },
+                                {
+                                    "name": "signature",
+                                    "type": "bytes[64]",
+                                    "required": true
+                                },
+                                {
+                                    "name": "public_key",
+                                    "type": "bytes[32]",
+                                    "required": true
+                                }
+                            ],
+                            "returns": "bool",
+                            "deterministic": true,
+                            "errors": []
+                        }
+                    },
+                    "instance_methods": {
+                        "to_did": {
+                            "id": "wallet.to_did",
+                            "parameters": [],
+                            "returns": "string",
+                            "deterministic": true
+                        },
+                        "sign": {
+                            "id": "wallet.sign",
+                            "parameters": [
+                                {
+                                    "name": "message",
+                                    "type": "bytes",
+                                    "required": true
+                                }
+                            ],
+                            "returns": "bytes[64]",
+                            "deterministic": true,
+                            "errors": [
+                                "TALOS_CRYPTO_ERROR"
+                            ]
+                        }
+                    },
+                    "properties": {
+                        "address": {
+                            "type": "string",
+                            "description": "Hex-encoded public key hash"
+                        },
+                        "public_key": {
+                            "type": "bytes[32]"
+                        },
+                        "name": {
+                            "type": "string?"
+                        }
+                    }
+                }
+            }
+        },
+        "mcp_security": {
+            "functions": {
+                "sign_mcp_request": {
+                    "id": "mcp.sign_request",
+                    "parameters": [
+                        {
+                            "name": "wallet",
+                            "type": "Wallet",
+                            "required": true
+                        },
+                        {
+                            "name": "request",
+                            "type": "object",
+                            "required": true
+                        },
+                        {
+                            "name": "session_id",
+                            "type": "string",
+                            "required": true
+                        },
+                        {
+                            "name": "correlation_id",
+                            "type": "string",
+                            "required": true
+                        },
+                        {
+                            "name": "tool",
+                            "type": "string",
+                            "required": true
+                        },
+                        {
+                            "name": "action",
+                            "type": "string",
+                            "required": true
+                        },
+                        {
+                            "name": "timestamp",
+                            "type": "int?",
+                            "required": false
+                        }
+                    ],
+                    "returns": "SignedFrame",
+                    "deterministic": true,
+                    "errors": [
+                        "TALOS_CRYPTO_ERROR"
+                    ]
+                },
+                "verify_mcp_response": {
+                    "id": "mcp.verify_response",
+                    "parameters": [
+                        {
+                            "name": "frame",
+                            "type": "SignedFrame",
+                            "required": true
+                        },
+                        {
+                            "name": "expected_correlation_id",
+                            "type": "string",
+                            "required": true
+                        },
+                        {
+                            "name": "signer_public_key",
+                            "type": "bytes[32]",
+                            "required": true
+                        }
+                    ],
+                    "returns": "bool",
+                    "deterministic": true,
+                    "errors": []
+                }
+            }
+        },
+        "canonical": {
+            "functions": {
+                "canonical_json": {
+                    "id": "canonical.json",
+                    "parameters": [
+                        {
+                            "name": "obj",
+                            "type": "any",
+                            "required": true
+                        }
+                    ],
+                    "returns": "string",
+                    "deterministic": true
+                },
+                "canonical_json_bytes": {
+                    "id": "canonical.json_bytes",
+                    "parameters": [
+                        {
+                            "name": "obj",
+                            "type": "any",
+                            "required": true
+                        }
+                    ],
+                    "returns": "bytes",
+                    "deterministic": true
+                }
+            }
+        },
+        "client": {
+            "classes": {
+                "TalosClient": {
+                    "description": "High-level facade",
+                    "constructor": {
+                        "parameters": [
+                            {
+                                "name": "gateway_url",
+                                "type": "string",
+                                "required": true
+                            },
+                            {
+                                "name": "wallet",
+                                "type": "Wallet",
+                                "required": true
+                            }
+                        ]
+                    },
+                    "instance_methods": {
+                        "connect": {
+                            "id": "client.connect",
+                            "parameters": [],
+                            "returns": "void",
+                            "async": true,
+                            "errors": [
+                                "TALOS_TRANSPORT_ERROR",
+                                "TALOS_PROTOCOL_MISMATCH"
+                            ]
+                        },
+                        "close": {
+                            "id": "client.close",
+                            "parameters": [],
+                            "returns": "void",
+                            "async": true
+                        },
+                        "sign_mcp_request": {
+                            "id": "client.sign_mcp_request",
+                            "parameters": [
+                                {
+                                    "name": "request",
+                                    "type": "object",
+                                    "required": true
+                                },
+                                {
+                                    "name": "tool",
+                                    "type": "string",
+                                    "required": true
+                                },
+                                {
+                                    "name": "action",
+                                    "type": "string",
+                                    "required": true
+                                }
+                            ],
+                            "returns": "SignedFrame",
+                            "errors": [
+                                "TALOS_TRANSPORT_ERROR"
+                            ]
+                        },
+                        "sign_and_send_mcp": {
+                            "id": "client.sign_and_send_mcp",
+                            "parameters": [
+                                {
+                                    "name": "request",
+                                    "type": "object",
+                                    "required": true
+                                },
+                                {
+                                    "name": "tool",
+                                    "type": "string",
+                                    "required": true
+                                },
+                                {
+                                    "name": "action",
+                                    "type": "string",
+                                    "required": true
+                                }
+                            ],
+                            "returns": "object",
+                            "async": true,
+                            "errors": [
+                                "TALOS_TRANSPORT_ERROR",
+                                "TALOS_TRANSPORT_TIMEOUT"
+                            ]
+                        },
+                        "protocol_version": {
+                            "id": "client.protocol_version",
+                            "parameters": [],
+                            "returns": "string"
+                        },
+                        "supported_protocol_range": {
+                            "id": "client.supported_protocol_range",
+                            "parameters": [],
+                            "returns": [
+                                "string",
+                                "string"
+                            ]
+                        }
+                    },
+                    "properties": {
+                        "wallet": {
+                            "type": "Wallet"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "required_errors": [
+        "TALOS_DENIED",
+        "TALOS_INVALID_CAPABILITY",
+        "TALOS_PROTOCOL_MISMATCH",
+        "TALOS_FRAME_INVALID",
+        "TALOS_CRYPTO_ERROR",
+        "TALOS_INVALID_INPUT",
+        "TALOS_TRANSPORT_TIMEOUT",
+        "TALOS_TRANSPORT_ERROR"
+    ]
+}
