@@ -12,8 +12,8 @@
             },
             "expected": {
                 "public_key_hex": "4cb5abf6ad79fbf5abbccafcc269d85cd2651ed4b885b5869f241aedf0a5ba29",
-                "signature_base64url": "nWGxne_9MCmFTLxM-3T8d0D-nXPiS6VpebBxLF9bY3hWqxQ9Pz8H-hPgB5YkN6qK4pY7v8iJKxL2m8PdQZ_yCw",
-                "did": "did:key:z6MkffDZCkCTWreg8868fG1FGFogcJj5X6PY93pPcWDn9bob"
+                "signature_base64url": "fDUIhcJ3C7E6CqF8G69aWT2AmLDOMzoksPqt2PMO1V6PIeQzxGkTSszDu2iHUnVwb7Mo_2WSyzRhfP0gqUMPBw",
+                "did": "did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG"
             }
         },
         {
