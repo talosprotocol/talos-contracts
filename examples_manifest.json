@@ -1,0 +1,47 @@
+{
+    "version": "1",
+    "examples": [
+        {
+            "id": "secure-chat",
+            "title": "Secure AI Agent Chat",
+            "description": "End-to-end audited LLM interaction with ACL, blockchain audit trail, and forward secrecy encryption",
+            "route": "/examples/chat",
+            "backend": {
+                "type": "http",
+                "env": "TALOS_CHAT_URL",
+                "health": "/health",
+                "runtime_hint": "python"
+            },
+            "ui": {
+                "env": "TALOS_CHAT_UI_URL",
+                "default_path": "/"
+            },
+            "features": [
+                "double-ratchet",
+                "sqlite",
+                "audit-log"
+            ]
+        },
+        {
+            "id": "devops-agent",
+            "title": "DevOps Agent",
+            "description": "CI/CD automation agent secured by Talos Protocol with MCP tools and capability-based access",
+            "route": "/examples/devops",
+            "backend": {
+                "type": "http",
+                "env": "TALOS_AIOPS_URL",
+                "health": "/health",
+                "runtime_hint": "docker"
+            },
+            "ui": {
+                "env": "TALOS_AIOPS_UI_URL",
+                "default_path": "/"
+            },
+            "features": [
+                "talos-mcp",
+                "capabilities",
+                "docker-isolation"
+            ]
+        }
+    ]
+}
