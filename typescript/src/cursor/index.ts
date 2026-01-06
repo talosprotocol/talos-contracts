@@ -1,9 +1,9 @@
-// typescript/src/cursor.ts
+// typescript/src/cursor/index.ts
 // Cursor derivation, validation, and comparison
 // D4=B: invalid frames do not throw from validation, return INVALID_FRAME
 
-import { base64urlDecodeToUtf8, base64urlEncodeUtf8 } from "./base64url.js";
-import { isUuidV7, isCanonicalLowerUuid } from "./uuidv7.js";
+import { base64urlDecodeToUtf8, base64urlEncodeUtf8 } from "../base64url.js";
+import { isUuidV7, isCanonicalLowerUuid } from "../uuidv7.js";
 
 export type CursorValidationReason = "CURSOR_MISMATCH" | "INVALID_FRAME";
 

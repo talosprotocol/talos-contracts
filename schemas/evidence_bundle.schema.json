@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talosprotocol.com/schemas/evidence_bundle.schema.json",
+  "title": "Talos Evidence Bundle",
+  "description": "A portable, verifiable bundle of audit events with integrity metadata",
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "schema_version": { "type": "string" },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "source": { 
+          "type": "object",
+          "properties": {
+            "dashboard_version": { "type": "string" },
+            "gateway_version": { "type": "string" }
+          },
+          "required": ["dashboard_version"]
+        },
+        "redaction_level": { "enum": ["none", "safe_default", "strict"] },
+        "cursor_range": {
+           "type": "object",
+           "properties": { "start": {"type": "string"}, "end": {"type": "string"} }
+        }
+      },
+      "required": ["schema_version", "generated_at", "source", "redaction_level"]
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+           "id": { "type": "string" },
+           "timestamp": { "type": "number" },
+           "cursor": { "type": "string" }
+        },
+        "required": ["id", "timestamp", "cursor"]
+      }
+    },
+    "integrity_summary": {
+      "type": "object",
+      "properties": {
+        "total_events": { "type": "number" },
+        "cursor_continuity": { "enum": ["VERIFIED", "GAPS_DETECTED", "UNKNOWN"] }
+      },
+      "required": ["total_events", "cursor_continuity"]
+    }
+  },
+  "required": ["metadata", "events", "integrity_summary"]
+}

@@ -22,7 +22,28 @@ export {
     type CursorValidationReason,
     type CursorValidationResult,
     type DecodedCursor,
-} from "./cursor.js";
+} from "./cursor/index.js";
+
+export {
+    checkCursorContinuity,
+    type CursorGap,
+    type ContinuityCheckResult,
+} from "./cursor/continuity.js";
+
+export {
+    createEvidenceBundle,
+    type EvidenceBundle,
+    type EvidenceBundleMetadata,
+    type AuditEvent,
+    type IntegritySummary,
+    type GatewayStatus,
+} from "./evidence/bundle.js";
+
+export {
+    redactEvent,
+    redactGatewaySnapshot,
+    type RedactionLevel,
+} from "./evidence/redaction.js";
 
 // Event ordering
 export { orderingCompare } from "./ordering.js";
