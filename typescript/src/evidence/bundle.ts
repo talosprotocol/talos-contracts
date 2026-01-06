@@ -27,9 +27,9 @@ export interface AuditFilters {
     [key: string]: unknown;
 }
 
-export interface Comparator<T> {
-    (a: T, b: T): -1 | 0 | 1;
-}
+export type Outcome = "OK" | "DENY" | "ERROR";
+
+export type Comparator<T> = (a: T, b: T) => -1 | 0 | 1;
 
 export interface EvidenceBundleMetadata {
     schema_version: string;
@@ -45,7 +45,7 @@ export interface EvidenceBundleMetadata {
 
 export interface IntegritySummary {
     total_events: number;
-    by_outcome: Record<"OK" | "DENY" | "ERROR", number>;
+    by_outcome: Record<Outcome, number>;
     by_denial_reason: Record<string, number>;
     cursor_continuity: "VERIFIED" | "GAPS_DETECTED" | "UNKNOWN";
 }
@@ -74,11 +74,11 @@ export function createEvidenceBundle(params: {
     const redactedEvents = sortedEvents.map(e => redactEvent(e, level));
 
     // 3. Compute integrity summary
-    const by_outcome: Record<"OK" | "DENY" | "ERROR", number> = { OK: 0, DENY: 0, ERROR: 0 };
+    const by_outcome: Record<Outcome, number> = { OK: 0, DENY: 0, ERROR: 0 };
     const by_denial_reason: Record<string, number> = {};
 
     redactedEvents.forEach(e => {
-        const outcome = (e.outcome as "OK" | "DENY" | "ERROR") || "OK";
+        const outcome = (e.outcome as Outcome) || "OK";
         by_outcome[outcome] = (by_outcome[outcome] || 0) + 1;
         
         if (typeof e.reason === 'string') {
