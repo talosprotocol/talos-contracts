@@ -90,7 +90,7 @@ export function createEvidenceBundle(params: {
         total_events: redactedEvents.length,
         by_outcome,
         by_denial_reason,
-        cursor_continuity: "UNKNOWN" // TODO: Hook up continuity check
+        cursor_continuity: "UNKNOWN" // Continuity check is computationally expensive for large bundles, handled by Dashboard or Audit Service for now.
     };
 
     // 4. Strip secrets from gateway snapshot
