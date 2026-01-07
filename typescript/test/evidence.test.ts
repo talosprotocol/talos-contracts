@@ -1,12 +1,10 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it } from 'vitest';
 import { assert } from "chai";
 import { 
     createEvidenceBundle, 
     deriveCursor, 
     AuditEvent, 
-    EvidenceBundle,
-    checkCursorContinuity,
-    redactEvent
+    checkCursorContinuity
 } from "../src/index.js";
 
 function makeEvent(ts: number, id: string, extra: Record<string, unknown> = {}): AuditEvent {
@@ -14,6 +12,7 @@ function makeEvent(ts: number, id: string, extra: Record<string, unknown> = {}):
     const cursor = deriveCursor(ts, id);
     return {
         id,
+        event_id: id,
         timestamp: ts,
         cursor,
         ...extra

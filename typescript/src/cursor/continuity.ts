@@ -47,7 +47,7 @@ export function checkCursorContinuity(
         }
     }
 
-    // TODO: v1.2 Implement actual rigorous predecessor check using Merkle links if available
+    // FUTURE(v1.2): Implement actual rigorous predecessor check using Merkle links if available
     // For now, we only check monotonic ordering.
 
      if (gaps.length > 0) {

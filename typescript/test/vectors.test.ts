@@ -9,7 +9,7 @@ import {
   base64urlDecodeToBytes,
   base64urlEncodeBytes,
 } from "../src/base64url.js";
-import { deriveCursor, decodeCursor } from "../src/cursor/index.js";
+import { deriveCursor } from "../src/cursor/index.js";
 import { isUuidV7 } from "../src/uuidv7.js";
 import { orderingCompare } from "../src/ordering.js";
 

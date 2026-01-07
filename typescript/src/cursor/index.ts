@@ -18,7 +18,7 @@ function isValidUnixSecondsInt(n: unknown): n is number {
 }
 
 function isCanonicalTimestampString(s: string): boolean {
-    if (!/^[0-9]+$/.test(s)) return false;
+    if (!/^\\d+$/.test(s)) return false;
     if (s.length > 1 && s.startsWith("0")) return false;
     return true;
 }
