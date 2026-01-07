@@ -1,0 +1,10 @@
+# Talos Contracts - Python Dependencies
+# For contract validation and type checking
+
+# Development dependencies for type checking and testing
+mypy>=1.0.0
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# Install the local package in editable mode
+-e python/
