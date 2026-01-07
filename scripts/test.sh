@@ -16,9 +16,7 @@ info "--- TypeScript ---"
   npm run lint 2>/dev/null || true
   npm run typecheck 2>/dev/null || npm run build
   npm test -- --run
-  if [[ "${TALOS_SKIP_BUILD:-false}" != "true" ]]; then
-    npm run build
-  fi
+  npm run build
 )
 
 # Python tests (run in subshell to preserve cwd)
