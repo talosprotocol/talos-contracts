@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -e
+
+echo "🔍 Running pre-commit checks for talos-contracts..."
+
+cd typescript
+
+echo "1) Linting..."
+npm run lint
+
+echo "2) Typechecking..."
+npm run typecheck
+
+echo "3) Testing..."
+npm test
+
+echo "✅ talos-contracts checks passed!"
