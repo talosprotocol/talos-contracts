@@ -21,7 +21,31 @@ fi
 if [ -d "python" ]; then
     echo "🐍 Python pre-push checks"
     cd python
-    pytest -v
+    
+    # Full test suite with coverage
+    echo "  ▸ Running full test suite..."
+    pytest -v --tb=short
+    
+    # Strict mypy
+    echo "  ▸ Strict type checking..."
+    mypy talos_contracts/ --ignore-missing-imports
+    
+    # Build validation
+    echo "  ▸ Building distribution..."
+    python -m build --sdist --wheel --outdir dist/
+    
+    # Verify py.typed in wheel
+    echo "  ▸ Verifying py.typed in wheel..."
+    if python3 -c "import zipfile, sys, glob; wheel = glob.glob('dist/*.whl')[0]; sys.exit(0 if 'talos_contracts/py.typed' in zipfile.ZipFile(wheel).namelist() else 1)"; then
+         echo "    ✓ py.typed verified in wheel"
+    else
+        echo "❌ py.typed not found in wheel!"
+        exit 1
+    fi
+    
+    # Cleanup
+    rm -rf dist/
+    
     echo "✅ Python pre-push passed"
     cd ..
 fi

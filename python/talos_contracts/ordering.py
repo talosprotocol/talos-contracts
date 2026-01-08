@@ -1,45 +1,20 @@
-"""Event ordering comparison: (timestamp DESC, event_id DESC)."""
+"""Compatibility shim for ordering.
 
-from __future__ import annotations
+.. deprecated::
+    Import from `talos_contracts` root instead.
+"""
 
-from typing import Literal
+import warnings
 
+warnings.warn(
+    "Importing from talos_contracts.ordering is deprecated. "
+    "Import from talos_contracts root instead.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
-def ordering_compare(
-    a: dict[str, int | str],
-    b: dict[str, int | str],
-) -> Literal[-1, 0, 1]:
-    """
-    Compare two events for ordering.
+from talos_contracts.domain.logic.ordering import ordering_compare  # noqa: E402
 
-    Returns -1 if a should come before b (a is "greater" in DESC order)
-    Returns 0 if equal
-    Returns 1 if a should come after b
-
-    Ordering: timestamp DESC, then event_id DESC
-
-    Args:
-        a: Dict with 'timestamp' and 'event_id'
-        b: Dict with 'timestamp' and 'event_id'
-
-    Returns:
-        -1, 0, or 1
-    """
-    a_ts = a["timestamp"]
-    b_ts = b["timestamp"]
-    a_eid = a["event_id"]
-    b_eid = b["event_id"]
-
-    # DESC timestamp: higher timestamp comes first
-    if a_ts > b_ts:
-        return -1
-    if a_ts < b_ts:
-        return 1
-
-    # DESC event_id: higher event_id comes first (lexicographic)
-    if a_eid > b_eid:
-        return -1
-    if a_eid < b_eid:
-        return 1
-
-    return 0
+__all__ = [
+    "ordering_compare",
+]

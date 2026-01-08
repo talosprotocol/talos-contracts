@@ -1,37 +1,53 @@
-"""Talos Protocol contracts - schemas, types, and helper functions."""
+"""Talos Protocol contracts - schemas, types, and helper functions.
 
-from talos_contracts.base64url import (
-    Base64UrlError,
-    base64url_encode,
-    base64url_decode,
-)
-from talos_contracts.uuidv7 import (
-    is_uuid_v7,
-    is_canonical_lower_uuid,
-)
-from talos_contracts.cursor import (
-    derive_cursor,
-    decode_cursor,
-    compare_cursor,
+Public API - all exports are stable and backward-compatible.
+"""
+
+# Infrastructure layer
+# Domain layer - logic
+from talos_contracts.domain.logic import (
     assert_cursor_invariant,
-    CursorValidationResult,
+    compare_cursor,
+    decode_cursor,
+    derive_cursor,
+    ordering_compare,
 )
-from talos_contracts.ordering import ordering_compare
+
+# Domain layer - types
+from talos_contracts.domain.types import (
+    CursorBad,
+    CursorOk,
+    CursorValidationReason,
+    CursorValidationResult,
+    DecodedCursor,
+)
+from talos_contracts.infrastructure import (
+    Base64UrlError,
+    base64url_decode,
+    base64url_encode,
+    is_canonical_lower_uuid,
+    is_uuid_v7,
+)
 
 __all__ = [
-    # Base64url
+    # Infrastructure: Base64url
     "Base64UrlError",
     "base64url_encode",
     "base64url_decode",
-    # UUIDv7
+    # Infrastructure: UUIDv7
     "is_uuid_v7",
     "is_canonical_lower_uuid",
-    # Cursor
+    # Domain: Cursor types
+    "CursorValidationReason",
+    "CursorOk",
+    "CursorBad",
+    "CursorValidationResult",
+    "DecodedCursor",
+    # Domain: Cursor operations
     "derive_cursor",
     "decode_cursor",
     "compare_cursor",
     "assert_cursor_invariant",
-    "CursorValidationResult",
-    # Ordering
+    # Domain: Ordering
     "ordering_compare",
 ]

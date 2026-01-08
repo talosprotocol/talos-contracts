@@ -5,11 +5,14 @@ from pathlib import Path
 
 import pytest
 
-from talos_contracts.base64url import base64url_decode, base64url_encode
-from talos_contracts.cursor import derive_cursor
-from talos_contracts.uuidv7 import is_uuid_v7
-from talos_contracts.ordering import ordering_compare
-
+from talos_contracts import (
+    Base64UrlError,
+    base64url_decode,
+    base64url_encode,
+    derive_cursor,
+    is_uuid_v7,
+    ordering_compare,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 V = ROOT / "test_vectors"
@@ -28,7 +31,7 @@ def test_base64url_invalid():
     """Test that invalid base64url strings are rejected."""
     data = json.loads((V / "base64url.json").read_text())
     for s in data["invalid"]:
-        with pytest.raises(Exception):
+        with pytest.raises(Base64UrlError):
             base64url_decode(s)
 
 

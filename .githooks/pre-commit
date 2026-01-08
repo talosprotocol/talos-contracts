@@ -46,15 +46,43 @@ if [ -d "python" ]; then
     echo "🐍 Python pre-commit checks"
     cd python
     
-    # Lint if ruff available
-    if command -v ruff &> /dev/null; then
-        echo "  ▸ Linting..."
-        ruff check .
+    # Ensure dev dependencies are installed
+    if ! pip show ruff &> /dev/null; then
+        echo "  ▸ Installing dev dependencies..."
+        pip install -e ".[dev]" -q
     fi
+    
+    # Lint with ruff
+    echo "  ▸ Linting with ruff..."
+    ruff check talos_contracts/ tests/ --fix
+    
+    # Format with ruff
+    echo "  ▸ Formatting with ruff..."
+    ruff format talos_contracts/ tests/
+    
+    # Type check with mypy (if strict mode)
+    echo "  ▸ Type checking with mypy..."
+    mypy talos_contracts/ --ignore-missing-imports || echo "    ⚠ mypy warnings (non-blocking)"
     
     # Run tests
     echo "  ▸ Running tests..."
-    pytest -v
+    pytest -v --tb=short
+    
+    # Package validation
+    echo "  ▸ Validating package can build..."
+    rm -rf /tmp/python-build-check
+    python -m build --sdist --wheel --outdir /tmp/python-build-check > /dev/null 2>&1
+    
+    # Verify py.typed is in wheel
+    echo "  ▸ Checking py.typed in wheel..."
+    if python3 -c "import zipfile, sys, glob; wheel = glob.glob('/tmp/python-build-check/*.whl')[0]; sys.exit(0 if 'talos_contracts/py.typed' in zipfile.ZipFile(wheel).namelist() else 1)"; then
+        echo "    ✓ py.typed found in wheel"
+    else
+        echo "    ✗ py.typed NOT found in wheel! Contents:"
+        unzip -l /tmp/python-build-check/*.whl || echo "Failed to list wheel content"
+        exit 1
+    fi
+    rm -rf /tmp/python-build-check
     
     echo "✅ Python checks passed"
     cd ..
