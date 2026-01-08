@@ -5,6 +5,11 @@ echo "🚀 Running pre-push validation..."
 
 if [ -d "typescript" ]; then
     echo "🔷 TypeScript pre-push checks"
+    
+    # Verify versions match
+    echo "  ▸ Verifying version consistency..."
+    node scripts/verify-versions.mjs
+
     cd typescript
     
     # Full validation before push

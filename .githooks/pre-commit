@@ -4,6 +4,11 @@ set -euo pipefail
 # TypeScript
 if [ -d "typescript" ]; then
     echo "🔷 TypeScript pre-commit checks"
+    
+    # Verify versions match before proceeding
+    echo "  ▸ Verifying version consistency..."
+    node scripts/verify-versions.mjs
+    
     cd typescript
     
     # Sync version
