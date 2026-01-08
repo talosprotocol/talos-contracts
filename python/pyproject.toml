@@ -1,6 +1,6 @@
 [project]
 name = "talos-contracts"
-version = "1.1.1"
+version = "1.1.13"
 description = "Talos Protocol contracts - schemas, types, and helper functions for auditable AI agent security"
 readme = "README.md"
 requires-python = ">=3.10"
