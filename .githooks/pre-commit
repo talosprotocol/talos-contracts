@@ -12,7 +12,7 @@ if [ -d "typescript" ]; then
     cd typescript
     
     # Sync version
-    node scripts/version-sync.mjs
+    node ../scripts/version-sync.mjs
     git add package.json
     
     if [ -f pnpm-lock.yaml ]; then

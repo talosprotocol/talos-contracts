@@ -23,7 +23,7 @@
     "format": "prettier -w .",
     "typecheck": "tsc --noEmit",
     "validate": "npm run lint && npm run typecheck && npm run build && npm run test",
-    "version:sync": "node ./scripts/version-sync.mjs",
+    "version:sync": "node ../scripts/version-sync.mjs",
     "gates:contracts": "echo 'Skipping gates for contracts repo'",
     "api:snapshot": "npm run build && cp dist/index.d.ts test/fixtures/api-baseline.d.ts",
     "smoke:pack": "npm pack --dry-run && node scripts/smoke-test.mjs"
