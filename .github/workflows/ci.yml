@@ -21,7 +21,13 @@ jobs:
           node-version: "20"
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
 
       - name: Build
         run: npm run build
@@ -29,8 +35,16 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Pack artifact
-        run: npm pack
+      - name: Consumer smoke test
+        run: npm run smoke:pack
+
+      - name: Verify no Node-only globals
+        run: |
+          if grep -rE "require\(|Buffer\." dist/; then
+            echo "❌ Node-only globals detected in dist/"
+            exit 1
+          fi
+          echo "✅ No Node-only globals found"
 
       - uses: actions/upload-artifact@v4
         with:

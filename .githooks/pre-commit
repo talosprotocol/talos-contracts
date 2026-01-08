@@ -3,8 +3,10 @@ set -euo pipefail
 
 # TypeScript
 if [ -d "typescript" ]; then
-    echo "--- TypeScript ---"
+    echo "🔷 TypeScript pre-commit checks"
     cd typescript
+    
+    # Sync version
     node scripts/version-sync.mjs
     git add package.json
     
@@ -15,24 +17,48 @@ if [ -d "typescript" ]; then
       git add package-lock.json
     fi
     
-    # Run lint-staged directly (standardized)
+    # Run lint-staged (handles lint + format for staged files)
+    echo "  ▸ Linting staged files..."
     npx lint-staged
     
-    # Check types if script exists
-    if npm run | grep -q "typecheck"; then
-        npm run typecheck
-    else
-        npx tsc --noEmit
-    fi
+    # Type check
+    echo "  ▸ Type checking..."
+    npm run typecheck
     
+    # Build check (ensures the build doesn't break)
+    echo "  ▸ Building..."
+    npm run build
+    
+    # Run tests
+    echo "  ▸ Running tests..."
     npm run test
+    
+    # Package validation (ensures exports are correct)
+    echo "  ▸ Validating package..."
+    npm pack --dry-run > /dev/null 2>&1
+    
+    echo "✅ TypeScript checks passed"
     cd ..
 fi
 
 # Python
 if [ -d "python" ]; then
-    echo "--- Python ---"
+    echo "🐍 Python pre-commit checks"
     cd python
-    pytest
+    
+    # Lint if ruff available
+    if command -v ruff &> /dev/null; then
+        echo "  ▸ Linting..."
+        ruff check .
+    fi
+    
+    # Run tests
+    echo "  ▸ Running tests..."
+    pytest -v
+    
+    echo "✅ Python checks passed"
     cd ..
 fi
+
+echo ""
+echo "🎉 All pre-commit checks passed!"

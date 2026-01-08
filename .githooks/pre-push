@@ -1,14 +1,30 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+echo "🚀 Running pre-push validation..."
+
 if [ -d "typescript" ]; then
+    echo "🔷 TypeScript pre-push checks"
     cd typescript
-    npm run test
+    
+    # Full validation before push
+    npm run validate
+    
+    # Consumer smoke test
+    echo "  ▸ Running consumer smoke test..."
+    npm run smoke:pack
+    
+    echo "✅ TypeScript pre-push passed"
     cd ..
 fi
 
 if [ -d "python" ]; then
+    echo "🐍 Python pre-push checks"
     cd python
-    pytest
+    pytest -v
+    echo "✅ Python pre-push passed"
     cd ..
 fi
+
+echo ""
+echo "🎉 All pre-push checks passed!"

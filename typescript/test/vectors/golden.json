@@ -1,0 +1,160 @@
+{
+  "_comment": "Golden test vectors for @talosprotocol/contracts - DO NOT MODIFY manually",
+  "_version": "1.1.0",
+  "_generated": "2026-01-07",
+
+  "base64url": {
+    "encode": [
+      { "input": [1, 2, 3], "expected": "AQID" },
+      { "input": [], "expected": "" },
+      { "input": [0], "expected": "AA" },
+      { "input": [255, 255, 255], "expected": "____" },
+      { "input": [72, 101, 108, 108, 111], "expected": "SGVsbG8" }
+    ],
+    "decode": [
+      { "input": "AQID", "expected": [1, 2, 3] },
+      { "input": "", "expected": [] },
+      { "input": "SGVsbG8", "expected": [72, 101, 108, 108, 111] }
+    ],
+    "invalid": [
+      { "input": "AQID=", "error": "Padding is not allowed" },
+      { "input": "A", "error": "Invalid base64url length" },
+      { "input": "A+B/", "error": "Non-base64url characters present" }
+    ]
+  },
+
+  "uuidv7": {
+    "valid": [
+      "01234567-89ab-7cde-8f01-234567890abc",
+      "018e1c6d-1234-7abc-9def-0123456789ab",
+      "00000000-0000-7000-8000-000000000000"
+    ],
+    "invalid": [
+      "01234567-89ab-4cde-8f01-234567890abc",
+      "01234567-89ab-7cde-0f01-234567890abc",
+      "not-a-uuid"
+    ],
+    "valid_but_not_canonical": [
+      {
+        "input": "01234567-89AB-7CDE-8F01-234567890ABC",
+        "isV7": true,
+        "isCanonicalLower": false,
+        "_comment": "Uppercase is valid UUIDv7 structure but not canonical form"
+      }
+    ],
+    "canonical_lower": [
+      { "input": "01234567-89ab-7cde-8f01-234567890abc", "expected": true },
+      { "input": "01234567-89AB-7cde-8f01-234567890abc", "expected": false }
+    ]
+  },
+
+  "cursor": {
+    "derive": [
+      {
+        "timestamp": 1704672000,
+        "event_id": "018e1c6d-1234-7abc-9def-0123456789ab",
+        "expected": "MTcwNDY3MjAwMDowMThlMWM2ZC0xMjM0LTdhYmMtOWRlZi0wMTIzNDU2Nzg5YWI"
+      },
+      {
+        "timestamp": 0,
+        "event_id": "00000000-0000-7000-8000-000000000000",
+        "expected": "MDowMDAwMDAwMC0wMDAwLTcwMDAtODAwMC0wMDAwMDAwMDAwMDA"
+      }
+    ],
+    "decode": [
+      {
+        "input": "MTcwNDY3MjAwMDowMThlMWM2ZC0xMjM0LTdhYmMtOWRlZi0wMTIzNDU2Nzg5YWI",
+        "expected": {
+          "timestamp": 1704672000,
+          "event_id": "018e1c6d-1234-7abc-9def-0123456789ab"
+        }
+      }
+    ],
+    "compare": [
+      {
+        "a": "MTcwNDY3MjAwMDowMThlMWM2ZC0xMjM0LTdhYmMtOWRlZi0wMTIzNDU2Nzg5YWI",
+        "b": "MTcwNDY3MjAwMDowMThlMWM2ZC0xMjM0LTdhYmMtOWRlZi0wMTIzNDU2Nzg5YWI",
+        "expected": 0
+      }
+    ],
+    "invariant": [
+      {
+        "event": {
+          "timestamp": 1704672000,
+          "event_id": "018e1c6d-1234-7abc-9def-0123456789ab",
+          "cursor": "MTcwNDY3MjAwMDowMThlMWM2ZC0xMjM0LTdhYmMtOWRlZi0wMTIzNDU2Nzg5YWI"
+        },
+        "expected": { "ok": true }
+      },
+      {
+        "event": {
+          "timestamp": "not-a-number",
+          "event_id": "018e1c6d-1234-7abc-9def-0123456789ab",
+          "cursor": "some-cursor"
+        },
+        "expected": { "ok": false, "reason": "INVALID_FRAME" }
+      }
+    ]
+  },
+
+  "ordering": {
+    "compare": [
+      {
+        "a": { "timestamp": 1000, "event_id": "aaa" },
+        "b": { "timestamp": 900, "event_id": "bbb" },
+        "expected": -1,
+        "_comment": "Higher timestamp comes first (DESC)"
+      },
+      {
+        "a": { "timestamp": 1000, "event_id": "aaa" },
+        "b": { "timestamp": 1000, "event_id": "bbb" },
+        "expected": 1,
+        "_comment": "Same timestamp, higher event_id comes first (DESC)"
+      },
+      {
+        "a": { "timestamp": 1000, "event_id": "aaa" },
+        "b": { "timestamp": 1000, "event_id": "aaa" },
+        "expected": 0
+      }
+    ]
+  },
+
+  "redaction": {
+    "event": [
+      {
+        "input": {
+          "event_id": "test-id",
+          "timestamp": 1000,
+          "cursor": "test-cursor",
+          "request": {
+            "headers": {
+              "authorization": "Bearer secret",
+              "cookie": "session=xyz",
+              "x-api-key": "key123",
+              "content-type": "application/json"
+            }
+          }
+        },
+        "level": "safe_default",
+        "expected_headers": {
+          "content-type": "application/json"
+        },
+        "_comment": "Auth headers stripped, content-type preserved"
+      }
+    ],
+    "gateway": [
+      {
+        "input": {
+          "version": "1.0.0",
+          "internal_endpoints": ["http://internal"],
+          "keys": { "api": "secret" },
+          "tokens": { "jwt": "token" }
+        },
+        "expected": {
+          "version": "1.0.0"
+        },
+        "_comment": "Secrets stripped, version preserved"
+      }
+    ]
+  }
+}
