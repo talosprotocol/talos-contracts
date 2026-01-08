@@ -127,12 +127,7 @@ def assert_cursor_invariant(event: dict[str, Any]) -> CursorValidationResult:
     cur = event.get("cursor")
 
     # Frame checks first (D4=B: do not throw)
-    if (
-        not isinstance(ts, int)
-        or ts < 0
-        or not isinstance(eid, str)
-        or not isinstance(cur, str)
-    ):
+    if not isinstance(ts, int) or ts < 0 or not isinstance(eid, str) or not isinstance(cur, str):
         return {"ok": False, "derived": "", "reason": "INVALID_FRAME"}
 
     # Decode cursor must be strict base64url + canonical frame. If it fails, INVALID_FRAME.
