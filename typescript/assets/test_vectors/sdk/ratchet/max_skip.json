@@ -1,0 +1,89 @@
+{
+  "title": "Ratchet Max Skip Trace",
+  "description": "Tests rejection of too many skipped messages (>1000).",
+  "expected_error": {
+    "message_contains": "Too many skipped messages"
+  },
+  "alice": {
+    "identity_public": "eQhYET2SVp2262v1eejZ1UULLct4xfaO7_qoCm-krug",
+    "identity_private": "njmHx9GbthWCRzg94H8xzamYLlXynjUOWt3y0sZ3qDg",
+    "ephemeral_private": "8MUdF-CLYVwO3JlCDYPAToONUXgBEHju7X6jhq9CmW4"
+  },
+  "bob": {
+    "identity_public": "p5Fkk1IWbdzLD_M-cBNpM4JpPnMlb58wVOetcItus0E",
+    "identity_private": "oHKzaz8UcRNRe5ZXZH1FNOetcFYPH4r7nkv_0K0aIPA",
+    "prekey_bundle": {
+      "identity_key": "p5Fkk1IWbdzLD_M-cBNpM4JpPnMlb58wVOetcItus0E",
+      "signed_prekey": "0lrH_Ekp4wrZotwgwF5RmrpCir7t7-mRyV1c6OXZF0E",
+      "prekey_signature": "6nboQHZjBIrf1a5RX5ywzZvU8tQXmbkSUg3Iteytf5HIcEpRnA2Ekrge32CRbw7ZgQoe35hFMIlHMhX7hgbbDg",
+      "one_time_prekey": null
+    },
+    "bundle_secrets": {
+      "signed_prekey_private": "CHwCjy3fBAIv3R37lLnW5HyrSRCVIjDpFZu36b_AZGM"
+    }
+  },
+  "steps": [
+    {
+      "step": 1,
+      "action": "encrypt",
+      "actor": "alice",
+      "description": "Alice sends M1",
+      "plaintext": "TWVzc2FnZSAx",
+      "header": {
+        "dh": "5duU9Hr9scF1j11agUR1U9BIj0Q76n8_R45AXWMNUzM",
+        "pn": 0,
+        "n": 0
+      },
+      "nonce": "55YbXmz6EpO63G8h",
+      "ciphertext": "8esnscHWoamySQXqTALT9icqQBf1EmWQfw",
+      "aad": "eyJkaCI6IjVkdVU5SHI5c2NGMWoxMWFnVVIxVTlCSWowUTc2bjhfUjQ1QVhXTU5Vek0iLCJwbiI6MCwibiI6MH0",
+      "wire_message": "AEF7ImRoIjoiNWR1VTlIcjlzY0YxajExYWdVUjFVOUJJajBRNzZuOF9SNDVBWFdNTlV6TSIsInBuIjowLCJuIjowfeeWG15s-hKTutxvIfHrJ7HB1qGpskkF6kwC0_YnKkAX9RJlkH8"
+    },
+    {
+      "step": 2,
+      "action": "encrypt",
+      "actor": "alice",
+      "description": "Alice sends M1003 (skipping >1000)",
+      "plaintext": "TWVzc2FnZSAxMDAz",
+      "header": {
+        "dh": "5duU9Hr9scF1j11agUR1U9BIj0Q76n8_R45AXWMNUzM",
+        "pn": 0,
+        "n": 1002
+      },
+      "nonce": "n7G5f3V65NkaPe6G",
+      "ciphertext": "WMbN65kAfD-p5VZPIlMLHddKWN1ld_pwx2fjIg",
+      "aad": "eyJkaCI6IjVkdVU5SHI5c2NGMWoxMWFnVVIxVTlCSWowUTc2bjhfUjQ1QVhXTU5Vek0iLCJwbiI6MCwibiI6MTAwMn0",
+      "wire_message": "AER7ImRoIjoiNWR1VTlIcjlzY0YxajExYWdVUjFVOUJJajBRNzZuOF9SNDVBWFdNTlV6TSIsInBuIjowLCJuIjoxMDAyfZ-xuX91euTZGj3uhljGzeuZAHw_qeVWTyJTCx3XSljdZXf6cMdn4yI"
+    },
+    {
+      "step": 3,
+      "action": "decrypt",
+      "actor": "bob",
+      "description": "Bob receives M1",
+      "ciphertext": "8esnscHWoamySQXqTALT9icqQBf1EmWQfw",
+      "header": {
+        "dh": "5duU9Hr9scF1j11agUR1U9BIj0Q76n8_R45AXWMNUzM",
+        "pn": 0,
+        "n": 0
+      },
+      "nonce": "55YbXmz6EpO63G8h",
+      "aad": "eyJkaCI6IjVkdVU5SHI5c2NGMWoxMWFnVVIxVTlCSWowUTc2bjhfUjQ1QVhXTU5Vek0iLCJwbiI6MCwibiI6MH0",
+      "expected_plaintext": "TWVzc2FnZSAx"
+    },
+    {
+      "step": 4,
+      "action": "decrypt",
+      "actor": "bob",
+      "description": "Bob receives M1003 (should fail)",
+      "ciphertext": "WMbN65kAfD-p5VZPIlMLHddKWN1ld_pwx2fjIg",
+      "header": {
+        "dh": "5duU9Hr9scF1j11agUR1U9BIj0Q76n8_R45AXWMNUzM",
+        "pn": 0,
+        "n": 1002
+      },
+      "nonce": "n7G5f3V65NkaPe6G",
+      "aad": "eyJkaCI6IjVkdVU5SHI5c2NGMWoxMWFnVVIxVTlCSWowUTc2bjhfUjQ1QVhXTU5Vek0iLCJwbiI6MCwibiI6MTAwMn0",
+      "expected_plaintext": "TWVzc2FnZSAxMDAz"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Double Ratchet Message (v1.1.0)",
+  "type": "object",
+  "required": ["header", "ciphertext", "nonce"],
+  "properties": {
+    "header": {
+      "$ref": "double_ratchet_header.schema.json"
+    },
+    "ciphertext": {
+      "type": "string",
+      "description": "ChaCha20-Poly1305 Ciphertext + Tag (Base64URL No Padding)"
+    },
+    "nonce": {
+      "type": "string",
+      "description": "12-byte random nonce (Base64URL No Padding)"
+    }
+  },
+  "additionalProperties": false
+}

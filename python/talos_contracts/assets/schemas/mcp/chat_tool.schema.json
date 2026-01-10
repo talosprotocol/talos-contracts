@@ -1,0 +1,83 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://talosprotocol.org/schemas/mcp/chat_tool.schema.json",
+    "title": "Talos MCP Chat Tool",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "session_id",
+        "model",
+        "messages"
+    ],
+    "properties": {
+        "session_id": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 128,
+            "description": "Talos session id. First request binds capability to this id. Subsequent requests reuse it."
+        },
+        "capability": {
+            "type": "string",
+            "minLength": 32,
+            "maxLength": 4096,
+            "description": "Optional on subsequent requests. If present, must be a Talos capability token."
+        },
+        "model": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+        },
+        "messages": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 64,
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "role",
+                    "content"
+                ],
+                "properties": {
+                    "role": {
+                        "type": "string",
+                        "enum": [
+                            "system",
+                            "user",
+                            "assistant"
+                        ]
+                    },
+                    "content": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4000
+                    }
+                }
+            }
+        },
+        "temperature": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 2,
+            "default": 0.7
+        },
+        "max_tokens": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4096,
+            "default": 512
+        },
+        "timeout_ms": {
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 600000,
+            "default": 60000
+        },
+        "client_request_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "Optional client correlation id for UI mapping."
+        }
+    }
+}

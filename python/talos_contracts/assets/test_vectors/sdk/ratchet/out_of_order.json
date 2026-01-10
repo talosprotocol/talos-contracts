@@ -1,0 +1,115 @@
+{
+  "title": "Ratchet Out-of-Order Trace",
+  "description": "Tests handling of skipped message keys.",
+  "alice": {
+    "identity_public": "w388tGk0dxBL6YIxy6Eszeri0tpEHwZSJBKmof5pzos",
+    "identity_private": "Ek7hvZqQ5eujNsEXghkY9Fyqw_7xSKEipjxUqiVAZHs",
+    "ephemeral_private": "SJ1TGka4d0ROLLfGLA2IZ_AnI95kVRhdc7gI7Zm0onk"
+  },
+  "bob": {
+    "identity_public": "1sZUBaEHdoC4qJOV9w9TTcg8cT4TBHDxCmdXAg_YvvA",
+    "identity_private": "iQGZpNSgDtUnYF8KBJPmoPaVWOjVRBHm687YfySAhAk",
+    "prekey_bundle": {
+      "identity_key": "1sZUBaEHdoC4qJOV9w9TTcg8cT4TBHDxCmdXAg_YvvA",
+      "signed_prekey": "wqav9idZF5P5JNhTaxPa4uggtrzwRT5YquaqjB7Yk2U",
+      "prekey_signature": "MvzJ6fg0X50v4o3rVhH5U1NFSVu4xwHnmgVVnZxKi-D9xXDt737rwOxNg68ZrQ6PsFgc_RiKukS7AVYbPc1qCg",
+      "one_time_prekey": null
+    },
+    "bundle_secrets": {
+      "signed_prekey_private": "cAIutnm88KDjHJCbnVux461A0fo3PZ3F1G9WMrzwvkc"
+    }
+  },
+  "steps": [
+    {
+      "step": 1,
+      "action": "encrypt",
+      "actor": "alice",
+      "description": "Alice sends M1",
+      "plaintext": "TWVzc2FnZSAx",
+      "header": {
+        "dh": "ni7JrgCPXudf_7h4OPS24qmTX6vbxZOt7pjpKWx1jzA",
+        "pn": 0,
+        "n": 0
+      },
+      "nonce": "eMw1GMxt7XljyvOq",
+      "ciphertext": "KzA7P6pqPo57yDYoJizfYrzensFso2womg",
+      "aad": "eyJkaCI6Im5pN0pyZ0NQWHVkZl83aDRPUFMyNHFtVFg2dmJ4Wk90N3BqcEtXeDFqekEiLCJwbiI6MCwibiI6MH0",
+      "wire_message": "AEF7ImRoIjoibmk3SnJnQ1BYdWRmXzdoNE9QUzI0cW1UWDZ2YnhaT3Q3cGpwS1d4MWp6QSIsInBuIjowLCJuIjowfXjMNRjMbe15Y8rzqiswOz-qaj6Oe8g2KCYs32K83p7BbKNsKJo"
+    },
+    {
+      "step": 2,
+      "action": "encrypt",
+      "actor": "alice",
+      "description": "Alice sends M2 (will arrive late)",
+      "plaintext": "TWVzc2FnZSAy",
+      "header": {
+        "dh": "ni7JrgCPXudf_7h4OPS24qmTX6vbxZOt7pjpKWx1jzA",
+        "pn": 0,
+        "n": 1
+      },
+      "nonce": "n_mdGSRwXPBFuys3",
+      "ciphertext": "r9hIHpsTqhkvqtf4iXC66V9FAz8xegvQfQ",
+      "aad": "eyJkaCI6Im5pN0pyZ0NQWHVkZl83aDRPUFMyNHFtVFg2dmJ4Wk90N3BqcEtXeDFqekEiLCJwbiI6MCwibiI6MX0"
+    },
+    {
+      "step": 3,
+      "action": "encrypt",
+      "actor": "alice",
+      "description": "Alice sends M3",
+      "plaintext": "TWVzc2FnZSAz",
+      "header": {
+        "dh": "ni7JrgCPXudf_7h4OPS24qmTX6vbxZOt7pjpKWx1jzA",
+        "pn": 0,
+        "n": 2
+      },
+      "nonce": "fbGXVW63-UgGQKrR",
+      "ciphertext": "aItM9GwhUC6BiXqquHUZa43u4ck40W7WqQ",
+      "aad": "eyJkaCI6Im5pN0pyZ0NQWHVkZl83aDRPUFMyNHFtVFg2dmJ4Wk90N3BqcEtXeDFqekEiLCJwbiI6MCwibiI6Mn0"
+    },
+    {
+      "step": 4,
+      "action": "decrypt",
+      "actor": "bob",
+      "description": "Bob receives M1",
+      "ciphertext": "KzA7P6pqPo57yDYoJizfYrzensFso2womg",
+      "header": {
+        "dh": "ni7JrgCPXudf_7h4OPS24qmTX6vbxZOt7pjpKWx1jzA",
+        "pn": 0,
+        "n": 0
+      },
+      "nonce": "eMw1GMxt7XljyvOq",
+      "aad": "eyJkaCI6Im5pN0pyZ0NQWHVkZl83aDRPUFMyNHFtVFg2dmJ4Wk90N3BqcEtXeDFqekEiLCJwbiI6MCwibiI6MH0",
+      "expected_plaintext": "TWVzc2FnZSAx"
+    },
+    {
+      "step": 5,
+      "action": "decrypt",
+      "actor": "bob",
+      "description": "Bob receives M3 (skipping M2)",
+      "ciphertext": "aItM9GwhUC6BiXqquHUZa43u4ck40W7WqQ",
+      "header": {
+        "dh": "ni7JrgCPXudf_7h4OPS24qmTX6vbxZOt7pjpKWx1jzA",
+        "pn": 0,
+        "n": 2
+      },
+      "nonce": "fbGXVW63-UgGQKrR",
+      "aad": "eyJkaCI6Im5pN0pyZ0NQWHVkZl83aDRPUFMyNHFtVFg2dmJ4Wk90N3BqcEtXeDFqekEiLCJwbiI6MCwibiI6Mn0",
+      "expected_plaintext": "TWVzc2FnZSAz"
+    },
+    {
+      "step": 6,
+      "action": "decrypt",
+      "actor": "bob",
+      "description": "Bob receives M2 (out-of-order)",
+      "ciphertext": "r9hIHpsTqhkvqtf4iXC66V9FAz8xegvQfQ",
+      "header": {
+        "dh": "ni7JrgCPXudf_7h4OPS24qmTX6vbxZOt7pjpKWx1jzA",
+        "pn": 0,
+        "n": 1
+      },
+      "nonce": "n_mdGSRwXPBFuys3",
+      "aad": "eyJkaCI6Im5pN0pyZ0NQWHVkZl83aDRPUFMyNHFtVFg2dmJ4Wk90N3BqcEtXeDFqekEiLCJwbiI6MCwibiI6MX0",
+      "expected_plaintext": "TWVzc2FnZSAy"
+    }
+  ]
+}

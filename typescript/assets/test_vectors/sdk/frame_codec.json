@@ -1,0 +1,63 @@
+{
+  "version": "1.0",
+  "description": "Frame codec test vectors",
+  "vectors": [
+    {
+      "test_id": "encode_data_frame",
+      "description": "Encode a DATA frame",
+      "inputs": {
+        "frame_type": "DATA",
+        "payload_utf8": "test payload"
+      },
+      "expected": {
+        "encoded_base64url": "eyJmbGFncyI6MCwicGF5bG9hZCI6ImRHVnpkQ0J3WVhsc2IyRmsiLCJ0eXBlIjoiREFUQSIsInZlcnNpb24iOjF9"
+      }
+    },
+    {
+      "test_id": "decode_handshake_frame",
+      "description": "Decode a HANDSHAKE frame",
+      "inputs": {
+        "encoded_base64url": "eyJmbGFncyI6MCwicGF5bG9hZCI6ImRHVnpkQ0J3WVhsc2IyRmsiLCJ0eXBlIjoiSEFORFNIQUtFIiwidmVyc2lvbiI6MX0"
+      },
+      "expected": {
+        "frame_type": "HANDSHAKE",
+        "version": 1,
+        "flags": 0
+      }
+    }
+  ],
+  "negative_cases": [
+    {
+      "test_id": "decode_truncated",
+      "description": "Truncated frame should fail",
+      "inputs": {
+        "encoded_base64url": "eyJ2ZXJzaW9u"
+      },
+      "expected_error": {
+        "code": "TALOS_FRAME_INVALID",
+        "message_contains": "truncat"
+      }
+    },
+    {
+      "test_id": "decode_invalid_type",
+      "description": "Unknown frame type should fail",
+      "inputs": {
+        "encoded_base64url": "eyJ2ZXJzaW9uIjoxLCJ0eXBlIjoiVU5LTk9XTiIsImZsYWdzIjowLCJwYXlsb2FkIjoiIn0"
+      },
+      "expected_error": {
+        "code": "TALOS_FRAME_INVALID",
+        "message_contains": "type"
+      }
+    },
+    {
+      "test_id": "decode_garbage",
+      "description": "Garbage bytes should fail",
+      "inputs": {
+        "encoded_hex": "deadbeef"
+      },
+      "expected_error": {
+        "code": "TALOS_FRAME_INVALID"
+      }
+    }
+  ]
+}

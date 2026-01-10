@@ -1,0 +1,45 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://talosprotocol.org/schemas/frame.json",
+    "title": "Talos Protocol Frame",
+    "description": "Wire format frame schema",
+    "type": "object",
+    "required": [
+        "version",
+        "type",
+        "payload"
+    ],
+    "properties": {
+        "version": {
+            "type": "integer",
+            "description": "Protocol version",
+            "minimum": 1
+        },
+        "type": {
+            "type": "string",
+            "description": "Frame type",
+            "enum": [
+                "HANDSHAKE",
+                "HANDSHAKE_ACK",
+                "DATA",
+                "PING",
+                "PONG",
+                "CLOSE"
+            ]
+        },
+        "flags": {
+            "type": "integer",
+            "description": "Frame flags (bitfield)",
+            "default": 0
+        },
+        "payload": {
+            "type": "string",
+            "description": "Base64url-encoded payload bytes"
+        },
+        "signature": {
+            "type": "string",
+            "description": "Base64url-encoded signature (if signed)"
+        }
+    },
+    "additionalProperties": false
+}

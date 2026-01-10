@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Double Ratchet Session State",
+  "type": "object",
+  "required": ["dh_pair", "root_key", "chains"],
+  "properties": {
+    "dh_pair": {
+      "type": "object",
+      "required": ["private", "public"],
+      "properties": {
+        "private": {
+          "type": "string"
+        },
+        "public": {
+          "type": "string"
+        }
+      }
+    },
+    "dh_remote": {
+      "type": "string"
+    },
+    "root_key": {
+      "type": "string"
+    },
+    "chains": {
+      "type": "object",
+      "properties": {
+        "send": {
+          "type": "string",
+          "description": "Current sending chain key"
+        },
+        "recv": {
+          "type": "string",
+          "description": "Current receiving chain key"
+        }
+      }
+    },
+    "counters": {
+      "type": "object",
+      "properties": {
+        "send": {
+          "type": "integer"
+        },
+        "recv": {
+          "type": "integer"
+        },
+        "prev_send": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

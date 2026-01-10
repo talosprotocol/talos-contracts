@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talosprotocol.com/schemas/ai_gateway/routing_policy.schema.json",
+  "title": "Routing Policy",
+  "description": "Versioned routing and reliability policy for LLM requests.",
+  "type": "object",
+  "required": ["id", "version", "strategy"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Policy identifier."
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Policy version (immutable per version)."
+    },
+    "strategy": {
+      "type": "string",
+      "enum": ["weighted_hash", "round_robin", "least_latency"],
+      "default": "weighted_hash",
+      "description": "Routing strategy. Default is deterministic hash-based."
+    },
+    "retries": {
+      "type": "object",
+      "properties": {
+        "max_attempts": { "type": "integer", "minimum": 0, "default": 3 },
+        "backoff_ms": { "type": "integer", "minimum": 0, "default": 500 },
+        "backoff_multiplier": { "type": "number", "minimum": 1, "default": 2 }
+      }
+    },
+    "timeout_ms": {
+      "type": "integer",
+      "minimum": 100,
+      "default": 30000,
+      "description": "Request timeout in milliseconds."
+    },
+    "cooldown": {
+      "type": "object",
+      "properties": {
+        "failure_threshold": { "type": "integer", "minimum": 1, "default": 3 },
+        "window_seconds": { "type": "integer", "minimum": 1, "default": 60 },
+        "cooldown_seconds": { "type": "integer", "minimum": 1, "default": 300 }
+      },
+      "description": "Cooldown policy for failing upstreams."
+    }
+  }
+}

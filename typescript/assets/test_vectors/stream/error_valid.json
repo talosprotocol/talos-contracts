@@ -1,0 +1,12 @@
+{
+  "description": "Valid Error message (Slow Consumer)",
+  "data": {
+    "type": "error",
+    "code": "SLOW_CONSUMER",
+    "message": "Client buffer exceeded",
+    "details": {
+      "queue_depth": 1000,
+      "limit": 1000
+    }
+  }
+}

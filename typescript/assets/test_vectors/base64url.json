@@ -1,0 +1,38 @@
+{
+  "valid": [
+    {
+      "bytes_hex": "",
+      "encoded": ""
+    },
+    {
+      "bytes_hex": "66",
+      "encoded": "Zg"
+    },
+    {
+      "bytes_hex": "666f",
+      "encoded": "Zm8"
+    },
+    {
+      "bytes_hex": "666f6f",
+      "encoded": "Zm9v"
+    },
+    {
+      "bytes_hex": "68656c6c6f",
+      "encoded": "aGVsbG8"
+    }
+  ],
+  "invalid": [
+    "Zg==",
+    "Zm8=",
+    "Zm9v=",
+    "aGVsbG8=",
+    "Zm+v",
+    "Zm/v",
+    "Zg=",
+    "A",
+    "==",
+    "Zg==Zg",
+    "Zm9v\n",
+    "Zm9v "
+  ]
+}

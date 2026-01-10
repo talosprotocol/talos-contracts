@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/mcp/discovery.schema.json",
+  "title": "McpDiscovery",
+  "definitions": {
+    "McpServerRef": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the server"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name of the server"
+        },
+        "transport": {
+          "type": "string",
+          "enum": ["stdio", "http", "talos_tunnel"],
+          "description": "Transport mechanism used to communicate with the server"
+        },
+        "endpoint": {
+          "type": "string",
+          "description": "Connection details (e.g., command for stdio, URL for http)"
+        },
+        "metadata": {
+          "type": "object",
+          "description": "Additional server metadata",
+          "additionalProperties": true
+        }
+      },
+      "required": ["id", "name", "transport"]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "servers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/McpServerRef"
+      }
+    }
+  },
+  "required": ["servers"]
+}

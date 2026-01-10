@@ -1,0 +1,14 @@
+{
+  "test_id": "kdf_ck_symmetric_ratchet",
+  "inputs": {
+    "ck": "AwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwM",
+    "info_chain": "talos-double-ratchet-chain",
+    "info_message": "talos-double-ratchet-message",
+    "ikm_mode": "ck",
+    "out_len": 32
+  },
+  "expected": {
+    "next_ck": "A6Hk3IixOvn25wz3Njlpsbohmd3Z9uqt1BA4xhYAwNI",
+    "mk": "RYUNB7C-U5hf_tn-nt5ZTj9LN7cmrBSsszPEocJinCc"
+  }
+}

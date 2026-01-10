@@ -1,0 +1,42 @@
+{
+  "version": "1.0",
+  "description": "MCP signing and verification test vectors",
+  "vectors": [
+    {
+      "test_id": "sign_mcp_request_basic",
+      "description": "Sign a basic MCP request",
+      "inputs": {
+        "signer_seed_hex": "0000000000000000000000000000000000000000000000000000000000000001",
+        "request": {
+          "method": "read",
+          "params": {
+            "path": "/data"
+          }
+        },
+        "session_id": "session-123",
+        "correlation_id": "corr-456",
+        "tool": "filesystem",
+        "action": "read",
+        "timestamp": 1767500000
+      },
+      "expected": {
+        "payload_canonical": "{\"action\":\"read\",\"correlation_id\":\"corr-456\",\"request\":{\"method\":\"read\",\"params\":{\"path\":\"/data\"}},\"session_id\":\"session-123\",\"timestamp\":1767500000,\"tool\":\"filesystem\"}",
+        "signature_length": 64,
+        "frame_type": "DATA"
+      }
+    }
+  ],
+  "negative_cases": [
+    {
+      "test_id": "verify_wrong_correlation",
+      "description": "Verify with mismatched correlation ID should fail",
+      "inputs": {
+        "expected_correlation_id": "corr-456",
+        "actual_correlation_id": "corr-789"
+      },
+      "expected": {
+        "verify": false
+      }
+    }
+  ]
+}

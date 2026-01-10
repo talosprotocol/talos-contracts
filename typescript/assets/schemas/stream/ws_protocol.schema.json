@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talosprotocol.com/schemas/stream/ws_protocol.schema.json",
+  "title": "Talos WebSocket Protocol Messages",
+  "oneOf": [
+    { "$ref": "#/definitions/InitMessage" },
+    { "$ref": "#/definitions/InitAckMessage" },
+    { "$ref": "#/definitions/HeartbeatMessage" },
+    { "$ref": "#/definitions/EventMessage" },
+    { "$ref": "#/definitions/ErrorMessage" },
+    { "$ref": "#/definitions/ReconnectAdviceMessage" }
+  ],
+  "definitions": {
+    "InitMessage": {
+      "type": "object",
+      "required": ["type", "version", "capability", "nonce", "ts"],
+      "properties": {
+        "type": { "const": "init" },
+        "version": { "type": "integer", "const": 1 },
+        "capability": {
+          "type": "string",
+          "description": "Base64 encoded capability token"
+        },
+        "nonce": {
+          "type": "string",
+          "description": "Unique random string for replay protection"
+        },
+        "ts": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp"
+        }
+      }
+    },
+    "InitAckMessage": {
+      "type": "object",
+      "required": ["type", "session_id", "heartbeat_interval_ms"],
+      "properties": {
+        "type": { "const": "init_ack" },
+        "session_id": { "type": "string", "format": "uuid" },
+        "heartbeat_interval_ms": { "type": "integer", "minimum": 1000 }
+      }
+    },
+    "HeartbeatMessage": {
+      "type": "object",
+      "required": ["type", "last_cursor"],
+      "properties": {
+        "type": { "const": "heartbeat" },
+        "last_cursor": { "type": "string" },
+        "interval_ms": { "type": "integer" }
+      }
+    },
+    "EventMessage": {
+      "type": "object",
+      "required": ["type", "event", "cursor"],
+      "properties": {
+        "type": { "const": "event" },
+        "event": { "$ref": "../../schemas/audit_event.schema.json" },
+        "cursor": { "type": "string" },
+        "server_time": { "type": "string", "format": "date-time" }
+      }
+    },
+    "ErrorMessage": {
+      "type": "object",
+      "required": ["type", "code", "message"],
+      "properties": {
+        "type": { "const": "error" },
+        "code": {
+          "type": "string",
+          "enum": [
+            "AUTH_FAILED",
+            "CAPABILITY_EXPIRED",
+            "INVALID_MESSAGE",
+            "RATE_LIMITED",
+            "SLOW_CONSUMER",
+            "INTERNAL_ERROR"
+          ]
+        },
+        "message": { "type": "string" },
+        "details": { "type": "object" }
+      }
+    },
+    "ReconnectAdviceMessage": {
+      "type": "object",
+      "required": ["type", "retry_after_ms"],
+      "properties": {
+        "type": { "const": "reconnect" },
+        "retry_after_ms": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

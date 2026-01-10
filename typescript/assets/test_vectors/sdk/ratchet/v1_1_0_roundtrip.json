@@ -1,0 +1,74 @@
+{
+  "title": "Ratchet Golden Trace (v1.1.0 Interop)",
+  "description": "Generated with JSON wire framing (Option A) and deterministic KDF schedule.",
+  "version": "1.1.0",
+  "alice": {
+    "identity_public": "EDC4yqS9rJWoqrnmR9T24TVpX4NfqNkeoX3NDC-SwvM",
+    "identity_private": "ycPjUCVI9ctfhqau8hlmHSDo_17XS5MV1ZujmHqMWWg",
+    "ephemeral_private": "2N4czt7AZRLm9CmTbo2FPL77rwxOnC8Aq45uDSnqbXE"
+  },
+  "bob": {
+    "identity_public": "E80vGn1T8vhm2dystAQ5VBKzpbXf8_zf98es-RuGZkw",
+    "identity_private": "YKGriHH1oHqqtWLCUfDqEBeoYG8i3298EnmZUzIy7e0",
+    "prekey_bundle": {
+      "identity_key": "E80vGn1T8vhm2dystAQ5VBKzpbXf8_zf98es-RuGZkw",
+      "signed_prekey": "ZPLNJFKa-PyNyrhA0PD9KAd_2KMiPfzkZe9hz9e6xnc",
+      "prekey_signature": "aubPCBHtdqGqq7vBOSFzLl4o5FFfO4jUaTVPtVO3mJ9Q2cYmd9SSQ7kEkwFDADLJqB2Uk66xcciuW1r4rD4lCA",
+      "one_time_prekey": null
+    },
+    "bundle_secrets": {
+      "signed_prekey_private": "OM7eZuUYF0K0iSccFg_9doJbna0fDQNimjhYwHDQz1k"
+    }
+  },
+  "steps": [
+    {
+      "step": 1,
+      "action": "encrypt",
+      "actor": "alice",
+      "description": "Alice sends first message (v1.1.0)",
+      "plaintext": "SGVsbG8gQm9i",
+      "header": {
+        "dh": "ZS08FeNGY32XUEKJQa0P1Wf_skkb4DUGu9Issoincno",
+        "n": 0,
+        "pn": 0
+      },
+      "nonce": "45SxE8It1J5W8_4T",
+      "ciphertext": "ntqRXDLNWlpthH0V2ZRZEgrmX93G_bkLuw",
+      "wire_message_b64u": "eyJjaXBoZXJ0ZXh0IjoibnRxUlhETE5XbHB0aEgwVjJaUlpFZ3JtWDkzR19ia0x1dyIsImhlYWRlciI6eyJkaCI6IlpTMDhGZU5HWTMyWFVFS0pRYTBQMVdmX3Nra2I0RFVHdTlJc3NvaW5jbm8iLCJuIjowLCJwbiI6MH0sIm5vbmNlIjoiNDVTeEU4SXQxSjVXOF80VCJ9",
+      "aad": "eyJkaCI6IlpTMDhGZU5HWTMyWFVFS0pRYTBQMVdmX3Nra2I0RFVHdTlJc3NvaW5jbm8iLCJuIjowLCJwbiI6MH0"
+    },
+    {
+      "step": 2,
+      "action": "decrypt",
+      "actor": "bob",
+      "description": "Bob receives first message",
+      "wire_message_b64u": "eyJjaXBoZXJ0ZXh0IjoibnRxUlhETE5XbHB0aEgwVjJaUlpFZ3JtWDkzR19ia0x1dyIsImhlYWRlciI6eyJkaCI6IlpTMDhGZU5HWTMyWFVFS0pRYTBQMVdmX3Nra2I0RFVHdTlJc3NvaW5jbm8iLCJuIjowLCJwbiI6MH0sIm5vbmNlIjoiNDVTeEU4SXQxSjVXOF80VCJ9",
+      "expected_plaintext": "SGVsbG8gQm9i"
+    },
+    {
+      "step": 3,
+      "action": "encrypt",
+      "actor": "bob",
+      "description": "Bob replies",
+      "plaintext": "SGkgQWxpY2U",
+      "header": {
+        "dh": "e06Qm75__kTEZaIgA31gjuNYl9Me-XLwf3SJLLD3PxM",
+        "n": 0,
+        "pn": 0
+      },
+      "nonce": "XC87rzqZteZxNa-P",
+      "ciphertext": "1JR6WDZnuJ-2-H3jCfTbg1wv8TlrpdiJ",
+      "wire_message_b64u": "eyJjaXBoZXJ0ZXh0IjoiMUpSNldEWm51Si0yLUgzakNmVGJnMXd2OFRscnBkaUoiLCJoZWFkZXIiOnsiZGgiOiJlMDZRbTc1X19rVEVaYUlnQTMxZ2p1TllsOU1lLVhMd2YzU0pMTEQzUHhNIiwibiI6MCwicG4iOjB9LCJub25jZSI6IlhDODdyenFadGVaeE5hLVAifQ",
+      "aad": "eyJkaCI6ImUwNlFtNzVfX2tURVphSWdBMzFnanVOWWw5TWUtWEx3ZjNTSkxMRDNQeE0iLCJuIjowLCJwbiI6MH0",
+      "ratchet_priv": "ERERERERERERERERERERERERERERERERERERERERERE"
+    },
+    {
+      "step": 4,
+      "action": "decrypt",
+      "actor": "alice",
+      "description": "Alice receives reply",
+      "wire_message_b64u": "eyJjaXBoZXJ0ZXh0IjoiMUpSNldEWm51Si0yLUgzakNmVGJnMXd2OFRscnBkaUoiLCJoZWFkZXIiOnsiZGgiOiJlMDZRbTc1X19rVEVaYUlnQTMxZ2p1TllsOU1lLVhMd2YzU0pMTEQzUHhNIiwibiI6MCwicG4iOjB9LCJub25jZSI6IlhDODdyenFadGVaeE5hLVAifQ",
+      "expected_plaintext": "SGkgQWxpY2U"
+    }
+  ]
+}

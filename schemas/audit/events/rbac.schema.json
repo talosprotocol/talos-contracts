@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talosprotocol.com/schemas/audit/events/rbac.schema.json",
+  "title": "RBAC Audit Event",
+  "description": "Audit event for RBAC mutations.",
+  "type": "object",
+  "required": ["event_type", "timestamp", "actor_id"],
+  "properties": {
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "role_created",
+        "role_updated",
+        "binding_created",
+        "binding_deleted",
+        "user_added",
+        "service_account_created",
+        "key_created",
+        "key_rotated",
+        "key_revoked",
+        "policy_created",
+        "policy_updated"
+      ]
+    },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "actor_id": { "type": "string", "description": "Principal who performed the action." },
+    "target_type": { "type": "string" },
+    "target_id": { "type": "string" },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["platform", "org", "team"] },
+        "org_id": { "type": "string" },
+        "team_id": { "type": "string" }
+      }
+    },
+    "previous_hash": { "type": "string" },
+    "new_hash": { "type": "string" }
+  }
+}

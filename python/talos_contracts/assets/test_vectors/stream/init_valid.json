@@ -1,0 +1,10 @@
+{
+  "description": "Valid Init Message with nonce and timestamp",
+  "data": {
+    "type": "init",
+    "version": 1,
+    "capability": "eyBhbGxvdy_tYWxvc19yZWFk... (redacted)",
+    "nonce": "a1b2c3d4",
+    "ts": "2026-06-01T12:00:00Z"
+  }
+}

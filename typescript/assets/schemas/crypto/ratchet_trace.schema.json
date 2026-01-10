@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Ratchet Golden Trace (v1.1.0)",
+  "type": "object",
+  "required": ["title", "alice", "bob", "steps"],
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "alice": {
+      "type": "object",
+      "required": ["identity_public", "identity_private"],
+      "properties": {
+        "identity_public": {
+          "type": "string"
+        },
+        "identity_private": {
+          "type": "string"
+        }
+      }
+    },
+    "bob": {
+      "type": "object",
+      "required": ["identity_public", "identity_private", "prekey_bundle"],
+      "properties": {
+        "identity_public": {
+          "type": "string"
+        },
+        "identity_private": {
+          "type": "string"
+        },
+        "prekey_bundle": {
+          "$ref": "x3dh_prekey_bundle.schema.json"
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["step", "action", "actor"],
+        "properties": {
+          "step": {
+            "type": "integer"
+          },
+          "action": {
+            "enum": ["encrypt", "decrypt"]
+          },
+          "actor": {
+            "enum": ["alice", "bob"]
+          },
+          "description": {
+            "type": "string"
+          },
+          "plaintext": {
+            "type": "string"
+          },
+          "nonce": {
+            "type": "string"
+          },
+          "header_bytes_b64u": {
+            "type": "string"
+          },
+          "wire_message_b64u": {
+            "type": "string"
+          },
+          "expected_header": {
+            "$ref": "double_ratchet_header.schema.json"
+          }
+        },
+        "dependencies": {
+          "action": {
+            "oneOf": [
+              {
+                "properties": {
+                  "action": {
+                    "const": "encrypt"
+                  }
+                },
+                "required": ["plaintext", "nonce", "wire_message_b64u"]
+              },
+              {
+                "properties": {
+                  "action": {
+                    "const": "decrypt"
+                  }
+                },
+                "required": ["plaintext", "wire_message_b64u"]
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talosprotocol.org/schemas/capability_token.json",
+  "title": "Talos Capability Token",
+  "description": "Schema for capability tokens used in authorization",
+  "type": "object",
+  "required": [
+    "version",
+    "issuer",
+    "subject",
+    "scope",
+    "exp",
+    "nonce",
+    "signature"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Token format version",
+      "enum": ["1.0"]
+    },
+    "issuer": {
+      "type": "string",
+      "description": "DID of the issuing authority",
+      "pattern": "^did:key:z[1-9A-HJ-NP-Za-km-z]+$"
+    },
+    "subject": {
+      "type": "string",
+      "description": "DID of the authorized agent",
+      "pattern": "^did:key:z[1-9A-HJ-NP-Za-km-z]+$"
+    },
+    "scope": {
+      "type": "array",
+      "description": "Authorized tool:action pairs",
+      "items": {
+        "type": "object",
+        "required": ["tool", "actions"],
+        "properties": {
+          "tool": {
+            "type": "string"
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "exp": {
+      "type": "integer",
+      "description": "Expiration timestamp (Unix epoch seconds)"
+    },
+    "nbf": {
+      "type": "integer",
+      "description": "Not-before timestamp (optional)"
+    },
+    "nonce": {
+      "type": "string",
+      "description": "Unique nonce for replay protection",
+      "minLength": 16
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional claims (optional)"
+    },
+    "signature": {
+      "type": "string",
+      "description": "Base64url-encoded Ed25519 signature over canonical JSON of payload"
+    }
+  },
+  "additionalProperties": false
+}

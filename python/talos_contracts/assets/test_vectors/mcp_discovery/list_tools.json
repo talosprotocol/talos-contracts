@@ -1,0 +1,25 @@
+{
+  "description": "Happy path listing of tools for a server",
+  "input": {
+    "server_id": "local-git"
+  },
+  "expected": {
+    "server_id": "local-git",
+    "tools": [
+      {
+        "name": "git_commit",
+        "description": "Create a new commit",
+        "input_schema_ref": "hash_12345",
+        "output_schema_ref": "hash_67890",
+        "tags": ["vcs", "write"]
+      },
+      {
+        "name": "git_log",
+        "description": "Show commit logs",
+        "input_schema_ref": "hash_abcde",
+        "output_schema_ref": "hash_fghij",
+        "tags": ["vcs", "read"]
+      }
+    ]
+  }
+}

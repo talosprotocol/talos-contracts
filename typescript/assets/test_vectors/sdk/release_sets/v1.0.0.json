@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "vectors": [
+    "canonical_json.json",
+    "capability_verify.json",
+    "frame_codec.json",
+    "mcp_sign_verify.json",
+    "signing_verify.json"
+  ]
+}

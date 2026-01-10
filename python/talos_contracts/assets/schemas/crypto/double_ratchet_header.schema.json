@@ -1,0 +1,26 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Double Ratchet Header",
+    "type": "object",
+    "required": [
+        "dh",
+        "pn",
+        "n"
+    ],
+    "properties": {
+        "dh": {
+            "type": "string",
+            "description": "Sender's current Ratchet Public Key (Base64URL, 32 bytes)"
+        },
+        "pn": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Number of messages in previous sending chain"
+        },
+        "n": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Message number in current sending chain"
+        }
+    }
+}

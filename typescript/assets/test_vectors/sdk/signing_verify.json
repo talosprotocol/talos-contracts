@@ -1,0 +1,69 @@
+{
+  "version": "1.0",
+  "algorithm": "Ed25519",
+  "description": "Signing and verification test vectors",
+  "vectors": [
+    {
+      "test_id": "sign_verify_basic",
+      "description": "Basic sign and verify with known seed",
+      "inputs": {
+        "seed_hex": "0000000000000000000000000000000000000000000000000000000000000001",
+        "message_utf8": "Hello, Talos!"
+      },
+      "expected": {
+        "public_key_hex": "4cb5abf6ad79fbf5abbccafcc269d85cd2651ed4b885b5869f241aedf0a5ba29",
+        "signature_base64url": "fDUIhcJ3C7E6CqF8G69aWT2AmLDOMzoksPqt2PMO1V6PIeQzxGkTSszDu2iHUnVwb7Mo_2WSyzRhfP0gqUMPBw",
+        "did": "did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG"
+      }
+    },
+    {
+      "test_id": "sign_empty_message",
+      "description": "Sign empty message",
+      "inputs": {
+        "seed_hex": "0000000000000000000000000000000000000000000000000000000000000002",
+        "message_utf8": ""
+      },
+      "expected": {
+        "signature_length": 64,
+        "verify": true
+      }
+    }
+  ],
+  "negative_cases": [
+    {
+      "test_id": "invalid_seed_length",
+      "description": "Seed with wrong length should fail",
+      "inputs": {
+        "seed_hex": "0011223344"
+      },
+      "expected_error": {
+        "code": "TALOS_INVALID_INPUT",
+        "message_contains": "seed"
+      }
+    },
+    {
+      "test_id": "verify_wrong_key",
+      "description": "Verify with wrong public key should fail",
+      "inputs": {
+        "message_utf8": "Hello",
+        "signature_base64url": "nWGxne_9MCmFTLxM-3T8d0D-nXPiS6VpebBxLF9bY3hWqxQ9Pz8H-hPgB5YkN6qK4pY7v8iJKxL2m8PdQZ_yCw",
+        "wrong_public_key_hex": "1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      "expected": {
+        "verify": false
+      }
+    },
+    {
+      "test_id": "verify_tampered_message",
+      "description": "Verify with tampered message should fail",
+      "inputs": {
+        "original_message": "Hello, Talos!",
+        "tampered_message": "Hello, Talos?",
+        "seed_hex": "0000000000000000000000000000000000000000000000000000000000000001"
+      },
+      "expected": {
+        "verify": false
+      }
+    }
+  ]
+}

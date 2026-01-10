@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/mcp/errors.schema.json",
+  "title": "TalosMcpError",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "integer",
+      "description": "Numeric error code for programmatic handling"
+    },
+    "message": {
+      "type": "string",
+      "description": "Human-readable error message"
+    },
+    "details": {
+      "type": "object",
+      "description": "Additional error details, context-specific",
+      "additionalProperties": true
+    },
+    "retryable": {
+      "type": "boolean",
+      "description": "Whether the client should retry the operation"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "CONFIG",
+        "DISCOVERY_DENIED",
+        "TOOL_DENIED",
+        "TRANSPORT",
+        "TIMEOUT",
+        "SCHEMA_MISMATCH",
+        "MCP_PROTOCOL",
+        "INTERNAL"
+      ],
+      "description": "Broad category of the error"
+    }
+  },
+  "required": ["code", "message", "category"]
+}

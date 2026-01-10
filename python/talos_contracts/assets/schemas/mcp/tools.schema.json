@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/mcp/tools.schema.json",
+  "title": "McpTools",
+  "definitions": {
+    "McpToolRef": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the tool"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of what the tool does"
+        },
+        "input_schema_ref": {
+          "type": "string",
+          "description": "Reference or hash of the input schema (optimization to avoid inlining full schema)"
+        },
+        "output_schema_ref": {
+          "type": "string",
+          "description": "Reference or hash of the output schema"
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["name"]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "server_id": {
+      "type": "string",
+      "description": "ID of the server providing these tools"
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/McpToolRef"
+      }
+    }
+  },
+  "required": ["server_id", "tools"]
+}

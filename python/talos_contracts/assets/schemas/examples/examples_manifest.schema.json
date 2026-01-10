@@ -1,0 +1,88 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://talosprotocol.com/schemas/examples/examples_manifest.schema.json",
+    "title": "Talos Examples Manifest",
+    "description": "Catalog of available Talos examples for dashboard integration",
+    "type": "object",
+    "required": [
+        "version",
+        "examples"
+    ],
+    "properties": {
+        "version": {
+            "type": "string",
+            "description": "Manifest schema version"
+        },
+        "examples": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "description",
+                    "route",
+                    "backend"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "pattern": "^[a-z][a-z0-9-]*$",
+                        "description": "Unique identifier (kebab-case)"
+                    },
+                    "title": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 500
+                    },
+                    "route": {
+                        "type": "string",
+                        "pattern": "^/examples/[a-z][a-z0-9-]*$",
+                        "description": "Dashboard route path"
+                    },
+                    "backend": {
+                        "type": "object",
+                        "required": [
+                            "type",
+                            "env",
+                            "health"
+                        ],
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "http"
+                                ],
+                                "description": "Only http backends supported"
+                            },
+                            "env": {
+                                "type": "string",
+                                "pattern": "^EXAMPLES_[A-Z_]+_URL$",
+                                "description": "Environment variable for backend URL"
+                            },
+                            "health": {
+                                "type": "string",
+                                "pattern": "^/[a-z][a-z0-9/]*$",
+                                "description": "Health check endpoint path"
+                            },
+                            "runtime_hint": {
+                                "type": "string",
+                                "enum": [
+                                    "docker",
+                                    "python",
+                                    "node"
+                                ],
+                                "description": "Optional hint for UI display"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

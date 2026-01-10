@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talosprotocol.com/schemas/mcp/server.schema.json",
+  "title": "MCP Server",
+  "description": "Configuration for an MCP tool server.",
+  "type": "object",
+  "required": ["id", "name", "transport"],
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "transport": {
+      "type": "string",
+      "enum": ["stdio", "http", "talos_tunnel"]
+    },
+    "endpoint": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL for http/talos_tunnel transports."
+    },
+    "command": {
+      "type": "string",
+      "description": "Command for stdio transport."
+    },
+    "args": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "env": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "tags": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "enabled": { "type": "boolean", "default": true }
+  }
+}

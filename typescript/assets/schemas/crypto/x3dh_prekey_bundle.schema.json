@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "X3DH Prekey Bundle",
+  "type": "object",
+  "required": ["identity_key", "signed_prekey", "prekey_signature"],
+  "properties": {
+    "identity_key": {
+      "type": "string",
+      "description": "Base64URL encoded Ed25519 public key (32 bytes)"
+    },
+    "signed_prekey": {
+      "type": "string",
+      "description": "Base64URL encoded X25519 public key (32 bytes)"
+    },
+    "prekey_signature": {
+      "type": "string",
+      "description": "Base64URL encoded XEdDSA signature (64 bytes)"
+    },
+    "one_time_prekey": {
+      "type": "string",
+      "description": "Optional Base64URL encoded X25519 public key"
+    }
+  }
+}

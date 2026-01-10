@@ -1,0 +1,41 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Header Canonical Bytes Micro-Vector",
+    "description": "Verifies canonical JSON serialization of ratchet headers",
+    "version": "1.1.0",
+    "test_cases": [
+        {
+            "id": "header_canonical_sorting",
+            "description": "Header with keys in reverse order (pn, n, dh)",
+            "input_header": {
+                "pn": 10,
+                "n": 5,
+                "dh": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            },
+            "expected_canonical_json": "{\"dh\":\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"n\":5,\"pn\":10}",
+            "expected_canonical_b64u": "eyJkaCI6IkFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUEiLCJuIjo1LCJwbiI6MTB9"
+        },
+        {
+            "id": "header_already_sorted",
+            "description": "Header with keys already in canonical order",
+            "input_header": {
+                "dh": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                "n": 5,
+                "pn": 10
+            },
+            "expected_canonical_json": "{\"dh\":\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"n\":5,\"pn\":10}",
+            "expected_canonical_b64u": "eyJkaCI6IkFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUEiLCJuIjo1LCJwbiI6MTB9"
+        },
+        {
+            "id": "header_different_values",
+            "description": "Different key in middle of alphabet",
+            "input_header": {
+                "n": 0,
+                "dh": "QkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkI",
+                "pn": 0
+            },
+            "expected_canonical_json": "{\"dh\":\"QkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkI\",\"n\":0,\"pn\":0}",
+            "expected_canonical_b64u": "eyJkaCI6IlFrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0pDUWtKQ1FrSkNRa0kiLCJuIjowLCJwbiI6MH0"
+        }
+    ]
+}

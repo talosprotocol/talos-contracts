@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talosprotocol.com/schemas/rbac/principal.schema.json",
+  "title": "RBAC Principal",
+  "description": "User or service account for RBAC.",
+  "type": "object",
+  "required": ["id", "type"],
+  "properties": {
+    "id": { "type": "string" },
+    "type": {
+      "type": "string",
+      "enum": ["user", "service_account"]
+    },
+    "email": { "type": "string", "format": "email" },
+    "org_id": { "type": "string" },
+    "display_name": { "type": "string" },
+    "created_at": { "type": "string", "format": "date-time" }
+  }
+}

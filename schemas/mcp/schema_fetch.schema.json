@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/mcp/schema_fetch.schema.json",
+  "title": "McpSchemaFetch",
+  "type": "object",
+  "properties": {
+    "server_id": {
+      "type": "string",
+      "description": "ID of the server"
+    },
+    "tool_name": {
+      "type": "string",
+      "description": "Name of the tool"
+    },
+    "json_schema": {
+      "type": "object",
+      "description": "The full JSON Schema of the tool inputs",
+      "additionalProperties": true
+    },
+    "schema_hash": {
+      "type": "string",
+      "description": "Hash of the schema content for caching and data integrity"
+    },
+    "version": {
+      "type": "string",
+      "description": "Version of the tool schema"
+    }
+  },
+  "required": ["server_id", "tool_name", "json_schema", "schema_hash"]
+}
