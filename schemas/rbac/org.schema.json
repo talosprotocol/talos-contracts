@@ -4,10 +4,18 @@
   "title": "Organization",
   "description": "Top-level multi-tenancy container.",
   "type": "object",
-  "required": ["id", "name"],
+  "required": ["id", "name", "domain"],
   "properties": {
     "id": { "type": "string" },
     "name": { "type": "string" },
+    "domain": { 
+      "type": "string", 
+      "description": "Primary verified domain for the organization."
+    },
+    "created_by": { 
+      "type": "string",
+      "description": "Principal ID of the creator."
+    },
     "created_at": { "type": "string", "format": "date-time" }
   }
 }

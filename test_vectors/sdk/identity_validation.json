@@ -6,7 +6,8 @@
       "schema": "org",
       "data": {
         "id": "org_123",
-        "name": "Acme Corp",
+        "name": "Talos Protocol",
+        "domain": "talos.protocol",
         "created_at": "2026-01-10T22:45:00Z"
       },
       "valid": true

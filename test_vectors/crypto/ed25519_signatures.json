@@ -1,0 +1,42 @@
+{
+  "description": "Ed25519 Test Vectors for Talos Protocol",
+  "key_pair": {
+    "public_key_b64": "LmeCHMVa3mFnuea4uwDeg7XOnemP84aj0SSvh6DFS8Y=",
+    "key_type": "ed25519"
+  },
+  "tests": [
+    {
+      "name": "valid_signature",
+      "payload": {
+        "nonce": "nonce123",
+        "timestamp": 1768140994,
+        "type": "HANDSHAKE"
+      },
+      "signature_b64": "PsoFZt73SCzGPuPZm8wB1KEPYe4dy+gAKi7hPg+roZGDeWioswU0vCelq6V5bqmY06vxedxaG0PuXMnvxLiACg==",
+      "key_id": "LmeCHMVa3mFnuea4uwDeg7XOnemP84aj0SSvh6DFS8Y=",
+      "expected": "valid"
+    },
+    {
+      "name": "tampered_payload",
+      "payload": {
+        "nonce": "nonce123",
+        "timestamp": 1768140995,
+        "type": "HANDSHAKE"
+      },
+      "signature_b64": "PsoFZt73SCzGPuPZm8wB1KEPYe4dy+gAKi7hPg+roZGDeWioswU0vCelq6V5bqmY06vxedxaG0PuXMnvxLiACg==",
+      "key_id": "LmeCHMVa3mFnuea4uwDeg7XOnemP84aj0SSvh6DFS8Y=",
+      "expected": "invalid"
+    },
+    {
+      "name": "wrong_key",
+      "payload": {
+        "nonce": "nonce123",
+        "timestamp": 1768140994,
+        "type": "HANDSHAKE"
+      },
+      "signature_b64": "PsoFZt73SCzGPuPZm8wB1KEPYe4dy+gAKi7hPg+roZGDeWioswU0vCelq6V5bqmY06vxedxaG0PuXMnvxLiACg==",
+      "key_id": "another-key-id",
+      "expected": "invalid"
+    }
+  ]
+}

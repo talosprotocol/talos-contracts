@@ -4,16 +4,28 @@
   "title": "RBAC Principal",
   "description": "User or service account for RBAC.",
   "type": "object",
-  "required": ["id", "type"],
+  "required": ["id", "principal_id", "type", "status"],
   "properties": {
     "id": { "type": "string" },
+    "principal_id": { 
+      "type": "string",
+      "description": "Unique cryptographic identifier (e.g. fingerprint of public key)."
+    },
     "type": {
       "type": "string",
       "enum": ["user", "service_account"]
     },
+    "status": {
+      "type": "string",
+      "enum": ["active", "suspended", "revoked"],
+      "default": "active"
+    },
+    "public_key": { "type": "string", "description": "Base64-encoded public key." },
+    "key_type": { "type": "string", "enum": ["ed25519"], "default": "ed25519" },
     "email": { "type": "string", "format": "email" },
     "org_id": { "type": "string" },
     "display_name": { "type": "string" },
-    "created_at": { "type": "string", "format": "date-time" }
+    "created_at": { "type": "string", "format": "date-time" },
+    "revoked_at": { "type": ["string", "null"], "format": "date-time" }
   }
 }

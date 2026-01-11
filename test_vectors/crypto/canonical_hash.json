@@ -1,0 +1,21 @@
+{
+  "description": "Deterministic Serialization Vectors",
+  "tests": [
+    {
+      "name": "key_sorting",
+      "input": {
+        "z": 1,
+        "a": 2,
+        "m": 3
+      },
+      "expected_json": "{\"a\":2,\"m\":3,\"z\":1}"
+    },
+    {
+      "name": "whitespace_removal",
+      "input": {
+        "key": "value"
+      },
+      "expected_json": "{\"key\":\"value\"}"
+    }
+  ]
+}

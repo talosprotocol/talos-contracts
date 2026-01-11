@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talosprotocol.com/schemas/crypto/http_attestation.schema.json",
+  "title": "HTTP Attestation v1 Headers",
+  "description": "Schema for the cryptographic attestation headers used in HTTP Attestation v1.",
+  "type": "object",
+  "required": [
+    "x_talos_key_id",
+    "x_talos_timestamp",
+    "x_talos_nonce",
+    "x_talos_signature",
+    "x_talos_sig_alg",
+    "x_talos_sig_version"
+  ],
+  "properties": {
+    "x_talos_key_id": {
+      "type": "string",
+      "description": "The Key ID (or DID) of the signer.",
+      "minLength": 1
+    },
+    "x_talos_timestamp": {
+      "type": "integer",
+      "description": "Unix timestamp in seconds.",
+      "minimum": 0
+    },
+    "x_talos_nonce": {
+      "type": "string",
+      "description": "Unique nonce for replay protection. ASCII only.",
+      "minLength": 8,
+      "maxLength": 128,
+      "pattern": "^[ -~]+$"
+    },
+    "x_talos_signature": {
+      "type": "string",
+      "description": "Ed25519 signature, base64url encoded, unpadded.",
+      "pattern": "^[a-zA-Z0-9_-]+$"
+    },
+    "x_talos_sig_alg": {
+      "type": "string",
+      "const": "ed25519"
+    },
+    "x_talos_sig_version": {
+      "type": "string",
+      "const": "v1"
+    }
+  },
+  "additionalProperties": false
+}

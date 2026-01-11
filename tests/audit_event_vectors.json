@@ -1,0 +1,29 @@
+{
+  "vectors": [
+    {
+      "description": "Canonicalization and Hashing",
+      "input": {
+        "schema_id": "talos.audit_event",
+        "schema_version": "v1",
+        "event_id": "00000000-0000-0000-0000-000000000001",
+        "ts": "2024-01-01T00:00:00Z",
+        "request_id": "req-123",
+        "surface_id": "test.op",
+        "action": "test",
+        "status": "success",
+        "principal": {
+          "principal_id": "p-1",
+          "team_id": "t-1",
+          "auth_mode": "bearer"
+        },
+        "data_classification": "public",
+        "meta": {
+           "b": 2,
+           "a": 1
+        }
+      },
+      "canonical_json_string": "{\"action\":\"test\",\"data_classification\":\"public\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"meta\":{\"a\":1,\"b\":2},\"principal\":{\"auth_mode\":\"bearer\",\"principal_id\":\"p-1\",\"team_id\":\"t-1\"},\"request_id\":\"req-123\",\"schema_id\":\"talos.audit_event\",\"schema_version\":\"v1\",\"status\":\"success\",\"surface_id\":\"test.op\",\"ts\":\"2024-01-01T00:00:00Z\"}",
+      "event_hash": "246fe220459c36203923bb3542718a59ec169a66ba2327771618a35368a52934"
+    }
+  ]
+}
