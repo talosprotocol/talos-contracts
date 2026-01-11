@@ -1,0 +1,39 @@
+[
+  {
+    "event": "heartbeat",
+    "data": { "timestamp": "2024-01-01T12:00:00Z" }
+  },
+  {
+    "event": "task.update",
+    "id": "evt-1",
+    "data": {
+      "profile": { "profile_id": "a2a-compat", "profile_version": "0.1", "spec_source": "a2a-protocol" },
+      "task_id": "01944ec7-9a00-75ad-9532-613200af732b",
+      "status": "running",
+      "created_at": "2024-01-01T12:00:01Z",
+      "updated_at": "2024-01-01T12:00:02Z"
+    }
+  },
+  {
+    "event": "task.complete",
+    "id": "evt-2",
+    "data": {
+      "profile": { "profile_id": "a2a-compat", "profile_version": "0.1", "spec_source": "a2a-protocol" },
+      "task_id": "01944ec7-9a00-75ad-9532-613200af732b",
+      "status": "completed",
+      "created_at": "2024-01-01T12:00:01Z",
+      "updated_at": "2024-01-01T12:00:05Z",
+      "artifacts": [
+        { "artifact_id": "art-1", "type": "text/plain", "content": { "text": "Result" }, "name": "output.txt" }
+      ]
+    }
+  },
+  {
+    "event": "task.error",
+    "data": {
+      "code": -32000,
+      "message": "Quota exceeded",
+      "data": { "talos_code": "RATE_LIMITED", "retry_after_ms": 5000 }
+    }
+  }
+]

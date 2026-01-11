@@ -1,0 +1,8 @@
+{
+  "jsonrpc": "2.0",
+  "method": "tasks.cancel",
+  "id": "req-cancel",
+  "params": {
+    "task_id": "01944ec7-9a00-75ad-9532-613200af732b"
+  }
+}

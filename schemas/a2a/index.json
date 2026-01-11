@@ -1,0 +1,24 @@
+{
+  "schemas": [
+    "profile.schema.json",
+    "jsonrpc_request.schema.json",
+    "jsonrpc_response.schema.json",
+    "jsonrpc_error.schema.json",
+    "agent_card.schema.json",
+    "task.schema.json",
+    "message.schema.json",
+    "artifact.schema.json",
+    "part.schema.json",
+    "sse_event.schema.json",
+    "methods/tasks_send.request.schema.json",
+    "methods/tasks_send.response.schema.json",
+    "methods/tasks_send_subscribe.request.schema.json",
+    "methods/tasks_send_subscribe.response.schema.json",
+    "methods/tasks_get.request.schema.json",
+    "methods/tasks_get.response.schema.json",
+    "methods/tasks_cancel.request.schema.json",
+    "methods/tasks_cancel.response.schema.json",
+    "methods/tasks_resubscribe.request.schema.json",
+    "methods/tasks_resubscribe.response.schema.json"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "jsonrpc": "2.0",
+  "method": "tasks.send",
+  "id": "req-123",
+  "params": {
+    "profile": {
+      "profile_id": "a2a-compat",
+      "profile_version": "0.1",
+      "spec_source": "a2a-protocol"
+    },
+    "input": [
+      {
+        "role": "user",
+        "content": [{ "text": "Hello world" }]
+      }
+    ]
+  }
+}

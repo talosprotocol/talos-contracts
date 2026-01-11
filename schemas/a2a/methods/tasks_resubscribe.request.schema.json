@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/a2a/methods/tasks_resubscribe.request.schema.json",
+  "type": "object",
+  "required": ["jsonrpc", "method", "params", "id"],
+  "properties": {
+    "jsonrpc": { "const": "2.0" },
+    "method": { "const": "tasks.resubscribe" },
+    "id": { "type": ["string", "integer"] },
+    "params": {
+      "type": "object",
+      "required": ["task_id"],
+      "properties": {
+        "task_id": { "type": "string" },
+        "resume_from": { "type": "string" }
+      }
+    }
+  }
+}
