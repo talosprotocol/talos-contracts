@@ -1,0 +1,350 @@
+{
+  "$schema": "../schemas/catalog/provider_catalog.schema.json",
+  "version": "1.0.0",
+  "updated_at": "2026-01-10T00:00:00Z",
+  "templates": [
+    {
+      "provider_key": "openai",
+      "display_name": "OpenAI",
+      "category": "direct_provider",
+      "tier_tags": ["paid"],
+      "default_base_url": "https://api.openai.com/v1",
+      "auth_style": "bearer",
+      "secret_ref_hints": ["env:OPENAI_API_KEY", "secret:openai-prod"],
+      "docs_url": "https://platform.openai.com/docs",
+      "console_url": "https://platform.openai.com",
+      "notes": [],
+      "risk_flags": []
+    },
+    {
+      "provider_key": "anthropic",
+      "display_name": "Anthropic",
+      "category": "direct_provider",
+      "tier_tags": ["paid"],
+      "default_base_url": "https://api.anthropic.com/v1",
+      "auth_style": "bearer",
+      "secret_ref_hints": ["env:ANTHROPIC_API_KEY", "secret:anthropic-prod"],
+      "docs_url": "https://docs.anthropic.com",
+      "console_url": "https://console.anthropic.com",
+      "notes": [],
+      "risk_flags": []
+    },
+    {
+      "provider_key": "google-ai-studio",
+      "display_name": "Google AI Studio",
+      "category": "direct_provider",
+      "tier_tags": ["free_tier"],
+      "default_base_url": "https://generativelanguage.googleapis.com/v1beta",
+      "auth_style": "bearer",
+      "secret_ref_hints": ["env:GOOGLE_API_KEY"],
+      "docs_url": "https://ai.google.dev/docs",
+      "console_url": "https://aistudio.google.com",
+      "notes": ["Data is used for training when used outside of the UK/CH/EEA/EU"],
+      "risk_flags": ["data_training_opt_in", "regional_policy"],
+      "source": {
+        "upstream_name": "free-llm-api-resources",
+        "upstream_url": "https://github.com/cheahjs/free-llm-api-resources",
+        "imported_at": "2026-01-10T00:00:00Z"
+      }
+    },
+    {
+      "provider_key": "azure-openai",
+      "display_name": "Azure OpenAI",
+      "category": "cloud_platform",
+      "tier_tags": ["paid", "enterprise"],
+      "default_base_url": "https://{resource}.openai.azure.com",
+      "auth_style": "header_api_key",
+      "auth_header_name": "api-key",
+      "secret_ref_hints": ["env:AZURE_OPENAI_API_KEY", "secret:azure-openai"],
+      "docs_url": "https://learn.microsoft.com/azure/ai-services/openai/",
+      "console_url": "https://portal.azure.com",
+      "notes": ["Deployment ID required in endpoint path"],
+      "risk_flags": []
+    },
+    {
+      "provider_key": "groq",
+      "display_name": "Groq",
+      "category": "direct_provider",
+      "tier_tags": ["free_tier"],
+      "default_base_url": "https://api.groq.com/openai/v1",
+      "auth_style": "bearer",
+      "secret_ref_hints": ["env:GROQ_API_KEY"],
+      "docs_url": "https://console.groq.com/docs",
+      "console_url": "https://console.groq.com",
+      "notes": ["OpenAI-compatible API", "Fast inference"],
+      "risk_flags": ["rate_limited"],
+      "source": {
+        "upstream_name": "free-llm-api-resources",
+        "upstream_url": "https://github.com/cheahjs/free-llm-api-resources",
+        "imported_at": "2026-01-10T00:00:00Z"
+      }
+    },
+    {
+      "provider_key": "together",
+      "display_name": "Together AI",
+      "category": "direct_provider",
+      "tier_tags": ["paid"],
+      "default_base_url": "https://api.together.xyz/v1",
+      "auth_style": "bearer",
+      "secret_ref_hints": ["env:TOGETHER_API_KEY"],
+      "docs_url": "https://docs.together.ai",
+      "console_url": "https://api.together.xyz",
+      "notes": ["OpenAI-compatible API"],
+      "risk_flags": []
+    },
+    {
+      "provider_key": "mistral",
+      "display_name": "Mistral AI",
+      "category": "direct_provider",
+      "tier_tags": ["free_tier"],
+      "default_base_url": "https://api.mistral.ai/v1",
+      "auth_style": "bearer",
+      "secret_ref_hints": ["env:MISTRAL_API_KEY"],
+      "docs_url": "https://docs.mistral.ai",
+      "console_url": "https://console.mistral.ai",
+      "notes": ["Free tier requires opting into data training", "Phone verification required"],
+      "risk_flags": ["data_training_opt_in", "phone_verification", "rate_limited"],
+      "source": {
+        "upstream_name": "free-llm-api-resources",
+        "upstream_url": "https://github.com/cheahjs/free-llm-api-resources",
+        "imported_at": "2026-01-10T00:00:00Z"
+      }
+    },
+    {
+      "provider_key": "openrouter",
+      "display_name": "OpenRouter",
+      "category": "aggregator",
+      "tier_tags": ["free_tier", "paid"],
+      "default_base_url": "https://openrouter.ai/api/v1",
+      "auth_style": "bearer",
+      "secret_ref_hints": ["env:OPENROUTER_API_KEY"],
+      "docs_url": "https://openrouter.ai/docs",
+      "console_url": "https://openrouter.ai",
+      "notes": ["Routes to various providers", "Free tier models available"],
+      "risk_flags": [],
+      "source": {
+        "upstream_name": "free-llm-api-resources",
+        "upstream_url": "https://github.com/cheahjs/free-llm-api-resources",
+        "imported_at": "2026-01-10T00:00:00Z"
+      }
+    },
+    {
+      "provider_key": "nvidia-nim",
+      "display_name": "NVIDIA NIM",
+      "category": "cloud_platform",
+      "tier_tags": ["free_tier"],
+      "default_base_url": "https://integrate.api.nvidia.com/v1",
+      "auth_style": "bearer",
+      "secret_ref_hints": ["env:NVIDIA_API_KEY"],
+      "docs_url": "https://build.nvidia.com",
+      "console_url": "https://build.nvidia.com/explore/discover",
+      "notes": ["Phone verification required", "Models may be context limited", "40 requests/minute limit"],
+      "risk_flags": ["phone_verification", "context_limited", "rate_limited"],
+      "source": {
+        "upstream_name": "free-llm-api-resources",
+        "upstream_url": "https://github.com/cheahjs/free-llm-api-resources",
+        "imported_at": "2026-01-10T00:00:00Z"
+      }
+    },
+    {
+      "provider_key": "cerebras",
+      "display_name": "Cerebras",
+      "category": "direct_provider",
+      "tier_tags": ["free_tier"],
+      "default_base_url": "https://api.cerebras.ai/v1",
+      "auth_style": "bearer",
+      "secret_ref_hints": ["env:CEREBRAS_API_KEY"],
+      "docs_url": "https://cloud.cerebras.ai",
+      "console_url": "https://cloud.cerebras.ai",
+      "notes": ["Fast inference provider"],
+      "risk_flags": [],
+      "source": {
+        "upstream_name": "free-llm-api-resources",
+        "upstream_url": "https://github.com/cheahjs/free-llm-api-resources",
+        "imported_at": "2026-01-10T00:00:00Z"
+      }
+    },
+    {
+      "provider_key": "cohere",
+      "display_name": "Cohere",
+      "category": "direct_provider",
+      "tier_tags": ["free_tier"],
+      "default_base_url": "https://api.cohere.ai/v1",
+      "auth_style": "bearer",
+      "secret_ref_hints": ["env:COHERE_API_KEY"],
+      "docs_url": "https://docs.cohere.com",
+      "console_url": "https://dashboard.cohere.com",
+      "notes": ["20 requests/minute limit", "1000 requests/month free tier"],
+      "risk_flags": ["rate_limited", "shared_quota"],
+      "source": {
+        "upstream_name": "free-llm-api-resources",
+        "upstream_url": "https://github.com/cheahjs/free-llm-api-resources",
+        "imported_at": "2026-01-10T00:00:00Z"
+      }
+    },
+    {
+      "provider_key": "huggingface",
+      "display_name": "HuggingFace Inference",
+      "category": "gateway",
+      "tier_tags": ["free_tier"],
+      "default_base_url": "https://api-inference.huggingface.co",
+      "auth_style": "bearer",
+      "secret_ref_hints": ["env:HF_API_KEY"],
+      "docs_url": "https://huggingface.co/docs/inference-providers",
+      "console_url": "https://huggingface.co",
+      "notes": ["$0.10/month in credits", "Models <10GB only"],
+      "risk_flags": ["shared_quota"],
+      "source": {
+        "upstream_name": "free-llm-api-resources",
+        "upstream_url": "https://github.com/cheahjs/free-llm-api-resources",
+        "imported_at": "2026-01-10T00:00:00Z"
+      }
+    },
+    {
+      "provider_key": "cloudflare-workers-ai",
+      "display_name": "Cloudflare Workers AI",
+      "category": "cloud_platform",
+      "tier_tags": ["free_tier"],
+      "default_base_url": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run",
+      "auth_style": "bearer",
+      "secret_ref_hints": ["env:CLOUDFLARE_API_TOKEN"],
+      "docs_url": "https://developers.cloudflare.com/workers-ai",
+      "console_url": "https://dash.cloudflare.com",
+      "notes": [],
+      "risk_flags": [],
+      "source": {
+        "upstream_name": "free-llm-api-resources",
+        "upstream_url": "https://github.com/cheahjs/free-llm-api-resources",
+        "imported_at": "2026-01-10T00:00:00Z"
+      }
+    },
+    {
+      "provider_key": "github-models",
+      "display_name": "GitHub Models",
+      "category": "gateway",
+      "tier_tags": ["free_tier"],
+      "default_base_url": "https://models.inference.ai.azure.com",
+      "auth_style": "bearer",
+      "secret_ref_hints": ["env:GITHUB_TOKEN"],
+      "docs_url": "https://github.com/marketplace/models",
+      "console_url": "https://github.com/marketplace/models",
+      "notes": [],
+      "risk_flags": [],
+      "source": {
+        "upstream_name": "free-llm-api-resources",
+        "upstream_url": "https://github.com/cheahjs/free-llm-api-resources",
+        "imported_at": "2026-01-10T00:00:00Z"
+      }
+    },
+    {
+      "provider_key": "sambanova",
+      "display_name": "SambaNova Cloud",
+      "category": "direct_provider",
+      "tier_tags": ["trial_credits"],
+      "default_base_url": "https://api.sambanova.ai/v1",
+      "auth_style": "bearer",
+      "secret_ref_hints": ["env:SAMBANOVA_API_KEY"],
+      "docs_url": "https://cloud.sambanova.ai/docs",
+      "console_url": "https://cloud.sambanova.ai",
+      "notes": ["Trial credits available"],
+      "risk_flags": [],
+      "source": {
+        "upstream_name": "free-llm-api-resources",
+        "upstream_url": "https://github.com/cheahjs/free-llm-api-resources",
+        "imported_at": "2026-01-10T00:00:00Z"
+      }
+    },
+    {
+      "provider_key": "fireworks",
+      "display_name": "Fireworks AI",
+      "category": "direct_provider",
+      "tier_tags": ["trial_credits"],
+      "default_base_url": "https://api.fireworks.ai/inference/v1",
+      "auth_style": "bearer",
+      "secret_ref_hints": ["env:FIREWORKS_API_KEY"],
+      "docs_url": "https://docs.fireworks.ai",
+      "console_url": "https://fireworks.ai",
+      "notes": ["Trial credits available"],
+      "risk_flags": [],
+      "source": {
+        "upstream_name": "free-llm-api-resources",
+        "upstream_url": "https://github.com/cheahjs/free-llm-api-resources",
+        "imported_at": "2026-01-10T00:00:00Z"
+      }
+    },
+    {
+      "provider_key": "deepinfra",
+      "display_name": "DeepInfra",
+      "category": "direct_provider",
+      "tier_tags": ["trial_credits"],
+      "default_base_url": "https://api.deepinfra.com/v1/openai",
+      "auth_style": "bearer",
+      "secret_ref_hints": ["env:DEEPINFRA_API_KEY"],
+      "docs_url": "https://deepinfra.com/docs",
+      "console_url": "https://deepinfra.com",
+      "notes": ["OpenAI-compatible endpoint"],
+      "risk_flags": [],
+      "source": {
+        "upstream_name": "free-llm-api-resources",
+        "upstream_url": "https://github.com/cheahjs/free-llm-api-resources",
+        "imported_at": "2026-01-10T00:00:00Z"
+      }
+    },
+    {
+      "provider_key": "hyperbolic",
+      "display_name": "Hyperbolic",
+      "category": "direct_provider",
+      "tier_tags": ["trial_credits"],
+      "default_base_url": "https://api.hyperbolic.xyz/v1",
+      "auth_style": "bearer",
+      "secret_ref_hints": ["env:HYPERBOLIC_API_KEY"],
+      "docs_url": "https://app.hyperbolic.xyz/docs",
+      "console_url": "https://app.hyperbolic.xyz",
+      "notes": ["Trial credits available"],
+      "risk_flags": [],
+      "source": {
+        "upstream_name": "free-llm-api-resources",
+        "upstream_url": "https://github.com/cheahjs/free-llm-api-resources",
+        "imported_at": "2026-01-10T00:00:00Z"
+      }
+    },
+    {
+      "provider_key": "ollama",
+      "display_name": "Ollama (Local)",
+      "category": "self_hosted",
+      "tier_tags": ["free_tier"],
+      "default_base_url": "http://localhost:11434/v1",
+      "auth_style": "none",
+      "secret_ref_hints": [],
+      "docs_url": "https://ollama.com",
+      "console_url": "https://ollama.com",
+      "notes": ["Self-hosted, no auth required", "OpenAI-compatible API at /v1"],
+      "risk_flags": []
+    },
+    {
+      "provider_key": "lmstudio",
+      "display_name": "LM Studio (Local)",
+      "category": "self_hosted",
+      "tier_tags": ["free_tier"],
+      "default_base_url": "http://localhost:1234/v1",
+      "auth_style": "none",
+      "secret_ref_hints": [],
+      "docs_url": "https://lmstudio.ai",
+      "console_url": "https://lmstudio.ai",
+      "notes": ["Self-hosted, no auth required"],
+      "risk_flags": []
+    },
+    {
+      "provider_key": "custom",
+      "display_name": "Custom (OpenAI-compatible)",
+      "category": "self_hosted",
+      "tier_tags": [],
+      "default_base_url": "",
+      "auth_style": "bearer",
+      "secret_ref_hints": ["env:CUSTOM_API_KEY"],
+      "docs_url": "",
+      "notes": ["For custom OpenAI-compatible endpoints"],
+      "risk_flags": []
+    }
+  ]
+}
