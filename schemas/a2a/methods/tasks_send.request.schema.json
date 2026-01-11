@@ -15,7 +15,8 @@
         "input": {
           "type": "array",
           "items": { "$ref": "../message.schema.json" }
-        }
+        },
+        "tool_call": { "$ref": "../tool_call.schema.json" }
       }
     }
   }

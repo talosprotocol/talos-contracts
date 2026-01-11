@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talosprotocol.com/schemas/rbac/team.schema.json",
+  "title": "Team",
+  "description": "A group within an organization.",
+  "type": "object",
+  "required": ["id", "org_id", "name"],
+  "properties": {
+    "id": { "type": "string" },
+    "org_id": { "type": "string" },
+    "name": { "type": "string" },
+    "created_at": { "type": "string", "format": "date-time" }
+  }
+}

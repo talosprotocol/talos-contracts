@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/a2a/tool_call.schema.json",
+  "type": "object",
+  "required": ["server_id", "tool_name", "arguments"],
+  "properties": {
+    "server_id": {
+      "type": "string",
+      "description": "ID of the MCP server hosting the tool"
+    },
+    "tool_name": {
+      "type": "string",
+      "description": "Name of the tool to execute"
+    },
+    "arguments": {
+      "type": "object",
+      "description": "Arguments to pass to the tool",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

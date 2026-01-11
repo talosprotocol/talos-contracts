@@ -48,6 +48,15 @@
                 "mcp_security"
             ],
             "description": "MCP request signing and verification"
+        },
+        {
+            "id": "identity_validation",
+            "file": "identity_validation.json",
+            "required_protocol": "1.0",
+            "features": [
+                "identity"
+            ],
+            "description": "Validation of core identity and RBAC schemas"
         }
     ],
     "feature_sets": {

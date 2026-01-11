@@ -19,6 +19,7 @@
     "methods/tasks_cancel.request.schema.json",
     "methods/tasks_cancel.response.schema.json",
     "methods/tasks_resubscribe.request.schema.json",
-    "methods/tasks_resubscribe.response.schema.json"
+    "methods/tasks_resubscribe.response.schema.json",
+    "tool_call.schema.json"
   ]
 }
