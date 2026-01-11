@@ -31,8 +31,8 @@ def test_identity_validation(vector):
     """Validate identity vectors against their schemas."""
     schema = load_schema(vector["schema"])
     validator = Draft7Validator(schema)
-    
+
     errors = list(validator.iter_errors(vector["data"]))
     is_valid = len(errors) == 0
-    
+
     assert is_valid == vector["valid"], f"Expected valid={vector['valid']}, got errors: {errors}"
