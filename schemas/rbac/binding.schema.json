@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
   "$id": "https://talosprotocol.com/schemas/rbac/binding.schema.json",
   "title": "RBAC Binding",
   "description": "Binds a principal to a role at a scope.",
@@ -13,10 +13,10 @@
     },
     "role_id": { "type": "string" },
     "scope": {
-      "$ref": "#/definitions/Scope"
+      "$ref": "#/$defs/Scope"
     }
   },
-  "definitions": {
+  "$defs": {
     "Scope": {
       "type": "object",
       "required": ["type"],

@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
   "$id": "https://talosprotocol.com/schemas/rbac/virtual_key_hashed.schema.json",
   "title": "Virtual Key (Hashed)",
   "description": "A hashed representation of an API key or session key.",

@@ -23,7 +23,29 @@ def load_schema(name: str) -> dict:
 def load_vectors() -> list:
     """Load identity validation vectors."""
     data = json.loads((VECTORS_DIR / "identity_validation.json").read_text())
-    return data["vectors"]
+    vectors = []
+
+    for schema_name, cases in data.items():
+        for entry in cases.get("valid", []):
+            vectors.append(
+                {
+                    "id": entry.get("name", f"{schema_name}-valid"),
+                    "schema": schema_name,
+                    "data": entry["data"],
+                    "valid": True,
+                }
+            )
+        for entry in cases.get("invalid", []):
+            vectors.append(
+                {
+                    "id": entry.get("name", f"{schema_name}-invalid"),
+                    "schema": schema_name,
+                    "data": entry["data"],
+                    "valid": False,
+                }
+            )
+
+    return vectors
 
 
 @pytest.mark.parametrize("vector", load_vectors(), ids=lambda v: v["id"])

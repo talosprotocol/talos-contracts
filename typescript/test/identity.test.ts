@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import Ajv from "ajv";
+import Ajv2019 from "ajv/dist/2019";
 import addFormats from "ajv-formats";
 import fs from "node:fs";
 import path from "node:path";
@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const ajv = new Ajv({ strict: false });
+const ajv = new Ajv2019({ strict: false, allErrors: true });
 addFormats(ajv);
 
 function readJson(p: string) {
@@ -27,19 +27,33 @@ describe("Identity and RBAC Schema Validation", () => {
   }
 
   const vectorFile = path.join(vectorsDir, "identity_validation.json");
-  const { vectors } = readJson(vectorFile);
+  const matrix = readJson(vectorFile);
 
-  test.each(vectors)("vector: $id", (...args: any[]) => {
-    const vector = args[0];
-    const { schema, data, valid } = vector;
-    // We expect schemas to be indexed by their $id which is https://talosprotocol.com/schemas/rbac/{name}.schema.json
-    const schemaId = `https://talosprotocol.com/schemas/rbac/${schema}.schema.json`;
-    const validate = ajv.getSchema(schemaId);
-    if (!validate) {
-      throw new Error(`Schema not found: ${schemaId}`);
-    }
+  for (const [schemaType, categories] of Object.entries(matrix)) {
+    describe(`Schema: ${schemaType}`, () => {
+      // @ts-expect-error - iterating over object entries
+      for (const [category, vectors] of Object.entries(categories)) {
+        const isValidExpected = category === "valid";
 
-    const isValid = validate(data);
-    expect(isValid).toBe(valid);
-  });
+        // @ts-expect-error - vectors is any[]
+        test.each(vectors)(`[${category}] $name`, (vector: any) => {
+          const { data } = vector;
+          const schemaId = `https://talosprotocol.com/schemas/rbac/${schemaType}.schema.json`;
+          const validate = ajv.getSchema(schemaId);
+          if (!validate) {
+            throw new Error(`Schema not found: ${schemaId}`);
+          }
+
+          const isValid = validate(data);
+          if (isValid !== isValidExpected) {
+            console.error(
+              `Validation failed for ${vector.name}:`,
+              validate.errors,
+            );
+          }
+          expect(isValid).toBe(isValidExpected);
+        });
+      }
+    });
+  }
 });

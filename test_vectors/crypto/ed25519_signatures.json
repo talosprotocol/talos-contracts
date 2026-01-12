@@ -1,7 +1,7 @@
 {
   "description": "Ed25519 Test Vectors for Talos Protocol",
   "key_pair": {
-    "public_key_b64": "LmeCHMVa3mFnuea4uwDeg7XOnemP84aj0SSvh6DFS8Y=",
+    "public_key_b64": "r/G4GGPYC1D5j5/iSFz35khWrvax31dIz+xHQMXT7a4=",
     "key_type": "ed25519"
   },
   "tests": [
@@ -9,32 +9,32 @@
       "name": "valid_signature",
       "payload": {
         "nonce": "nonce123",
-        "timestamp": 1768140994,
+        "timestamp": 1768178601,
         "type": "HANDSHAKE"
       },
-      "signature_b64": "PsoFZt73SCzGPuPZm8wB1KEPYe4dy+gAKi7hPg+roZGDeWioswU0vCelq6V5bqmY06vxedxaG0PuXMnvxLiACg==",
-      "key_id": "LmeCHMVa3mFnuea4uwDeg7XOnemP84aj0SSvh6DFS8Y=",
+      "signature_b64": "BpwaO76zuOQUXi7411fTyd7ieAOIUgr0rJ/oP9Kad4FFjEiCVg2UIcRFytwNuW9v5lAMdcD1x77EaA1qYFLJCQ==",
+      "key_id": "r/G4GGPYC1D5j5/iSFz35khWrvax31dIz+xHQMXT7a4=",
       "expected": "valid"
     },
     {
       "name": "tampered_payload",
       "payload": {
         "nonce": "nonce123",
-        "timestamp": 1768140995,
+        "timestamp": 1768178602,
         "type": "HANDSHAKE"
       },
-      "signature_b64": "PsoFZt73SCzGPuPZm8wB1KEPYe4dy+gAKi7hPg+roZGDeWioswU0vCelq6V5bqmY06vxedxaG0PuXMnvxLiACg==",
-      "key_id": "LmeCHMVa3mFnuea4uwDeg7XOnemP84aj0SSvh6DFS8Y=",
+      "signature_b64": "BpwaO76zuOQUXi7411fTyd7ieAOIUgr0rJ/oP9Kad4FFjEiCVg2UIcRFytwNuW9v5lAMdcD1x77EaA1qYFLJCQ==",
+      "key_id": "r/G4GGPYC1D5j5/iSFz35khWrvax31dIz+xHQMXT7a4=",
       "expected": "invalid"
     },
     {
       "name": "wrong_key",
       "payload": {
         "nonce": "nonce123",
-        "timestamp": 1768140994,
+        "timestamp": 1768178601,
         "type": "HANDSHAKE"
       },
-      "signature_b64": "PsoFZt73SCzGPuPZm8wB1KEPYe4dy+gAKi7hPg+roZGDeWioswU0vCelq6V5bqmY06vxedxaG0PuXMnvxLiACg==",
+      "signature_b64": "BpwaO76zuOQUXi7411fTyd7ieAOIUgr0rJ/oP9Kad4FFjEiCVg2UIcRFytwNuW9v5lAMdcD1x77EaA1qYFLJCQ==",
       "key_id": "another-key-id",
       "expected": "invalid"
     }

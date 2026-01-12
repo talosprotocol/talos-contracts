@@ -1,72 +1,240 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://talos.security/schemas/audit/audit_event.schema.json",
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://talosprotocol.com/schemas/audit_event.schema.json",
   "title": "Talos Audit Event",
-  "description": "Canonical Audit Event Structure",
   "type": "object",
+  "additionalProperties": false,
   "required": [
-    "schema_id", "schema_version", "event_id", "ts", "request_id", 
-    "surface_id", "action", "status", "principal", "data_classification", "event_hash"
+    "schema_id",
+    "schema_version",
+    "event_id",
+    "ts",
+    "request_id",
+    "surface_id",
+    "outcome",
+    "principal",
+    "http",
+    "meta",
+    "event_hash"
   ],
   "properties": {
     "schema_id": { "const": "talos.audit_event" },
     "schema_version": { "const": "v1" },
-    "event_id": { "type": "string", "format": "uuid" },
-    "ts": { "type": "string", "format": "date-time", "description": "ISO8601 UTC" },
-    "request_id": { "type": "string" },
-    "correlation_id": { "type": "string" },
-    
-    "surface_id": { "type": "string", "description": "Opcode from Inventory" },
-    "action": { "type": "string", "description": "Audit Action from Inventory" },
-    "status": { "type": "string", "enum": ["success", "failure", "denied"] },
-    
-    "http": {
-      "type": "object",
-      "required": ["method", "path", "status_code"],
-      "properties": {
-        "method": { "type": "string" },
-        "path": { "type": "string" },
-        "status_code": { "type": "integer" },
-        "client_ip_hash": { "type": "string" }
-      }
+
+    "event_id": { "$ref": "#/$defs/uuidv7" },
+    "ts": { "$ref": "#/$defs/rfc3339_utc_ms" },
+
+    "request_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
     },
-    
-    "principal": {
-      "type": "object",
-      "required": ["principal_id", "team_id", "auth_mode"],
-      "properties": {
-        "principal_id": { "type": "string" },
-        "team_id": { "type": "string" },
-        "org_id": { "type": "string" },
-        "auth_mode": { "type": "string", "enum": ["bearer", "attested", "bearer_attested"] },
-        "signer_key_id": { "type": "string" }
-      }
+
+    "surface_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Opcode or surface identifier from Surface Inventory."
     },
-    
-    "resource": {
-      "type": "object",
-      "properties": {
-        "resource_type": { "type": "string" },
-        "resource_id": { "type": "string" },
-        "resource_ref": { "type": "string" }
-      }
+
+    "outcome": {
+      "type": "string",
+      "enum": ["success", "failure", "denied"]
     },
-    
-    "meta": {
-      "type": "object",
-      "description": "Strictly allowlisted metadata"
-    },
-    
-    "data_classification": { "type": "string", "enum": ["public", "metadata", "sensitive"] },
-    
+
+    "principal": { "$ref": "#/$defs/principal" },
+
+    "http": { "$ref": "#/$defs/http" },
+
+    "resource": { "$ref": "#/$defs/resource" },
+
+    "meta": { "$ref": "#/$defs/meta" },
+
     "event_hash": {
       "type": "string",
-      "description": "SHA256 hash of canonical JSON of event (excluding event_hash)"
-    },
-    "prev_event_hash": {
-      "type": "string",
-      "description": "Hash of previous event in stream (optional in Gateway, mandatory in Audit Service)"
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "sha256(JCS(event_without_hash)) as lowercase hex"
     }
   },
-  "additionalProperties": false
+
+  "$defs": {
+    "uuidv7": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "description": "UUIDv7 lowercase hex with hyphens"
+    },
+
+    "rfc3339_utc_ms": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+      "description": "RFC3339 UTC timestamp with millisecond precision, example: 2026-01-11T18:23:45.123Z"
+    },
+
+    "principal": {
+      "description": "Principal identity. Shape is strictly determined by auth_mode. Optional fields MUST be absent when not applicable.",
+      "oneOf": [
+        { "$ref": "#/$defs/principal_signed" },
+        { "$ref": "#/$defs/principal_bearer" },
+        { "$ref": "#/$defs/principal_anonymous" }
+      ]
+    },
+
+    "principal_signed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["auth_mode", "principal_id", "team_id", "signer_key_id"],
+      "properties": {
+        "auth_mode": { "const": "signed" },
+        "principal_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "team_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "signer_key_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "allOf": [
+        {
+          "not": {
+            "properties": { "principal_id": { "const": "anonymous" } },
+            "required": ["principal_id"]
+          }
+        }
+      ]
+    },
+
+    "principal_bearer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["auth_mode", "principal_id", "team_id"],
+      "properties": {
+        "auth_mode": { "const": "bearer" },
+        "principal_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "team_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "allOf": [
+        {
+          "not": {
+            "required": ["signer_key_id"]
+          }
+        },
+        {
+          "not": {
+            "properties": { "principal_id": { "const": "anonymous" } },
+            "required": ["principal_id"]
+          }
+        }
+      ]
+    },
+
+    "principal_anonymous": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["auth_mode", "principal_id"],
+      "properties": {
+        "auth_mode": { "const": "anonymous" },
+        "principal_id": { "const": "anonymous" }
+      },
+      "allOf": [
+        { "not": { "required": ["team_id"] } },
+        { "not": { "required": ["signer_key_id"] } }
+      ]
+    },
+
+    "http": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "path", "status_code"],
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"]
+        },
+
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500,
+          "pattern": "^/[^?]*$",
+          "description": "MUST be surface template path (no query string), not raw request path."
+        },
+
+        "status_code": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 599
+        },
+
+        "client_ip_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "Lowercase hex of HMAC-SHA256 over canonical_ip_string"
+        },
+
+        "client_ip_hash_alg": {
+          "const": "HMAC-SHA256"
+        },
+
+        "client_ip_hash_key_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+
+      "dependentRequired": {
+        "client_ip_hash": ["client_ip_hash_alg", "client_ip_hash_key_id"],
+        "client_ip_hash_alg": ["client_ip_hash", "client_ip_hash_key_id"],
+        "client_ip_hash_key_id": ["client_ip_hash", "client_ip_hash_alg"]
+      }
+    },
+
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional resource context. If you do not use it yet, omit it entirely.",
+      "properties": {
+        "resource_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "resource_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      }
+    },
+
+    "meta": {
+      "type": "object",
+      "description": "Strictly filtered by per-surface audit_meta_allowlist. Schema allows dynamic keys but values are scalar-only.",
+      "maxProperties": 32,
+      "additionalProperties": {
+        "oneOf": [
+          { "type": "string", "maxLength": 1024 },
+          { "type": "number" },
+          { "type": "boolean" },
+          { "type": "null" }
+        ]
+      }
+    }
+  }
 }
