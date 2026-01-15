@@ -1,6 +1,7 @@
 import hashlib
 import json
 
+
 def canonical_json_bytes(data: any) -> bytes:
     """
     Serializes a value to canonical JSON bytes according to RFC 8785.
@@ -8,12 +9,10 @@ def canonical_json_bytes(data: any) -> bytes:
     - No whitespace in separators.
     - UTF-8 encoding.
     """
-    return json.dumps(
-        data,
-        sort_keys=True,
-        separators=(',', ':'),
-        ensure_ascii=False
-    ).encode('utf-8')
+    return json.dumps(data, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode(
+        "utf-8"
+    )
+
 
 def calculate_digest(data: dict, exclude_fields: list[str] = None) -> str:
     """
@@ -22,11 +21,11 @@ def calculate_digest(data: dict, exclude_fields: list[str] = None) -> str:
     """
     if exclude_fields is None:
         exclude_fields = ["_digest"]
-        
+
     clean_data = data.copy()
     for field in exclude_fields:
         if field in clean_data:
             del clean_data[field]
-            
+
     bytes_data = canonical_json_bytes(clean_data)
     return hashlib.sha256(bytes_data).hexdigest()
