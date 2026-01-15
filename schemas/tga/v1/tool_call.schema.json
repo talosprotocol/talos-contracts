@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://talosprotocol.com/schemas/tga/v1/tool_call.schema.json",
+  "title": "TGA Tool Call (Hardened v1)",
+  "description": "Agent's execution of an authorized action.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version",
+    "trace_id",
+    "plan_id",
+    "tool_call_id",
+    "supervisor_decision_id",
+    "supervisor_decision_digest",
+    "capability_digest",
+    "ts",
+    "call",
+    "idempotency_key",
+    "_digest_alg",
+    "_digest"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "talos.tga.tool_call"
+    },
+    "schema_version": {
+      "const": "tga.v1"
+    },
+    "trace_id": {
+      "$ref": "#/$defs/uuidv7"
+    },
+    "plan_id": {
+      "$ref": "#/$defs/uuidv7"
+    },
+    "tool_call_id": {
+      "$ref": "#/$defs/uuidv7"
+    },
+    "supervisor_decision_id": {
+      "$ref": "#/$defs/uuidv7"
+    },
+    "supervisor_decision_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Digest of the SupervisorDecision that authorized this call."
+    },
+    "capability_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Digest of the specific capability being exercised."
+    },
+    "ts": {
+      "$ref": "#/$defs/rfc3339_utc_ms"
+    },
+    "call": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool_server", "tool_name", "args"],
+      "properties": {
+        "tool_server": { "type": "string" },
+        "tool_name": { "type": "string" },
+        "args": { "type": "object" }
+      }
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": {
+        "type": ["string", "number", "boolean", "null"]
+      }
+    },
+    "_digest_alg": {
+      "enum": ["sha256"]
+    },
+    "_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "$defs": {
+    "uuidv7": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "minLength": 36,
+      "maxLength": 36
+    },
+    "rfc3339_utc_ms": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    }
+  }
+}

@@ -91,11 +91,10 @@ ls test_vectors/sdk/release_sets/
 ## References
 
 1.  [Protocol v1.1 Spec](./PROTOCOL_V1.1.md) (Placeholder)
-2.  [Mathematical Security Proof](https://github.com/talosprotocol/talos/wiki/Mathematical-Security-Proof)
-3.  [Talos Wiki](https://github.com/talosprotocol/talos/wiki)
+2.  [TGA Digest Specification](./docs/tga/digests.md)
+3.  [Mathematical Security Proof](https://github.com/talosprotocol/talos/wiki/Mathematical-Security-Proof)
+4.  [Talos Wiki](https://github.com/talosprotocol/talos/wiki)
 
 ## License
-
-Licensed under the Apache License 2.0. See [LICENSE](LICENSE).
 
 Licensed under the Apache License 2.0. See [LICENSE](LICENSE).

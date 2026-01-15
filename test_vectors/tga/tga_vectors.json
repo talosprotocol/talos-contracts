@@ -1,0 +1,146 @@
+{
+  "valid_action_requests": [
+    {
+      "description": "Valid GitHub PR Proposal",
+      "input": {
+        "schema_id": "talos.tga.action_request",
+        "schema_version": "v1",
+        "action_request_id": "01946896-1234-7567-89ab-000000001000",
+        "agent_id": "01946896-1234-7567-89ab-00000000000a",
+        "ts": "2026-01-15T14:45:00.000Z",
+        "proposal": {
+          "tool": "mcp-github",
+          "action": "create-pr",
+          "args": {
+            "title": "Fix security vulnerability",
+            "branch": "fix/vuln-1"
+          },
+          "rationale": "The agent detected a critical vulnerability in the auth module and proposes a fix via PR.",
+          "risk_tier": 1
+        },
+        "idempotency_key": "fixed-idempotency-1"
+      }
+    }
+  ],
+  "invalid_action_requests": [
+    {
+      "description": "Invalid Risk Tier",
+      "input": {
+        "schema_id": "talos.tga.action_request",
+        "schema_version": "v1",
+        "action_request_id": "01946896-1234-7567-89ab-000000001001",
+        "agent_id": "01946896-1234-7567-89ab-00000000000a",
+        "ts": "2026-01-15T14:45:00.000Z",
+        "proposal": {
+          "tool": "mcp-github",
+          "action": "create-pr",
+          "args": {},
+          "rationale": "valid rationale length here...",
+          "risk_tier": 5
+        }
+      },
+      "error_code": "maximum"
+    },
+    {
+      "description": "Rationale too short",
+      "input": {
+        "schema_id": "talos.tga.action_request",
+        "schema_version": "v1",
+        "action_request_id": "01946896-1234-7567-89ab-000000001002",
+        "agent_id": "01946896-1234-7567-89ab-00000000000a",
+        "ts": "2026-01-15T14:45:00.000Z",
+        "proposal": {
+          "tool": "mcp-github",
+          "action": "create-pr",
+          "args": {},
+          "rationale": "too short",
+          "risk_tier": 1
+        }
+      },
+      "error_code": "minLength"
+    }
+  ],
+  "valid_supervisor_decisions": [
+    {
+      "description": "Approved Decision with Capability",
+      "input": {
+        "schema_id": "talos.tga.supervisor_decision",
+        "schema_version": "v1",
+        "decision_id": "01946896-1234-7567-89ab-000000002000",
+        "action_request_id": "01946896-1234-7567-89ab-000000001000",
+        "ts": "2026-01-15T14:50:00.000Z",
+        "decision": "approve",
+        "risk_tier": 1,
+        "rationale": "The PR has been manually reviewed and approved for execution.",
+        "capability": "talos.cap.v1.fake-signed-token-here",
+        "supervisor_id": "01946896-1234-7567-89ab-00000000000b"
+      }
+    },
+    {
+      "description": "Denied Decision",
+      "input": {
+        "schema_id": "talos.tga.supervisor_decision",
+        "schema_version": "v1",
+        "decision_id": "01946896-1234-7567-89ab-000000002001",
+        "action_request_id": "01946896-1234-7567-89ab-000000001001",
+        "ts": "2026-01-15T14:50:00.000Z",
+        "decision": "deny",
+        "risk_tier": 2,
+        "rationale": "Risk is too high for the current security posture."
+      }
+    }
+  ],
+  "invalid_supervisor_decisions": [
+    {
+      "description": "Approved but missing capability",
+      "input": {
+        "schema_id": "talos.tga.supervisor_decision",
+        "schema_version": "v1",
+        "decision_id": "01946896-1234-7567-89ab-000000002002",
+        "action_request_id": "01946896-1234-7567-89ab-000000001000",
+        "ts": "2026-01-15T14:50:00.000Z",
+        "decision": "approve",
+        "risk_tier": 1,
+        "rationale": "Rationale is long enough here..."
+      },
+      "error_code": "required"
+    },
+    {
+      "description": "Denied but has capability",
+      "input": {
+        "schema_id": "talos.tga.supervisor_decision",
+        "schema_version": "v1",
+        "decision_id": "01946896-1234-7567-89ab-000000002003",
+        "action_request_id": "01946896-1234-7567-89ab-000000001000",
+        "ts": "2026-01-15T14:50:00.000Z",
+        "decision": "deny",
+        "risk_tier": 1,
+        "rationale": "Rationale is long enough here...",
+        "capability": "should-not-be-here"
+      },
+      "error_code": "not"
+    }
+  ],
+  "valid_tool_calls": [
+    {
+      "description": "Valid Tool Call",
+      "input": {
+        "schema_id": "talos.tga.tool_call",
+        "schema_version": "v1",
+        "tool_call_id": "01946896-1234-7567-89ab-000000003000",
+        "action_request_id": "01946896-1234-7567-89ab-000000001000",
+        "decision_id": "01946896-1234-7567-89ab-000000002000",
+        "capability": "talos.cap.v1.fake-signed-token-here",
+        "call": {
+          "tool": "mcp-github",
+          "action": "create-pr",
+          "args": {
+            "title": "Fix security vulnerability",
+            "branch": "fix/vuln-1"
+          }
+        },
+        "ts": "2026-01-15T14:55:00.000Z"
+      }
+    }
+  ]
+}

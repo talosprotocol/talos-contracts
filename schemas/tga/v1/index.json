@@ -1,0 +1,8 @@
+{
+  "schemas": [
+    "action_request.schema.json",
+    "supervisor_decision.schema.json",
+    "tool_call.schema.json",
+    "tool_effect.schema.json"
+  ]
+}
