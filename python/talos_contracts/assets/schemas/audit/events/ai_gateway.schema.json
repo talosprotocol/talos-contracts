@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talosprotocol.com/schemas/audit/events/ai_gateway.schema.json",
+  "title": "AI Gateway Audit Event",
+  "description": "Audit event for AI Gateway operations.",
+  "type": "object",
+  "required": ["event_type", "timestamp", "request_id"],
+  "properties": {
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "request_received",
+        "routing_decision",
+        "invoke_result",
+        "denied",
+        "usage_recorded",
+        "budget_debit",
+        "policy_changed"
+      ]
+    },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "request_id": { "type": "string" },
+    "org_id": { "type": "string" },
+    "team_id": { "type": "string" },
+    "key_id": { "type": "string" },
+    "surface": { "type": "string", "enum": ["llm", "mcp"] },
+    "target": { "type": "string", "description": "model_group_id or mcp_server_id" },
+    "outcome": { "type": "string", "enum": ["success", "denied", "error"] },
+    "error_code": { "type": "string" },
+    "latency_ms": { "type": "integer" },
+    "policy_version": { "type": "integer" }
+  }
+}

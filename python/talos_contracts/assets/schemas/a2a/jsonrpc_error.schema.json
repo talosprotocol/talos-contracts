@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/a2a/jsonrpc_error.schema.json",
+  "type": "object",
+  "required": ["code", "message"],
+  "properties": {
+    "code": {
+      "type": "integer"
+    },
+    "message": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "talos_code": {
+          "type": "string",
+          "description": "Stable Talos domain error code (e.g., RBAC_DENIED)"
+        },
+        "http_status": {
+          "type": "integer"
+        },
+        "request_id": {
+          "type": "string"
+        },
+        "retry_after_ms": {
+          "type": "integer"
+        },
+        "details": {
+          "type": "object"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,33 +1,77 @@
 {
-  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://talosprotocol.com/schemas/rbac/binding.schema.json",
   "title": "RBAC Binding",
-  "description": "Binds a principal to a role at a scope.",
+  "description": "Binds a role to a principal at a specific scope.",
   "type": "object",
-  "required": ["id", "principal_id", "role_id", "scope"],
+  "additionalProperties": false,
+  "unevaluatedProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version",
+    "binding_id",
+    "principal_id",
+    "role_id",
+    "scope"
+  ],
   "properties": {
-    "id": { "type": "string" },
-    "principal_id": {
-      "type": "string",
-      "description": "ID of the user or service account."
+    "schema_id": {
+      "const": "talos.rbac.binding"
     },
-    "role_id": { "type": "string" },
+    "schema_version": {
+      "const": "v1"
+    },
+    "binding_id": {
+      "$ref": "#/$defs/uuidv7"
+    },
+    "principal_id": {
+      "$ref": "#/$defs/uuidv7"
+    },
+    "role_id": {
+      "$ref": "#/$defs/uuidv7"
+    },
     "scope": {
-      "$ref": "#/$defs/Scope"
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["platform", "org", "team"] },
+        "org_id": { "$ref": "#/$defs/uuidv7" },
+        "team_id": { "$ref": "#/$defs/uuidv7" }
+      },
+      "required": ["type"],
+      "oneOf": [
+        {
+          "properties": { "type": { "const": "platform" } },
+          "not": { "anyOf": [{ "required": ["org_id"] }, { "required": ["team_id"] }] }
+        },
+        {
+          "properties": { "type": { "const": "org" } },
+          "required": ["org_id"],
+          "not": { "required": ["team_id"] }
+        },
+        {
+          "properties": { "type": { "const": "team" } },
+          "required": ["org_id", "team_id"]
+        }
+      ]
+    },
+    "created_at": {
+      "$ref": "#/$defs/rfc3339_utc_ms"
+    },
+    "expires_at": {
+      "$ref": "#/$defs/rfc3339_utc_ms"
     }
   },
   "$defs": {
-    "Scope": {
-      "type": "object",
-      "required": ["type"],
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": ["platform", "org", "team"]
-        },
-        "org_id": { "type": "string" },
-        "team_id": { "type": "string" }
-      }
+    "uuidv7": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "minLength": 36,
+      "maxLength": 36,
+      "description": "UUIDv7 lowercase hex"
+    },
+    "rfc3339_utc_ms": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
     }
   }
 }

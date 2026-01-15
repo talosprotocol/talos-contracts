@@ -44,6 +44,7 @@
     "invalid": [
       {
         "name": "extra_property_fail",
+        "error_code": "additionalProperties",
         "data": {
           "schema_id": "talos.principal",
           "schema_version": "v2",
@@ -57,7 +58,8 @@
         }
       },
       {
-        "name": "uuid_case_violation",
+        "name": "uuid_case_violation_id",
+        "error_code": "pattern",
         "data": {
           "schema_id": "talos.principal",
           "schema_version": "v2",
@@ -71,6 +73,7 @@
       },
       {
         "name": "bearer_with_signer_key_fail",
+        "error_code": "not",
         "data": {
           "schema_id": "talos.principal",
           "schema_version": "v2",
@@ -78,6 +81,50 @@
           "principal_id": "p-1",
           "type": "user",
           "auth_mode": "bearer",
+          "status": "active",
+          "team_id": "01945533-3158-7c85-992d-9865f1715699",
+          "signer_key_id": "01945533-3158-7c85-992d-9865f1715700"
+        }
+      },
+       {
+        "name": "bearer_with_signer_key_null_fail",
+        "error_code": "not",
+        "data": {
+          "schema_id": "talos.principal",
+          "schema_version": "v2",
+          "id": "01945533-3158-7c85-992d-9865f1715698",
+          "principal_id": "p-1",
+          "type": "user",
+          "auth_mode": "bearer",
+          "status": "active",
+          "team_id": "01945533-3158-7c85-992d-9865f1715699",
+          "signer_key_id": null
+        }
+      },
+      {
+        "name": "anonymous_with_team_id_fail",
+        "error_code": "not",
+        "data": {
+          "schema_id": "talos.principal",
+          "schema_version": "v2",
+          "id": "01945533-3158-7c85-992d-9865f1715698",
+          "principal_id": "anonymous",
+          "type": "user",
+          "auth_mode": "anonymous",
+          "status": "active",
+          "team_id": "01945533-3158-7c85-992d-9865f1715699"
+        }
+      },
+      {
+        "name": "unknown_auth_mode",
+        "error_code": "enum",
+        "data": {
+          "schema_id": "talos.principal",
+          "schema_version": "v2",
+          "id": "01945533-3158-7c85-992d-9865f1715698",
+          "principal_id": "p-1",
+          "type": "user",
+          "auth_mode": "Signed",
           "status": "active",
           "team_id": "01945533-3158-7c85-992d-9865f1715699",
           "signer_key_id": "01945533-3158-7c85-992d-9865f1715700"
@@ -101,11 +148,23 @@
     "invalid": [
       {
         "name": "missing_domain",
+        "error_code": "required",
         "data": {
           "schema_id": "talos.org",
           "schema_version": "v2",
           "id": "01945533-3158-7c85-992d-9865f1715698",
           "name": "Acme Corp"
+        }
+      },
+      {
+        "name": "uuid_casing_org",
+        "error_code": "pattern",
+        "data": {
+          "schema_id": "talos.org",
+          "schema_version": "v2",
+          "id": "01945533-3158-7C85-992D-9865F1715698",
+          "name": "Acme Corp",
+          "domain": "acme.com"
         }
       }
     ]
@@ -126,6 +185,7 @@
     "invalid": [
       {
         "name": "composition_leakage_fail",
+        "error_code": "additionalProperties",
         "data": {
           "schema_id": "talos.team",
           "schema_version": "v2",

@@ -11,12 +11,14 @@ all: install build test
 # Install dependencies
 install:
 	@echo "Installing dependencies..."
+	./scripts/build_python_assets.sh
 	cd typescript && npm ci
 	cd python && pip install -e . -q
 
 # Build artifacts
 build:
 	@echo "Building..."
+	./scripts/build_python_assets.sh
 	cd typescript && npm run build
 
 # Run tests

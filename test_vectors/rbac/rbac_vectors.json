@@ -1,0 +1,96 @@
+{
+  "valid_roles": [
+    {
+      "description": "Standard Role",
+      "input": {
+        "schema_id": "talos.rbac.role",
+        "schema_version": "v1",
+        "role_id": "01946896-1234-7567-89ab-000000000001",
+        "name": "AuditViewer",
+        "permissions": ["audit:read", "audit:export"],
+        "built_in": false
+      }
+    },
+    {
+      "description": "System Role",
+      "input": {
+        "schema_id": "talos.rbac.role",
+        "schema_version": "v1",
+        "role_id": "01946896-1234-7567-89ab-000000000002",
+        "name": "SuperAdmin",
+        "permissions": ["*:*"],
+        "built_in": true
+      }
+    }
+  ],
+  "invalid_roles": [
+    {
+      "description": "Invalid UUIDv7",
+      "input": {
+        "role_id": "bad-uuid",
+        "permissions": [],
+        "built_in": false
+      },
+      "error_code": "pattern"
+    },
+    {
+      "description": "Invalid Permission Format",
+      "input": {
+        "role_id": "01946896-1234-7567-89ab-000000000001",
+        "permissions": ["audit"],
+        "built_in": false
+      },
+      "error_code": "pattern"
+    }
+  ],
+  "valid_bindings": [
+    {
+      "description": "Platform Scope",
+      "input": {
+        "schema_id": "talos.rbac.binding",
+        "schema_version": "v1",
+        "binding_id": "01946896-1234-7567-89ab-000000000100",
+        "principal_id": "01946896-1234-7567-89ab-000000000200",
+        "role_id": "01946896-1234-7567-89ab-000000000001",
+        "scope": {
+          "type": "platform"
+        }
+      }
+    },
+    {
+      "description": "Team Scope",
+      "input": {
+        "schema_id": "talos.rbac.binding",
+        "schema_version": "v1",
+        "binding_id": "01946896-1234-7567-89ab-000000000101",
+        "principal_id": "01946896-1234-7567-89ab-000000000200",
+        "role_id": "01946896-1234-7567-89ab-000000000001",
+        "scope": {
+          "type": "team",
+          "org_id": "01946896-1234-7567-89ab-000000000300",
+          "team_id": "01946896-1234-7567-89ab-000000000400"
+        }
+      }
+    }
+  ],
+  "invalid_bindings": [
+    {
+      "description": "Missing Org ID for Org Scope",
+      "input": {
+        "scope": { "type": "org" }
+      },
+      "error_code": "required"
+    },
+    {
+      "description": "Leakage: Team ID present in Org Scope",
+      "input": {
+        "scope": { 
+          "type": "org", 
+          "org_id": "01946896-1234-7567-89ab-000000000300",
+          "team_id": "01946896-1234-7567-89ab-000000000400"
+        }
+      },
+      "error_code": "not"
+    }
+  ]
+}

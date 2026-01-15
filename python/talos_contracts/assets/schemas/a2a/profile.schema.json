@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/a2a/profile.schema.json",
+  "title": "A2A Compatibility Profile",
+  "description": "Defines the specific version of the A2A protocol being used to prevent drift.",
+  "type": "object",
+  "required": ["profile_id", "profile_version", "spec_source"],
+  "properties": {
+    "profile_id": {
+      "type": "string",
+      "const": "a2a-compat"
+    },
+    "profile_version": {
+      "type": "string",
+      "const": "0.1"
+    },
+    "spec_source": {
+      "type": "string",
+      "const": "a2a-protocol"
+    },
+    "compat_notes": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://talosprotocol.com/schemas/rbac/permission.schema.json",
+  "title": "RBAC Permission",
+  "description": "Atomic permission for RBAC.",
+  "type": "object",
+  "required": ["id", "name"],
+  "properties": {
+    "id": { "type": "string" },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z]+\\.[a-z]+$",
+      "examples": ["mcp.read", "llm.admin", "keys.write", "audit.read"]
+    },
+    "description": { "type": "string" }
+  }
+}

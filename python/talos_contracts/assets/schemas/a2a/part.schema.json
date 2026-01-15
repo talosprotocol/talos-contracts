@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/a2a/part.schema.json",
+  "type": "object",
+  "oneOf": [
+    {
+      "required": ["text"],
+      "properties": {
+        "text": { "type": "string" }
+      }
+    },
+    {
+      "required": ["blob", "mimeType"],
+      "properties": {
+        "blob": { "type": "string", "contentEncoding": "base64" },
+        "mimeType": { "type": "string" }
+      }
+    }
+  ]
+}

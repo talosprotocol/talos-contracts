@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talosprotocol.com/schemas/ai_gateway/budget.schema.json",
+  "title": "Budget",
+  "description": "Budget constraints for cost control.",
+  "type": "object",
+  "required": ["id", "scope_type", "scope_id"],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "scope_type": {
+      "type": "string",
+      "enum": ["team", "key"],
+      "description": "Budget scope type."
+    },
+    "scope_id": {
+      "type": "string",
+      "description": "ID of the scoped entity (team_id or key_id)."
+    },
+    "period": {
+      "type": "string",
+      "enum": ["daily", "monthly"],
+      "default": "monthly"
+    },
+    "max_usd": {
+      "type": "number",
+      "minimum": 0
+    },
+    "used_usd": {
+      "type": "number",
+      "minimum": 0,
+      "default": 0
+    },
+    "reset_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

@@ -1,25 +1,72 @@
 {
-  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://talosprotocol.com/schemas/rbac/role.schema.json",
   "title": "RBAC Role",
-  "description": "Named set of permissions.",
+  "description": "A named set of permissions.",
   "type": "object",
-  "required": ["id", "name", "permissions"],
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version",
+    "role_id",
+    "permissions",
+    "built_in"
+  ],
   "properties": {
-    "id": { "type": "string" },
+    "schema_id": {
+      "const": "talos.rbac.role"
+    },
+    "schema_version": {
+      "const": "v1"
+    },
+    "role_id": {
+      "$ref": "#/$defs/uuidv7"
+    },
     "name": {
       "type": "string",
-      "examples": ["PlatformAdmin", "TeamViewer", "KeyManager"]
+      "minLength": 1,
+      "maxLength": 100,
+      "pattern": "^[a-zA-Z0-9_-]+$",
+      "description": "Human-readable unique name (e.g. PlatformAdmin)."
     },
     "permissions": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "List of permission names."
+      "items": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 100,
+        "pattern": "^[a-z0-9_*]+:[a-z0-9_*]+(:[a-z0-9_*]+)?$"
+      },
+      "minItems": 0,
+      "uniqueItems": true,
+      "description": "List of namespaced permissions (e.g. audit:read)."
     },
     "built_in": {
       "type": "boolean",
-      "default": false,
-      "description": "True if this is a system-defined role."
+      "description": "True if this role is immutable system-defined."
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "created_at": {
+      "$ref": "#/$defs/rfc3339_utc_ms"
+    },
+    "updated_at": {
+      "$ref": "#/$defs/rfc3339_utc_ms"
+    }
+  },
+  "$defs": {
+    "uuidv7": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "minLength": 36,
+      "maxLength": 36,
+      "description": "UUIDv7 lowercase hex"
+    },
+    "rfc3339_utc_ms": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
     }
   }
 }

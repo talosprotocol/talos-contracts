@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/a2a/agent_card.schema.json",
+  "type": "object",
+  "required": ["profile", "name", "description", "capabilities", "auth"],
+  "properties": {
+    "profile": {
+      "$ref": "profile.schema.json"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "endpoints": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "type": "string", "format": "uri" },
+          {
+            "type": "object",
+            "required": ["url"],
+            "properties": {
+              "url": { "type": "string", "format": "uri" },
+              "type": { "type": "string" }
+            }
+          }
+        ]
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "chat": { "type": "boolean" },
+        "tools": { "type": "boolean" },
+        "history": { "type": "boolean" }
+      }
+    },
+    "auth": {
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["none", "bearer", "oauth2"] },
+        "scheme": { "type": "string" }
+      },
+      "required": ["type"]
+    },
+    "x_talos": {
+      "type": "object",
+      "properties": {
+        "supports_talos_attestation": { "type": "boolean" },
+        "supported_surfaces": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["a2a", "mcp", "openai_compat"] }
+        },
+        "public_key": { "type": "string" }
+      }
+    }
+  },
+  "additionalProperties": true
+}

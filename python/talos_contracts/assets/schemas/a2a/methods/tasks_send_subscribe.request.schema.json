@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/a2a/methods/tasks_send_subscribe.request.schema.json",
+  "type": "object",
+  "required": ["jsonrpc", "method", "params", "id"],
+  "properties": {
+    "jsonrpc": { "const": "2.0" },
+    "method": { "const": "tasks.sendSubscribe" },
+    "id": { "type": ["string", "integer"] },
+    "params": {
+      "type": "object",
+      "required": ["profile", "input"],
+      "properties": {
+        "profile": { "$ref": "../profile.schema.json" },
+        "input": {
+          "type": "array",
+          "items": { "$ref": "../message.schema.json" }
+        }
+      }
+    }
+  }
+}

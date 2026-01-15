@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://talosprotocol.com/schemas/rbac/principal.schema.json",
+  "title": "RBAC Principal (v2 Hardened)",
+  "type": "object",
+  "additionalProperties": false,
+  "unevaluatedProperties": false,
+  "required": ["schema_id", "schema_version", "id", "principal_id", "type", "status", "auth_mode"],
+  "properties": {
+    "schema_id": { "const": "talos.principal" },
+    "schema_version": { "const": "v2" },
+    "id": { "$ref": "#/$defs/uuidv7" },
+    "principal_id": { 
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Unique cryptographic identifier (e.g. fingerprint of public key) or 'anonymous'."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["user", "service_account"]
+    },
+    "auth_mode": {
+      "type": "string",
+      "enum": ["signed", "bearer", "anonymous"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "suspended", "revoked"],
+      "default": "active"
+    },
+    "public_key": { "type": "string", "maxLength": 512, "description": "Base64-encoded public key." },
+    "key_type": { "type": "string", "enum": ["ed25519"], "default": "ed25519" },
+    "email": { "type": "string", "format": "email", "maxLength": 255 },
+    "org_id": { "$ref": "#/$defs/uuidv7" },
+    "display_name": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "created_at": { "$ref": "#/$defs/rfc3339_utc_ms" },
+    "revoked_at": { 
+      "oneOf": [
+        { "$ref": "#/$defs/rfc3339_utc_ms" },
+        { "type": "null" }
+      ]
+    },
+    "team_id": { "$ref": "#/$defs/uuidv7" },
+    "signer_key_id": { "$ref": "#/$defs/uuidv7" }
+  },
+  "oneOf": [
+    {
+      "properties": { "auth_mode": { "const": "signed" } },
+      "required": ["signer_key_id", "team_id"]
+    },
+    {
+      "properties": { "auth_mode": { "const": "bearer" } },
+      "required": ["team_id"],
+      "not": { "required": ["signer_key_id"] }
+    },
+    {
+      "properties": { 
+        "auth_mode": { "const": "anonymous" },
+        "principal_id": { "const": "anonymous" }
+      },
+      "not": { "anyOf": [{ "required": ["team_id"] }, { "required": ["signer_key_id"] }] }
+    }
+  ],
+  "$defs": {
+    "uuidv7": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "minLength": 36,
+      "maxLength": 36,
+      "description": "UUIDv7 lowercase hex"
+    },
+    "rfc3339_utc_ms": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    }
+  }
+}

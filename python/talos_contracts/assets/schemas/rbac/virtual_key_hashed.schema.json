@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://talosprotocol.com/schemas/rbac/virtual_key_hashed.schema.json",
+  "title": "Virtual Key (Hashed)",
+  "description": "A hashed representation of an API key or session key.",
+  "type": "object",
+  "required": ["key_hash", "pepper_id", "team_id"],
+  "properties": {
+    "key_hash": { 
+      "type": "string", 
+      "description": "HMAC-SHA256(key, pepper)" 
+    },
+    "pepper_id": { 
+      "type": "string",
+      "description": "Identifier for the pepper used in hashing."
+    },
+    "team_id": { "type": "string" },
+    "name": { "type": "string" },
+    "scopes": {
+        "type": "array",
+        "items": { "type": "string" }
+    },
+    "revoked_at": { "type": ["string", "null"], "format": "date-time" },
+    "expires_at": { "type": ["string", "null"], "format": "date-time" },
+    "created_at": { "type": "string", "format": "date-time" }
+  }
+}

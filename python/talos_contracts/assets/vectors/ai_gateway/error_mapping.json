@@ -1,0 +1,32 @@
+[
+  {
+    "description": "Error mapping: RATE_LIMITED -> 429",
+    "input": { "error_code": "RATE_LIMITED" },
+    "expected": { "http_status": 429 }
+  },
+  {
+    "description": "Error mapping: BUDGET_EXCEEDED -> 429",
+    "input": { "error_code": "BUDGET_EXCEEDED" },
+    "expected": { "http_status": 429 }
+  },
+  {
+    "description": "Error mapping: AUTH_INVALID -> 401",
+    "input": { "error_code": "AUTH_INVALID" },
+    "expected": { "http_status": 401 }
+  },
+  {
+    "description": "Error mapping: POLICY_DENIED -> 403",
+    "input": { "error_code": "POLICY_DENIED" },
+    "expected": { "http_status": 403 }
+  },
+  {
+    "description": "Error mapping: UPSTREAM_TIMEOUT -> 504",
+    "input": { "error_code": "UPSTREAM_TIMEOUT" },
+    "expected": { "http_status": 504 }
+  },
+  {
+    "description": "Error mapping: UPSTREAM_5XX -> 502",
+    "input": { "error_code": "UPSTREAM_5XX" },
+    "expected": { "http_status": 502 }
+  }
+]

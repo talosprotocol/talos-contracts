@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
-import Ajv2019 from "ajv/dist/2019";
+import Ajv2020 from "ajv/dist/2020";
 import addFormats from "ajv-formats";
 
 const VECTOR_PATH = path.join(
@@ -40,7 +40,7 @@ describe("Audit Event Vectors (Hardened)", () => {
   const schema = readJson<any>(SCHEMA_PATH);
 
   // Setup Ajv
-  const ajv = new Ajv2019({ strict: false, allErrors: true });
+  const ajv = new Ajv2020({ strict: false, allErrors: true });
   addFormats(ajv);
   const validate = ajv.compile(schema);
 

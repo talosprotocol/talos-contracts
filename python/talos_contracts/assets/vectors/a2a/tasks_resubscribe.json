@@ -1,0 +1,9 @@
+{
+  "jsonrpc": "2.0",
+  "method": "tasks.resubscribe",
+  "id": 42,
+  "params": {
+    "task_id": "01944ec7-9a00-75ad-9532-613200af732b",
+    "resume_from": "evt-55"
+  }
+}

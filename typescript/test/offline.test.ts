@@ -1,12 +1,12 @@
 import { describe, it, expect } from "vitest";
-import Ajv2019 from "ajv/dist/2019";
+import Ajv2020 from "ajv/dist/2020";
 import metaDraft7 from "ajv/dist/refs/json-schema-draft-07.json" assert { type: "json" };
 import addFormats from "ajv-formats";
 import fs from "fs";
 import path from "path";
 
 describe("Offline Schema Validation", () => {
-  const ajv = new Ajv2019({ strict: false });
+  const ajv = new Ajv2020({ strict: false });
   ajv.addMetaSchema(metaDraft7);
   addFormats(ajv);
 

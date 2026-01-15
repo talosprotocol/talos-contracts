@@ -22,7 +22,7 @@ def load_schema(name: str) -> dict:
 
 def load_vectors() -> list:
     """Load identity validation vectors."""
-    data = json.loads((VECTORS_DIR / "identity_validation.json").read_text())
+    data = json.loads((VECTORS_DIR / "identity_vectors.json").read_text())
     vectors = []
 
     for schema_name, cases in data.items():

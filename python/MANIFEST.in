@@ -1,1 +1,2 @@
 include talos_contracts/py.typed
+recursive-include talos_contracts/assets *

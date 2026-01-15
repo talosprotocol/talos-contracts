@@ -20,7 +20,13 @@
                 "TALOS_CRYPTO_ERROR",
                 "TALOS_INVALID_INPUT",
                 "TALOS_TRANSPORT_TIMEOUT",
-                "TALOS_TRANSPORT_ERROR"
+                "TALOS_TRANSPORT_ERROR",
+                "RBAC_DENIED",
+                "AUTH_REVOKED",
+                "AUTH_EXPIRED",
+                "AUTH_INVALID_SIGNATURE",
+                "NOT_FOUND",
+                "INTERNAL"
             ]
         },
         "message": {

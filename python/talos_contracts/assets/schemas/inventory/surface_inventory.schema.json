@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.security/schemas/inventory/surface_inventory.schema.json",
+  "title": "Talos Surface Inventory",
+  "description": "Defines the inventory of all secure surfaces (HTTP endpoints, MCP tools, etc.)",
+  "type": "object",
+  "required": ["version", "items"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "required_scopes", "attestation_required", "audit_action", "data_classification"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique Opcode (Dot-notation)",
+            "pattern": "^[a-z0-9]+(\\.[a-z0-9]+)*$"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["http", "mcp_tool", "ws_frame"]
+          },
+          "http_match": {
+            "type": "object",
+            "required": ["method", "path_template"],
+            "properties": {
+              "method": {
+                "type": "string",
+                "enum": ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"]
+              },
+              "path_template": {
+                "type": "string",
+                "description": "FastAPI style path template (e.g. /v1/models/{id})"
+              }
+            }
+          },
+          "mcp_match": {
+             "type": "object",
+             "description": "For mcp_tool type",
+             "properties": {
+                "tool_name": { "type": "string" }
+             }
+          },
+          "required_scopes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+\\.[a-z0-9]+(\\.([a-z0-9]+|\\*))*$"
+            }
+          },
+          "attestation_required": {
+            "type": "boolean"
+          },
+          "audit_action": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(\\.[a-z0-9]+)*$"
+          },
+          "data_classification": {
+            "type": "string",
+            "enum": ["public", "metadata", "sensitive"]
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "if": {
+          "properties": { "type": { "const": "http" } }
+        },
+        "then": {
+          "required": ["http_match"]
+        }
+      }
+    }
+  }
+}

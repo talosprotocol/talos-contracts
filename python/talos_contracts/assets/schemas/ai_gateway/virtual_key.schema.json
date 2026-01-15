@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talosprotocol.com/schemas/ai_gateway/virtual_key.schema.json",
+  "title": "Virtual Key",
+  "description": "Data-plane authentication key with constraints.",
+  "type": "object",
+  "required": ["id", "team_id", "key_hash"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique key identifier."
+    },
+    "team_id": {
+      "type": "string",
+      "description": "Team this key belongs to."
+    },
+    "key_hash": {
+      "type": "string",
+      "description": "SHA256 hash of the key material."
+    },
+    "scopes": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["llm:invoke", "mcp:invoke", "mcp:read"] },
+      "description": "Allowed data-plane scopes."
+    },
+    "allowed_model_groups": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of allowed model group IDs."
+    },
+    "allowed_mcp_servers": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of allowed MCP server IDs."
+    },
+    "rate_limits": {
+      "type": "object",
+      "properties": {
+        "rpm": { "type": "integer", "minimum": 0 },
+        "tpm": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "max_daily_usd": { "type": "number", "minimum": 0 },
+        "max_monthly_usd": { "type": "number", "minimum": 0 }
+      }
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "revoked": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}
