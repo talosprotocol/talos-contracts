@@ -1,0 +1,201 @@
+{
+  "description": "Scope matching test vectors per Phase 7 LOCKED SPEC",
+  "valid_matches": [
+    {
+      "description": "Global binding matches any scope",
+      "binding_scope": {
+        "scope_type": "global",
+        "attributes": {}
+      },
+      "request_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "talosprotocol/talos" }
+      },
+      "expected": {
+        "matched": true,
+        "specificity": 0
+      }
+    },
+    {
+      "description": "Repo binding matches exact repo",
+      "binding_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "talosprotocol/talos" }
+      },
+      "request_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "talosprotocol/talos" }
+      },
+      "expected": {
+        "matched": true,
+        "specificity": 2
+      }
+    },
+    {
+      "description": "Repo binding with wildcard matches any repo",
+      "binding_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "*" }
+      },
+      "request_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "talosprotocol/contracts" }
+      },
+      "expected": {
+        "matched": true,
+        "specificity": 1
+      }
+    },
+    {
+      "description": "Secret binding matches exact secret_id",
+      "binding_scope": {
+        "scope_type": "secret",
+        "attributes": { "secret_id": "api-key-prod" }
+      },
+      "request_scope": {
+        "scope_type": "secret",
+        "attributes": { "secret_id": "api-key-prod" }
+      },
+      "expected": {
+        "matched": true,
+        "specificity": 2
+      }
+    },
+    {
+      "description": "Team binding with exact match",
+      "binding_scope": {
+        "scope_type": "team",
+        "attributes": { "org_id": "org-123", "team_id": "team-456" }
+      },
+      "request_scope": {
+        "scope_type": "team",
+        "attributes": { "org_id": "org-123", "team_id": "team-456" }
+      },
+      "expected": {
+        "matched": true,
+        "specificity": 4
+      }
+    }
+  ],
+  "invalid_matches": [
+    {
+      "description": "Scope type mismatch - repo vs secret",
+      "binding_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "talosprotocol/talos" }
+      },
+      "request_scope": {
+        "scope_type": "secret",
+        "attributes": { "secret_id": "api-key" }
+      },
+      "expected": {
+        "matched": false,
+        "reason": "scope_type_mismatch"
+      }
+    },
+    {
+      "description": "Missing required attribute key",
+      "binding_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "talosprotocol/talos" }
+      },
+      "request_scope": {
+        "scope_type": "repo",
+        "attributes": {}
+      },
+      "expected": {
+        "matched": false,
+        "reason": "missing_attribute"
+      }
+    },
+    {
+      "description": "Attribute value mismatch",
+      "binding_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "talosprotocol/talos" }
+      },
+      "request_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "talosprotocol/contracts" }
+      },
+      "expected": {
+        "matched": false,
+        "reason": "attribute_mismatch"
+      }
+    },
+    {
+      "description": "Team scope partial match fails (missing team_id)",
+      "binding_scope": {
+        "scope_type": "team",
+        "attributes": { "org_id": "org-123", "team_id": "team-456" }
+      },
+      "request_scope": {
+        "scope_type": "team",
+        "attributes": { "org_id": "org-123" }
+      },
+      "expected": {
+        "matched": false,
+        "reason": "missing_attribute"
+      }
+    }
+  ],
+  "tie_break_cases": [
+    {
+      "description": "Higher specificity wins",
+      "bindings": [
+        {
+          "binding_id": "bind-global",
+          "scope": { "scope_type": "global", "attributes": {} }
+        },
+        {
+          "binding_id": "bind-repo",
+          "scope": { "scope_type": "repo", "attributes": { "repo": "talosprotocol/talos" } }
+        }
+      ],
+      "request_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "talosprotocol/talos" }
+      },
+      "expected_winner": "bind-repo",
+      "reason": "higher_specificity"
+    },
+    {
+      "description": "Equal specificity - lexicographic binding_id wins",
+      "bindings": [
+        {
+          "binding_id": "bind-zebra",
+          "scope": { "scope_type": "repo", "attributes": { "repo": "talosprotocol/talos" } }
+        },
+        {
+          "binding_id": "bind-alpha",
+          "scope": { "scope_type": "repo", "attributes": { "repo": "talosprotocol/talos" } }
+        }
+      ],
+      "request_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "talosprotocol/talos" }
+      },
+      "expected_winner": "bind-alpha",
+      "reason": "lexicographic_binding_id"
+    },
+    {
+      "description": "Wildcard vs exact - exact wins",
+      "bindings": [
+        {
+          "binding_id": "bind-wildcard",
+          "scope": { "scope_type": "repo", "attributes": { "repo": "*" } }
+        },
+        {
+          "binding_id": "bind-exact",
+          "scope": { "scope_type": "repo", "attributes": { "repo": "talosprotocol/talos" } }
+        }
+      ],
+      "request_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "talosprotocol/talos" }
+      },
+      "expected_winner": "bind-exact",
+      "reason": "exact_match_higher_specificity"
+    }
+  ]
+}

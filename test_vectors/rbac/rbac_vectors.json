@@ -45,16 +45,21 @@
   ],
   "valid_bindings": [
     {
-      "description": "Platform Scope",
+      "description": "Platform Scope (Global)",
       "input": {
         "schema_id": "talos.rbac.binding",
         "schema_version": "v1",
-        "binding_id": "01946896-1234-7567-89ab-000000000100",
-        "principal_id": "01946896-1234-7567-89ab-000000000200",
-        "role_id": "01946896-1234-7567-89ab-000000000001",
-        "scope": {
-          "type": "platform"
-        }
+        "principal_id": "user_01946896-1234-7567-89ab-000000000200",
+        "bindings": [
+          {
+            "binding_id": "bind_01946896-1234-7567-89ab-000000000100",
+            "role_id": "role_01946896-1234-7567-89ab-000000000001",
+            "scope": {
+              "scope_type": "global",
+              "attributes": {}
+            }
+          }
+        ]
       }
     },
     {
@@ -62,35 +67,52 @@
       "input": {
         "schema_id": "talos.rbac.binding",
         "schema_version": "v1",
-        "binding_id": "01946896-1234-7567-89ab-000000000101",
-        "principal_id": "01946896-1234-7567-89ab-000000000200",
-        "role_id": "01946896-1234-7567-89ab-000000000001",
-        "scope": {
-          "type": "team",
-          "org_id": "01946896-1234-7567-89ab-000000000300",
-          "team_id": "01946896-1234-7567-89ab-000000000400"
-        }
+        "principal_id": "user_01946896-1234-7567-89ab-000000000200",
+        "team_id": "team_01946896-1234-7567-89ab-000000000400",
+        "bindings": [
+          {
+            "binding_id": "bind_01946896-1234-7567-89ab-000000000101",
+            "role_id": "role_01946896-1234-7567-89ab-000000000001",
+            "scope": {
+              "scope_type": "team",
+              "attributes": {
+                "org_id": "org_01946896-1234-7567-89ab-000000000300",
+                "team_id": "team_01946896-1234-7567-89ab-000000000400"
+              }
+            }
+          }
+        ]
       }
     }
   ],
   "invalid_bindings": [
     {
-      "description": "Missing Org ID for Org Scope",
+      "description": "Missing principal_id",
       "input": {
-        "scope": { "type": "org" }
+        "schema_id": "talos.rbac.binding",
+        "schema_version": "v1",
+        "bindings": []
       },
       "error_code": "required"
     },
     {
-      "description": "Leakage: Team ID present in Org Scope",
+      "description": "Invalid scope_type enum",
       "input": {
-        "scope": { 
-          "type": "org", 
-          "org_id": "01946896-1234-7567-89ab-000000000300",
-          "team_id": "01946896-1234-7567-89ab-000000000400"
-        }
+        "schema_id": "talos.rbac.binding",
+        "schema_version": "v1",
+        "principal_id": "user_123",
+        "bindings": [
+          {
+            "binding_id": "bind_001",
+            "role_id": "role_001",
+            "scope": {
+              "scope_type": "invalid_type",
+              "attributes": {}
+            }
+          }
+        ]
       },
-      "error_code": "not"
+      "error_code": "enum"
     }
   ]
 }

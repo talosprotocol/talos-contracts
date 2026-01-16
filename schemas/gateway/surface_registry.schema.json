@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://talosprotocol.com/schemas/gateway/surface_registry.schema.json",
+  "title": "Gateway Surface Registry",
+  "description": "Manifest of externally reachable routes with permission and scope mappings.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version",
+    "routes"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "talos.gateway.surface_registry"
+    },
+    "schema_version": {
+      "const": "v1"
+    },
+    "routes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/route_entry"
+      },
+      "minItems": 0,
+      "description": "List of route-to-permission mappings"
+    }
+  },
+  "$defs": {
+    "route_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "path_template", "permission", "scope_template"],
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
+          "description": "HTTP method (uppercase)"
+        },
+        "path_template": {
+          "type": "string",
+          "pattern": "^/",
+          "minLength": 1,
+          "maxLength": 500,
+          "description": "Route path template (e.g., /v1/secrets/{secret_id})"
+        },
+        "permission": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+\\.[a-z0-9_]+$",
+          "minLength": 3,
+          "maxLength": 100,
+          "description": "Required permission (e.g., secrets.read)"
+        },
+        "scope_template": {
+          "$ref": "#/$defs/scope_template"
+        },
+        "anonymous_allowed": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, anonymous access is permitted"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 500
+        }
+      }
+    },
+    "scope_template": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope_type", "attributes"],
+      "properties": {
+        "scope_type": {
+          "type": "string",
+          "enum": ["global", "team", "repo", "path", "secret", "trace"],
+          "description": "Scope type for this route"
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Attribute templates with {param} placeholders"
+        }
+      }
+    }
+  }
+}

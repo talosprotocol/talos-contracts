@@ -2,17 +2,14 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://talosprotocol.com/schemas/rbac/binding.schema.json",
   "title": "RBAC Binding",
-  "description": "Binds a role to a principal at a specific scope.",
+  "description": "Per-principal role bindings with scope. Draft 2020-12 strict.",
   "type": "object",
   "additionalProperties": false,
-  "unevaluatedProperties": false,
   "required": [
     "schema_id",
     "schema_version",
-    "binding_id",
     "principal_id",
-    "role_id",
-    "scope"
+    "bindings"
   ],
   "properties": {
     "schema_id": {
@@ -21,53 +18,71 @@
     "schema_version": {
       "const": "v1"
     },
-    "binding_id": {
-      "$ref": "#/$defs/uuidv7"
-    },
     "principal_id": {
-      "$ref": "#/$defs/uuidv7"
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255,
+      "description": "Principal identifier"
     },
-    "role_id": {
-      "$ref": "#/$defs/uuidv7"
+    "team_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255,
+      "description": "Optional team context for team-scoped principals"
     },
-    "scope": {
-      "type": "object",
-      "properties": {
-        "type": { "enum": ["platform", "org", "team"] },
-        "org_id": { "$ref": "#/$defs/uuidv7" },
-        "team_id": { "$ref": "#/$defs/uuidv7" }
+    "bindings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/binding_entry"
       },
-      "required": ["type"],
-      "oneOf": [
-        {
-          "properties": { "type": { "const": "platform" } },
-          "not": { "anyOf": [{ "required": ["org_id"] }, { "required": ["team_id"] }] }
-        },
-        {
-          "properties": { "type": { "const": "org" } },
-          "required": ["org_id"],
-          "not": { "required": ["team_id"] }
-        },
-        {
-          "properties": { "type": { "const": "team" } },
-          "required": ["org_id", "team_id"]
-        }
-      ]
-    },
-    "created_at": {
-      "$ref": "#/$defs/rfc3339_utc_ms"
-    },
-    "expires_at": {
-      "$ref": "#/$defs/rfc3339_utc_ms"
+      "minItems": 0,
+      "description": "List of role bindings for this principal"
     }
   },
   "$defs": {
-    "uuidv7": {
-      "type": "string",
-      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
-      "minLength": 36,
-      "maxLength": 36,
-      "description": "UUIDv7 lowercase hex"
+    "binding_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["binding_id", "role_id", "scope"],
+      "properties": {
+        "binding_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "description": "Unique binding identifier"
+        },
+        "role_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "description": "Role identifier to bind"
+        },
+        "scope": {
+          "$ref": "#/$defs/scope"
+        },
+        "created_at": {
+          "$ref": "#/$defs/rfc3339_utc_ms"
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope_type", "attributes"],
+      "properties": {
+        "scope_type": {
+          "type": "string",
+          "enum": ["global", "team", "repo", "path", "secret", "trace"],
+          "description": "Type of scope"
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Scope attributes - string values only"
+        }
+      }
     },
     "rfc3339_utc_ms": {
       "type": "string",
