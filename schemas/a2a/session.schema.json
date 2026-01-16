@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://talosprotocol.com/schemas/a2a/session.schema.json",
+  "title": "A2A Session",
+  "description": "Agent-to-agent session state. State is derived from session_event log.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version",
+    "session_id",
+    "initiator_id",
+    "responder_id",
+    "state",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "talos.a2a.session"
+    },
+    "schema_version": {
+      "const": "v1"
+    },
+    "session_id": {
+      "$ref": "#/$defs/uuidv7"
+    },
+    "initiator_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255,
+      "description": "Principal ID of session initiator"
+    },
+    "responder_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255,
+      "description": "Principal ID of session responder"
+    },
+    "state": {
+      "type": "string",
+      "enum": ["pending", "active", "closed"],
+      "description": "Session lifecycle state"
+    },
+    "ratchet_state_digest": {
+      "$ref": "#/$defs/sha256_hex",
+      "description": "Digest of encrypted-at-rest ratchet state blob"
+    },
+    "created_at": {
+      "$ref": "#/$defs/rfc3339_utc_ms"
+    },
+    "expires_at": {
+      "$ref": "#/$defs/rfc3339_utc_ms"
+    }
+  },
+  "$defs": {
+    "uuidv7": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "minLength": 36,
+      "maxLength": 36,
+      "description": "UUIDv7 lowercase hex"
+    },
+    "rfc3339_utc_ms": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    },
+    "sha256_hex": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "SHA-256 hex lowercase"
+    }
+  }
+}

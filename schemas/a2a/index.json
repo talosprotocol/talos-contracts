@@ -20,6 +20,11 @@
     "methods/tasks_cancel.response.schema.json",
     "methods/tasks_resubscribe.request.schema.json",
     "methods/tasks_resubscribe.response.schema.json",
-    "tool_call.schema.json"
+    "tool_call.schema.json",
+    "session.schema.json",
+    "session_event.schema.json",
+    "encrypted_frame.schema.json",
+    "group.schema.json",
+    "group_event.schema.json"
   ]
 }

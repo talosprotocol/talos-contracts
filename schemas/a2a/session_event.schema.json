@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://talosprotocol.com/schemas/a2a/session_event.schema.json",
+  "title": "A2A Session Event",
+  "description": "Append-only session lifecycle event for deterministic recovery.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version",
+    "event_id",
+    "session_id",
+    "actor_id",
+    "event_type",
+    "ts",
+    "event_digest"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "talos.a2a.session_event"
+    },
+    "schema_version": {
+      "const": "v1"
+    },
+    "event_id": {
+      "$ref": "#/$defs/uuidv7"
+    },
+    "session_id": {
+      "$ref": "#/$defs/uuidv7"
+    },
+    "actor_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255,
+      "description": "Principal ID of event actor"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": ["session_opened", "session_accepted", "session_rotated", "session_closed"],
+      "description": "Session lifecycle event type"
+    },
+    "ts": {
+      "$ref": "#/$defs/rfc3339_utc_ms"
+    },
+    "event_digest": {
+      "$ref": "#/$defs/sha256_hex",
+      "description": "sha256(RFC8785 canonical JSON of event WITHOUT event_digest)"
+    },
+    "previous_digest": {
+      "$ref": "#/$defs/sha256_hex",
+      "description": "Digest of previous event in chain (for ordering)"
+    }
+  },
+  "$defs": {
+    "uuidv7": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "minLength": 36,
+      "maxLength": 36
+    },
+    "rfc3339_utc_ms": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    },
+    "sha256_hex": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}
