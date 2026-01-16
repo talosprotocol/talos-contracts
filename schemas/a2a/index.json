@@ -25,6 +25,12 @@
     "session_event.schema.json",
     "encrypted_frame.schema.json",
     "group.schema.json",
-    "group_event.schema.json"
+    "group_event.schema.json",
+    "session_create_request.schema.json",
+    "session_accept_request.schema.json",
+    "session_rotate_request.schema.json",
+    "frame_send_request.schema.json",
+    "group_create_request.schema.json",
+    "group_member_add_request.schema.json"
   ]
 }

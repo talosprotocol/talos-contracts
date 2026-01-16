@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://talosprotocol.com/schemas/a2a/group_create_request.schema.json",
+  "title": "A2A Group Create Request",
+  "description": "Request body for POST /a2a/groups",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "talos.a2a.group_create_request"
+    },
+    "schema_version": {
+      "const": "v1"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255,
+      "description": "Optional human-readable group name"
+    }
+  }
+}

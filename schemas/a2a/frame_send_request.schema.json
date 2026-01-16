@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://talosprotocol.com/schemas/a2a/frame_send_request.schema.json",
+  "title": "A2A Frame Send Request",
+  "description": "Request body for POST /a2a/sessions/{id}/frames. Wraps encrypted_frame for validation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version",
+    "frame"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "talos.a2a.frame_send_request"
+    },
+    "schema_version": {
+      "const": "v1"
+    },
+    "frame": {
+      "$ref": "encrypted_frame.schema.json",
+      "description": "The encrypted frame to send"
+    }
+  }
+}
