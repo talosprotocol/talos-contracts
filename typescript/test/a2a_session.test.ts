@@ -36,7 +36,7 @@ describe("Phase 10 A2A Session Schema Validation", () => {
     for (const s of schemas) {
       try {
         ajv.addSchema(loadSchema(s));
-      } catch (e) {
+      } catch {
         // Schema may already be added
       }
     }
