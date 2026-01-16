@@ -42,12 +42,15 @@ describe("RBAC Schema Validation", () => {
 
   for (const [key, config] of Object.entries(mappings)) {
     describe(`${key} (${config.schema})`, () => {
-      // @ts-expect-error - implicit any
-      const items = vectors[key];
+      const items = vectors[key] as Array<{
+        description: string;
+        input: unknown;
+        error_code?: string;
+      }>;
       if (!items) return;
 
-      test.each(items)(`$description`, (item: any) => {
-        const data = item.input;
+      test.each(items)(`$description`, ({ description, input, error_code }) => {
+        const data = input;
         const schemaId = `https://talosprotocol.com/schemas/rbac/${config.schema}.schema.json`;
         const validate = ajv.getSchema(schemaId);
         if (!validate) throw new Error(`Schema ${schemaId} not found`);
@@ -55,19 +58,17 @@ describe("RBAC Schema Validation", () => {
         const valid = validate(data);
         if (valid !== config.valid) {
           console.error(
-            `Validation failed for ${item.description}:`,
+            `Validation failed for ${description}:`,
             validate.errors,
           );
         }
         expect(valid).toBe(config.valid);
 
-        if (!config.valid && item.error_code) {
-          const found = validate.errors?.some(
-            (e) => e.keyword === item.error_code,
-          );
+        if (!config.valid && error_code) {
+          const found = validate.errors?.some((e) => e.keyword === error_code);
           if (!found) {
             console.error(
-              `Expected error code ${item.error_code} not found. Got:`,
+              `Expected error code ${error_code} not found. Got:`,
               validate.errors,
             );
           }

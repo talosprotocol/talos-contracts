@@ -32,25 +32,31 @@ describe("Secrets Envelope Schema Validation", () => {
   const vectors = readJson(vectorFile);
 
   describe("Envelope Vectors", () => {
-    test.each(vectors.valid)("[Valid] $description", (item: any) => {
-      const data = item.input; // Vectors structure: input is the data
-      const schemaId =
-        "https://talosprotocol.com/schemas/secrets/envelope.schema.json";
-      const validate = ajv.getSchema(schemaId);
-      if (!validate) throw new Error("Schema not found");
+    test.each(vectors.valid as Array<{ description: string; input: unknown }>)(
+      "[Valid] $description",
+      ({ input }) => {
+        const data = input;
+        const schemaId =
+          "https://talosprotocol.com/schemas/secrets/envelope.schema.json";
+        const validate = ajv.getSchema(schemaId);
+        if (!validate) throw new Error("Schema not found");
 
-      const valid = validate(data);
-      if (!valid) {
-        console.error(
-          `Validation failed for ${item.description}:`,
-          validate.errors,
-        );
-      }
-      expect(valid).toBe(true);
-    });
+        const valid = validate(data);
+        if (!valid) {
+          console.error(`Validation failed:`, validate.errors);
+        }
+        expect(valid).toBe(true);
+      },
+    );
 
-    test.each(vectors.invalid)("[Invalid] $description", (item: any) => {
-      const data = item.input;
+    test.each(
+      vectors.invalid as Array<{
+        description: string;
+        input: unknown;
+        error_code?: string;
+      }>,
+    )("[Invalid] $description", ({ input, error_code }) => {
+      const data = input;
       const schemaId =
         "https://talosprotocol.com/schemas/secrets/envelope.schema.json";
       const validate = ajv.getSchema(schemaId);
@@ -59,13 +65,11 @@ describe("Secrets Envelope Schema Validation", () => {
       const valid = validate(data);
       expect(valid).toBe(false);
 
-      if (item.error_code) {
-        const found = validate.errors?.some(
-          (e) => e.keyword === item.error_code,
-        );
+      if (error_code) {
+        const found = validate.errors?.some((e) => e.keyword === error_code);
         if (!found) {
           console.error(
-            `Expected error code ${item.error_code} not found. Got:`,
+            `Expected error code ${error_code} not found. Got:`,
             validate.errors,
           );
         }
