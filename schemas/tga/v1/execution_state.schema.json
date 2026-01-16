@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://talosprotocol.com/schemas/tga/v1/execution_state.schema.json",
+  "title": "TGA Execution State (v1)",
+  "description": "Derived view of current execution state. Reproducible from replaying log entries.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version",
+    "trace_id",
+    "plan_id",
+    "current_state",
+    "last_sequence_number",
+    "last_entry_digest",
+    "state_digest"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "talos.tga.execution_state"
+    },
+    "schema_version": {
+      "const": "v1"
+    },
+    "trace_id": {
+      "$ref": "#/$defs/uuidv7"
+    },
+    "plan_id": {
+      "$ref": "#/$defs/uuidv7"
+    },
+    "current_state": {
+      "type": "string",
+      "enum": ["PENDING", "AUTHORIZED", "EXECUTING", "COMPLETED", "FAILED", "DENIED"],
+      "description": "Current execution state."
+    },
+    "last_sequence_number": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Sequence number of last applied log entry. 0 if empty."
+    },
+    "last_entry_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Digest of last applied log entry. 64 zeros if empty."
+    },
+    "state_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 of canonical JSON preimage (excluding state_digest)."
+    }
+  },
+  "$defs": {
+    "uuidv7": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "minLength": 36,
+      "maxLength": 36
+    }
+  }
+}

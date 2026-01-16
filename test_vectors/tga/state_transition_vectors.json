@@ -1,0 +1,300 @@
+{
+  "description": "Test vectors for TGA state machine transitions (Phase 9.3)",
+  "valid_transitions": [
+    {
+      "description": "Full successful execution: PENDING -> AUTHORIZED -> EXECUTING -> COMPLETED",
+      "entries": [
+        {
+          "sequence_number": 1,
+          "from_state": "PENDING",
+          "to_state": "PENDING",
+          "artifact_type": "action_request",
+          "prev_entry_digest": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "sequence_number": 2,
+          "from_state": "PENDING",
+          "to_state": "AUTHORIZED",
+          "artifact_type": "supervisor_decision"
+        },
+        {
+          "sequence_number": 3,
+          "from_state": "AUTHORIZED",
+          "to_state": "EXECUTING",
+          "artifact_type": "tool_call",
+          "tool_call_id": "01936a8b-4c2d-7000-8001-000000000001",
+          "idempotency_key": "idem-key-001"
+        },
+        {
+          "sequence_number": 4,
+          "from_state": "EXECUTING",
+          "to_state": "COMPLETED",
+          "artifact_type": "tool_effect",
+          "tool_call_id": "01936a8b-4c2d-7000-8001-000000000001",
+          "idempotency_key": "idem-key-001"
+        }
+      ],
+      "should_pass": true
+    },
+    {
+      "description": "Failed execution: PENDING -> AUTHORIZED -> EXECUTING -> FAILED",
+      "entries": [
+        {
+          "sequence_number": 1,
+          "from_state": "PENDING",
+          "to_state": "PENDING",
+          "artifact_type": "action_request",
+          "prev_entry_digest": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "sequence_number": 2,
+          "from_state": "PENDING",
+          "to_state": "AUTHORIZED",
+          "artifact_type": "supervisor_decision"
+        },
+        {
+          "sequence_number": 3,
+          "from_state": "AUTHORIZED",
+          "to_state": "EXECUTING",
+          "artifact_type": "tool_call",
+          "tool_call_id": "01936a8b-4c2d-7000-8001-000000000002",
+          "idempotency_key": "idem-key-002"
+        },
+        {
+          "sequence_number": 4,
+          "from_state": "EXECUTING",
+          "to_state": "FAILED",
+          "artifact_type": "tool_effect",
+          "tool_call_id": "01936a8b-4c2d-7000-8001-000000000002",
+          "idempotency_key": "idem-key-002"
+        }
+      ],
+      "should_pass": true
+    },
+    {
+      "description": "Denied execution: PENDING -> DENIED",
+      "entries": [
+        {
+          "sequence_number": 1,
+          "from_state": "PENDING",
+          "to_state": "PENDING",
+          "artifact_type": "action_request",
+          "prev_entry_digest": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "sequence_number": 2,
+          "from_state": "PENDING",
+          "to_state": "DENIED",
+          "artifact_type": "supervisor_decision"
+        }
+      ],
+      "should_pass": true
+    }
+  ],
+  "invalid_transitions": [
+    {
+      "description": "Invalid: PENDING -> COMPLETED (skipping states)",
+      "entries": [
+        {
+          "sequence_number": 1,
+          "from_state": "PENDING",
+          "to_state": "PENDING",
+          "artifact_type": "action_request",
+          "prev_entry_digest": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "sequence_number": 2,
+          "from_state": "PENDING",
+          "to_state": "COMPLETED",
+          "artifact_type": "tool_effect"
+        }
+      ],
+      "should_pass": false,
+      "expected_error": "STATE_INVALID_TRANSITION"
+    },
+    {
+      "description": "Invalid: Duplicate sequence number",
+      "entries": [
+        {
+          "sequence_number": 1,
+          "from_state": "PENDING",
+          "to_state": "PENDING",
+          "artifact_type": "action_request"
+        },
+        {
+          "sequence_number": 1,
+          "from_state": "PENDING",
+          "to_state": "AUTHORIZED",
+          "artifact_type": "supervisor_decision"
+        }
+      ],
+      "should_pass": false,
+      "expected_error": "STATE_SEQUENCE_GAP"
+    },
+    {
+      "description": "Invalid: Sequence gap (1 -> 3, missing 2)",
+      "entries": [
+        {
+          "sequence_number": 1,
+          "from_state": "PENDING",
+          "to_state": "PENDING",
+          "artifact_type": "action_request"
+        },
+        {
+          "sequence_number": 3,
+          "from_state": "PENDING",
+          "to_state": "AUTHORIZED",
+          "artifact_type": "supervisor_decision"
+        }
+      ],
+      "should_pass": false,
+      "expected_error": "STATE_SEQUENCE_GAP"
+    },
+    {
+      "description": "Invalid: AUTHORIZED -> COMPLETED (missing EXECUTING)",
+      "entries": [
+        {
+          "sequence_number": 1,
+          "from_state": "PENDING",
+          "to_state": "PENDING",
+          "artifact_type": "action_request"
+        },
+        {
+          "sequence_number": 2,
+          "from_state": "PENDING",
+          "to_state": "AUTHORIZED",
+          "artifact_type": "supervisor_decision"
+        },
+        {
+          "sequence_number": 3,
+          "from_state": "AUTHORIZED",
+          "to_state": "COMPLETED",
+          "artifact_type": "tool_effect"
+        }
+      ],
+      "should_pass": false,
+      "expected_error": "STATE_INVALID_TRANSITION"
+    },
+    {
+      "description": "Invalid: EXECUTING -> AUTHORIZED (backward transition)",
+      "entries": [
+        {
+          "sequence_number": 1,
+          "from_state": "PENDING",
+          "to_state": "PENDING",
+          "artifact_type": "action_request"
+        },
+        {
+          "sequence_number": 2,
+          "from_state": "PENDING",
+          "to_state": "AUTHORIZED",
+          "artifact_type": "supervisor_decision"
+        },
+        {
+          "sequence_number": 3,
+          "from_state": "AUTHORIZED",
+          "to_state": "EXECUTING",
+          "artifact_type": "tool_call"
+        },
+        {
+          "sequence_number": 4,
+          "from_state": "EXECUTING",
+          "to_state": "AUTHORIZED",
+          "artifact_type": "supervisor_decision"
+        }
+      ],
+      "should_pass": false,
+      "expected_error": "STATE_INVALID_TRANSITION"
+    },
+    {
+      "description": "Invalid: tool_call entry missing tool_call_id",
+      "entries": [
+        {
+          "sequence_number": 1,
+          "from_state": "PENDING",
+          "to_state": "PENDING",
+          "artifact_type": "action_request"
+        },
+        {
+          "sequence_number": 2,
+          "from_state": "PENDING",
+          "to_state": "AUTHORIZED",
+          "artifact_type": "supervisor_decision"
+        },
+        {
+          "sequence_number": 3,
+          "from_state": "AUTHORIZED",
+          "to_state": "EXECUTING",
+          "artifact_type": "tool_call",
+          "tool_call_id": null
+        }
+      ],
+      "should_pass": false,
+      "expected_error": "MISSING_TOOL_CALL_ID"
+    }
+  ],
+  "recovery_vectors": [
+    {
+      "description": "Recovery: crash after tool_call, no tool_effect",
+      "initial_log": [
+        {
+          "sequence_number": 1,
+          "from_state": "PENDING",
+          "to_state": "PENDING",
+          "artifact_type": "action_request"
+        },
+        {
+          "sequence_number": 2,
+          "from_state": "PENDING",
+          "to_state": "AUTHORIZED",
+          "artifact_type": "supervisor_decision"
+        },
+        {
+          "sequence_number": 3,
+          "from_state": "AUTHORIZED",
+          "to_state": "EXECUTING",
+          "artifact_type": "tool_call",
+          "tool_call_id": "01936a8b-4c2d-7000-8001-000000000003",
+          "idempotency_key": "idem-key-003"
+        }
+      ],
+      "recovery_action": "RE_DISPATCH_SAME_TOOL_CALL",
+      "expected_state_after_recovery": "COMPLETED_OR_FAILED",
+      "idempotency_enforced": true
+    },
+    {
+      "description": "Recovery: crash after tool_effect, state not materialized",
+      "initial_log": [
+        {
+          "sequence_number": 1,
+          "from_state": "PENDING",
+          "to_state": "PENDING",
+          "artifact_type": "action_request"
+        },
+        {
+          "sequence_number": 2,
+          "from_state": "PENDING",
+          "to_state": "AUTHORIZED",
+          "artifact_type": "supervisor_decision"
+        },
+        {
+          "sequence_number": 3,
+          "from_state": "AUTHORIZED",
+          "to_state": "EXECUTING",
+          "artifact_type": "tool_call",
+          "tool_call_id": "01936a8b-4c2d-7000-8001-000000000004"
+        },
+        {
+          "sequence_number": 4,
+          "from_state": "EXECUTING",
+          "to_state": "COMPLETED",
+          "artifact_type": "tool_effect",
+          "tool_call_id": "01936a8b-4c2d-7000-8001-000000000004"
+        }
+      ],
+      "recovery_action": "REPLAY_ONLY_NO_DISPATCH",
+      "expected_state_after_recovery": "COMPLETED",
+      "idempotency_enforced": false
+    }
+  ]
+}
