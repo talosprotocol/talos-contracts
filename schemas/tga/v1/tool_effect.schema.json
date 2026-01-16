@@ -81,6 +81,40 @@
         }
       }
     },
+    "document_hashes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["pointer", "hash", "size_bytes"],
+        "properties": {
+          "pointer": {
+            "type": "string",
+            "pattern": "^/",
+            "description": "JSON Pointer (RFC 6901) to content"
+          },
+          "hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "description": "SHA-256 lowercase hex (executor-computed)"
+          },
+          "size_bytes": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Actual bytes for this document"
+          }
+        }
+      },
+      "description": "Executor-computed hashes for each document pointer (read or write)"
+    },
+    "batch_total_bytes": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total bytes across all document paths"
+    },
+    "content_hash_alg": {
+      "const": "sha256",
+      "description": "Hash algorithm when document_hashes present"
+    },
     "meta": {
       "type": "object",
       "additionalProperties": {

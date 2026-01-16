@@ -62,6 +62,36 @@
         "args": { "type": "object" }
       }
     },
+    "tool_class": {
+      "type": "string",
+      "enum": ["read", "write"],
+      "description": "Informational. Executor re-derives from registry and will deny if mismatch."
+    },
+    "expected_document_hashes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["pointer", "hash"],
+        "properties": {
+          "pointer": {
+            "type": "string",
+            "pattern": "^/",
+            "description": "JSON Pointer (RFC 6901) to content"
+          },
+          "hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "description": "SHA-256 lowercase hex"
+          }
+        }
+      },
+      "description": "Expected content hashes for pre-execution validation (write ops)"
+    },
+    "batch_total_bytes": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total bytes across all document paths (executor-filled)"
+    },
     "idempotency_key": {
       "type": "string",
       "minLength": 1,

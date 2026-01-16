@@ -1,8 +1,9 @@
 import hashlib
 import json
+from typing import Any, Optional
 
 
-def canonical_json_bytes(data: any) -> bytes:
+def canonical_json_bytes(data: Any) -> bytes:
     """
     Serializes a value to canonical JSON bytes according to RFC 8785.
     - Keys sorted alphabetically.
@@ -14,7 +15,7 @@ def canonical_json_bytes(data: any) -> bytes:
     )
 
 
-def calculate_digest(data: dict, exclude_fields: list[str] = None) -> str:
+def calculate_digest(data: dict[str, Any], exclude_fields: Optional[list[str]] = None) -> str:
     """
     Calculates SHA-256 digest of an object after canonicalization.
     Optionally excludes specific fields (e.g., '_digest').

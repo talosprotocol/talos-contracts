@@ -1,0 +1,240 @@
+{
+  "valid_cases": [
+    {
+      "description": "Read tool with no document operations",
+      "data": {
+        "schema_id": "talos.mcp.tool_registry",
+        "schema_version": "v1",
+        "server_id": "mcp-github",
+        "server_version": "1.0.0",
+        "tools": [
+          {
+            "tool_name": "list-issues",
+            "tool_class": "read",
+            "is_document_op": false
+          }
+        ]
+      },
+      "should_pass": true
+    },
+    {
+      "description": "Write tool with write_content_pointers",
+      "data": {
+        "schema_id": "talos.mcp.tool_registry",
+        "schema_version": "v1",
+        "server_id": "mcp-github",
+        "server_version": "1.0.0",
+        "tools": [
+          {
+            "tool_name": "create-pr",
+            "tool_class": "write",
+            "is_document_op": true,
+            "requires_idempotency_key": true,
+            "document_spec": {
+              "write_content_pointers": ["/args/body", "/args/head_ref"],
+              "content_encoding": "utf8",
+              "max_read_bytes": 10485760,
+              "max_write_bytes": 5242880,
+              "max_batch_bytes": 52428800
+            }
+          }
+        ]
+      },
+      "should_pass": true
+    },
+    {
+      "description": "Read tool with read_content_pointers (post-execution)",
+      "data": {
+        "schema_id": "talos.mcp.tool_registry",
+        "schema_version": "v1",
+        "server_id": "mcp-filesystem",
+        "server_version": "2.1.0",
+        "tools": [
+          {
+            "tool_name": "read-file",
+            "tool_class": "read",
+            "is_document_op": true,
+            "document_spec": {
+              "read_content_pointers": ["/content"],
+              "content_encoding": "base64",
+              "max_read_bytes": 10485760,
+              "max_write_bytes": 5242880,
+              "max_batch_bytes": 52428800
+            }
+          }
+        ]
+      },
+      "should_pass": true
+    },
+    {
+      "description": "Write tool with both read and write pointers",
+      "data": {
+        "schema_id": "talos.mcp.tool_registry",
+        "schema_version": "v1",
+        "server_id": "mcp-filesystem",
+        "server_version": "2.1.0",
+        "tools": [
+          {
+            "tool_name": "update-file",
+            "tool_class": "write",
+            "is_document_op": true,
+            "requires_idempotency_key": true,
+            "document_spec": {
+              "write_content_pointers": ["/args/content"],
+              "read_content_pointers": ["/result/updated_content"],
+              "content_encoding": "base64",
+              "max_read_bytes": 10485760,
+              "max_write_bytes": 5242880,
+              "max_batch_bytes": 52428800
+            }
+          }
+        ]
+      },
+      "should_pass": true
+    }
+  ],
+  "invalid_cases": [
+    {
+      "description": "Missing schema_id",
+      "data": {
+        "schema_version": "v1",
+        "server_id": "mcp-test",
+        "server_version": "1.0.0",
+        "tools": []
+      },
+      "should_pass": false,
+      "expected_error": "required"
+    },
+    {
+      "description": "Wrong schema_id value",
+      "data": {
+        "schema_id": "wrong.schema",
+        "schema_version": "v1",
+        "server_id": "mcp-test",
+        "server_version": "1.0.0",
+        "tools": [
+          {
+            "tool_name": "test",
+            "tool_class": "read",
+            "is_document_op": false
+          }
+        ]
+      },
+      "should_pass": false,
+      "expected_error": "const"
+    },
+    {
+      "description": "Document op missing document_spec",
+      "data": {
+        "schema_id": "talos.mcp.tool_registry",
+        "schema_version": "v1",
+        "server_id": "mcp-test",
+        "server_version": "1.0.0",
+        "tools": [
+          {
+            "tool_name": "bad-tool",
+            "tool_class": "write",
+            "is_document_op": true,
+            "requires_idempotency_key": true
+          }
+        ]
+      },
+      "should_pass": false,
+      "expected_error": "required"
+    },
+    {
+      "description": "Invalid JSON Pointer (missing leading slash)",
+      "data": {
+        "schema_id": "talos.mcp.tool_registry",
+        "schema_version": "v1",
+        "server_id": "mcp-test",
+        "server_version": "1.0.0",
+        "tools": [
+          {
+            "tool_name": "bad-pointer",
+            "tool_class": "write",
+            "is_document_op": true,
+            "requires_idempotency_key": true,
+            "document_spec": {
+              "write_content_pointers": ["args/content"],
+              "content_encoding": "utf8",
+              "max_read_bytes": 10485760,
+              "max_write_bytes": 5242880,
+              "max_batch_bytes": 52428800
+            }
+          }
+        ]
+      },
+      "should_pass": false,
+      "expected_error": "pattern"
+    },
+    {
+      "description": "Negative max_write_bytes",
+      "data": {
+        "schema_id": "talos.mcp.tool_registry",
+        "schema_version": "v1",
+        "server_id": "mcp-test",
+        "server_version": "1.0.0",
+        "tools": [
+          {
+            "tool_name": "bad-size",
+            "tool_class": "write",
+            "is_document_op": true,
+            "requires_idempotency_key": true,
+            "document_spec": {
+              "write_content_pointers": ["/content"],
+              "content_encoding": "utf8",
+              "max_read_bytes": 10485760,
+              "max_write_bytes": -1,
+              "max_batch_bytes": 52428800
+            }
+          }
+        ]
+      },
+      "should_pass": false,
+      "expected_error": "minimum"
+    },
+    {
+      "description": "Invalid tool_class value",
+      "data": {
+        "schema_id": "talos.mcp.tool_registry",
+        "schema_version": "v1",
+        "server_id": "mcp-test",
+        "server_version": "1.0.0",
+        "tools": [
+          {
+            "tool_name": "bad-class",
+            "tool_class": "mutate",
+            "is_document_op": false
+          }
+        ]
+      },
+      "should_pass": false,
+      "expected_error": "enum"
+    },
+    {
+      "description": "Document op with neither read nor write pointers",
+      "data": {
+        "schema_id": "talos.mcp.tool_registry",
+        "schema_version": "v1",
+        "server_id": "mcp-test",
+        "server_version": "1.0.0",
+        "tools": [
+          {
+            "tool_name": "no-pointers",
+            "tool_class": "read",
+            "is_document_op": true,
+            "document_spec": {
+              "content_encoding": "utf8",
+              "max_read_bytes": 10485760,
+              "max_write_bytes": 5242880,
+              "max_batch_bytes": 52428800
+            }
+          }
+        ]
+      },
+      "should_pass": false,
+      "expected_error": "anyOf"
+    }
+  ]
+}
