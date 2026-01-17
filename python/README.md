@@ -34,4 +34,4 @@ is_valid = is_uuid_v7("0190a5e0-7c3a-7000-8000-000000000001")  # True
 
 ## License
 
-MIT
+Apache-2.0
