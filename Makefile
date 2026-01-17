@@ -3,10 +3,21 @@
 
 .PHONY: install build test lint clean start stop typecheck conformance interop
 
-REPOS_DIR ?= ../
+SDK_PY_DIR ?= ../sdks/python
+SDK_TS_DIR ?= ../sdks/typescript
 
-# Default target
-all: install build test
+# Interop: Run Python <-> TypeScript interop vectors
+interop:
+	@echo "Running interop tests..."
+	@echo "Preflight: Checking harness commands..."
+	@command -v python3 >/dev/null 2>&1 || { echo "ERROR: python3 not found"; exit 1; }
+	@[ -f "$(SDK_PY_DIR)/Makefile" ] || { echo "ERROR: talos-sdk-py not found at $(SDK_PY_DIR)"; exit 1; }
+	@[ -f "$(SDK_TS_DIR)/Makefile" ] || { echo "ERROR: talos-sdk-ts not found at $(SDK_TS_DIR)"; exit 1; }
+	@echo "Preflight passed."
+	@echo "Running Python conformance..."
+	cd $(SDK_PY_DIR) && make conformance
+	@echo "Running TypeScript conformance..."
+	cd $(SDK_TS_DIR) && make conformance
 
 # Install dependencies
 install:
@@ -63,19 +74,6 @@ conformance:
 	@echo "Step 0: Python schema validation"
 	cd python && pytest tests/test_vectors.py -q 2>/dev/null || echo "No Python vector tests"
 
-# Interop: Run Python <-> TypeScript interop vectors
-interop:
-	@echo "Running interop tests..."
-	@echo "Preflight: Checking harness commands..."
-	@command -v python3 >/dev/null 2>&1 || { echo "ERROR: python3 not found"; exit 1; }
-	@[ -f "$(REPOS_DIR)/talos-sdk-py/Makefile" ] || { echo "ERROR: talos-sdk-py not found at $(REPOS_DIR)/talos-sdk-py"; exit 1; }
-	@[ -f "$(REPOS_DIR)/talos-sdk-ts/Makefile" ] || { echo "ERROR: talos-sdk-ts not found at $(REPOS_DIR)/talos-sdk-ts"; exit 1; }
-	@echo "Preflight passed."
-	@echo "Running Python conformance..."
-	cd $(REPOS_DIR)/talos-sdk-py && make conformance
-	@echo "Running TypeScript conformance..."
-	cd $(REPOS_DIR)/talos-sdk-ts && make conformance
-	@echo "Interop complete: passed steps: 2"
 
 # Doctor check
 doctor:
