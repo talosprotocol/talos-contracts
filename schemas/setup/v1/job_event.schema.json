@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.security/schemas/setup/v1/job_event.schema.json",
+  "title": "Talos Setup Job Event",
+  "description": "Event emitted during job execution (log line or status change).",
+  "type": "object",
+  "required": [
+    "job_id",
+    "timestamp",
+    "type"
+  ],
+  "properties": {
+    "job_id": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["status_change", "log", "error"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "running", "success", "failed", "cancelled"],
+      "description": "New status, required if type is status_change"
+    },
+    "message": {
+      "type": "string",
+      "description": "Log message or error description"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

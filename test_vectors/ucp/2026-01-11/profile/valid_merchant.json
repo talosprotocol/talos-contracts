@@ -1,0 +1,19 @@
+{
+  "version": "2026-01-11",
+  "services": {
+    "dev.ucp.shopping": {
+      "id": "srv_shop_123",
+      "type": "dev.ucp.shopping",
+      "rest": {
+        "endpoint": "https://api.merchant.com/shopping/v1"
+      }
+    }
+  },
+  "signing_keys": [
+    {
+      "id": "key_1",
+      "algorithm": "ES256",
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE..."
+    }
+  ]
+}

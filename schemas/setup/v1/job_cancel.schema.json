@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.security/schemas/setup/v1/job_cancel.schema.json",
+  "title": "Job Cancel Request",
+  "type": "object",
+  "required": [
+    "job_id",
+    "reason"
+  ],
+  "properties": {
+    "job_id": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "force": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, force kill the process immediately"
+    }
+  }
+}

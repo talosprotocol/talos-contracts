@@ -1,0 +1,32 @@
+{
+  "version": "1.0.0",
+  "recipes": [
+    {
+      "id": "talos-sdk-init",
+      "version": "1.0.0",
+      "description": "Initialize a new Talos SDK project",
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", 
+      "args_schema": {
+        "type": "object",
+        "required": ["project_name", "language"],
+        "properties": {
+          "project_name": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "language": { "type": "string", "enum": ["typescript", "python", "go"] }
+        }
+      }
+    },
+    {
+      "id": "talos-ucp-connector",
+      "version": "1.0.0",
+      "description": "Universal Commerce Protocol (UCP) Connector",
+      "digest": "sha256:placeholder_ucp_digest",
+      "args_schema": {
+        "type": "object",
+        "required": ["merchant_domain"],
+        "properties": {
+          "merchant_domain": { "type": "string", "format": "hostname" }
+        }
+      }
+    }
+  ]
+}

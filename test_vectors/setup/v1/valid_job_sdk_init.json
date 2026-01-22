@@ -1,0 +1,12 @@
+{
+  "description": "Valid job creation request for SDK initialization",
+  "valid": true,
+  "schema": "schemas/setup/v1/job_create.schema.json",
+  "data": {
+    "recipe_id": "talos-sdk-init",
+    "args": {
+      "project_name": "my-safe-project",
+      "language": "typescript"
+    }
+  }
+}

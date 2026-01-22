@@ -1,0 +1,14 @@
+{
+  "version": "2026-01-11",
+  "id": "platform_talos_abc",
+  "signing_keys": [
+    {
+      "id": "platform_key_1",
+      "algorithm": "RS256",
+      "public_key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA..."
+    }
+  ],
+  "callback_endpoints": {
+    "webhook": "https://talos.network/callbacks/ucp/v1/webhook"
+  }
+}

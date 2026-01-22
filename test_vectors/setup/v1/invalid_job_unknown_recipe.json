@@ -1,0 +1,9 @@
+{
+  "description": "Job creation request with unknown recipe ID",
+  "valid": false,
+  "schema": "schemas/setup/v1/job_create.schema.json",
+  "data": {
+    "recipe_id": "unknown-malicious-recipe",
+    "args": {}
+  }
+}
