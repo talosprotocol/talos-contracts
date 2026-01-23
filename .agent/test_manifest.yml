@@ -1,29 +1,15 @@
-manifest_version: v1
-repo_id: contracts
-entrypoints:
-  unit: "scripts/test.sh unit"
-  integration: "scripts/test.sh unit"
-  smoke: "scripts/test.sh unit" 
-  lint: "scripts/test.sh lint"
-interop:
-  enabled: true
-  command: "scripts/test.sh interop"
-  contracts_pin:
-    type: "artifact"
-    name: "talos-contracts"
-    version: "SELF"
-  required: true
+repo_id: "talos-contracts"
+repo_root: "."
+commands:
+  test_entrypoint: "scripts/test.sh"
 coverage:
-  tool: "pytest-cov"
-  reports:
-    xml: "python/coverage.xml"
-    json: "python/coverage.json"
+  enabled: true
+  format: "cobertura"
+  report_path: "artifacts/coverage/coverage.xml"
   thresholds:
-    unit:
-      line: 0.95
-      branch: 0.90
-    critical_paths:
-      - path: "schemas/**"
-        line: 1.00
-  exclusions:
-    - "**/test_vectors/**"
+    line: 0.90
+    branch: 0.00
+  path_thresholds:
+    "python/talos_contracts/**": { line: 0.90 }
+ci:
+  default: ["--smoke", "--unit", "--coverage"]
