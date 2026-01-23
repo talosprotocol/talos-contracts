@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Benchmark Result Schema v1",
+  "type": "object",
+  "required": ["schema_version", "timestamp", "benchmarks"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "command": { "type": "string" },
+    "runs_count": { "type": "integer", "minimum": 1 },
+    "warmup_count": { "type": "integer", "minimum": 0 },
+    "benchmarks": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["stats"],
+        "properties": {
+          "stats": {
+            "type": "object",
+            "required": ["median_ms", "p95_ms", "ops_per_sec"],
+            "properties": {
+              "median_ms": { "type": "number", "minimum": 0 },
+              "p95_ms": { "type": "number", "minimum": 0 },
+              "mean_ms": { "type": "number", "minimum": 0 },
+              "stddev_ms": { "type": "number", "minimum": 0 },
+              "ops_per_sec": { "type": "number", "minimum": 0 },
+              "iterations": { "type": "integer", "minimum": 1 }
+            }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

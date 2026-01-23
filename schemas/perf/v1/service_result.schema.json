@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Service Performance Result Schema v1",
+  "type": "object",
+  "required": ["schema_version", "timestamp", "service", "contracts"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "service": { "type": "string" },
+    "image_digest": { "type": "string" },
+    "contracts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["metrics"],
+        "properties": {
+          "metrics": {
+            "type": "object",
+            "required": ["p50_ms", "p95_ms", "req_per_sec", "error_rate"],
+            "properties": {
+              "p50_ms": { "type": "number", "minimum": 0 },
+              "p95_ms": { "type": "number", "minimum": 0 },
+              "p99_ms": { "type": "number", "minimum": 0 },
+              "req_per_sec": { "type": "number", "minimum": 0 },
+              "error_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+              "ttfb_ms": { "type": "number", "minimum": 0 },
+              "tokens_per_sec": { "type": "number", "minimum": 0 },
+              "events_per_sec": { "type": "number", "minimum": 0 },
+              "subscribers": { "type": "integer", "minimum": 1 }
+            }
+          },
+          "configuration": {
+             "type": "object"
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}
