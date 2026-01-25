@@ -1,0 +1,22 @@
+config_version: "1.0"
+global:
+  env: prod
+  region: us-west-2
+  log_level: WARNING
+
+gateway:
+  port: 8080
+  host: 0.0.0.0
+  database_url_ref: "secret://db-gateway/rw"
+  disable_auth: false
+
+audit:
+  storage_backend: postgres
+  database_url_ref: "secret://db-audit/rw"
+  retention_days: 365
+
+mcp_connector:
+  allowed_servers:
+    - "https://mcp-weather.talos.dev"
+    - "https://mcp-slack.talos.dev"
+  signing_key_ref: "secret://mcp-signing/key"

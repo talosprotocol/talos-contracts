@@ -1,0 +1,20 @@
+config_version: "1.0"
+global:
+  env: dev
+  region: us-east-1
+  log_level: DEBUG
+
+gateway:
+  port: 8000
+  host: 127.0.0.1
+  disable_auth: true
+
+audit:
+  storage_backend: sqlite
+  database_url_ref: "sqlite:///./dev.db"
+  retention_days: 7
+
+mcp_connector:
+  allowed_servers:
+     - "http://localhost:8001"
+  signing_key_ref: "dev-key"

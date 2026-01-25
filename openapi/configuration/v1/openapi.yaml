@@ -1,0 +1,332 @@
+openapi: 3.1.0
+info:
+  title: Talos Configuration Control Plane
+  version: 1.0.0
+  description: |
+    Backend-for-Frontend (BFF) API for the Talos Configuration Service.
+    Enables validation, redaction, normalization, and draft management.
+
+servers:
+  - url: /api/config
+
+paths:
+  /contracts-version:
+    get:
+      summary: Get supported contracts version
+      operationId: getContractsVersion
+      responses:
+        '200':
+          description: Version information
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  contracts_version:
+                    type: string
+                    example: "1.2.3"
+                  config_version_supported:
+                    type: array
+                    items:
+                      type: string
+                    example: ["1.0"]
+
+  /schema:
+    get:
+      summary: Get the active JSON Schema
+      operationId: getSchema
+      responses:
+        '200':
+          description: The full JSON Schema draft-07 document
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /validate:
+    post:
+      summary: Validate configuration object
+      operationId: validateConfig
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [config]
+              properties:
+                config:
+                  type: object
+                strict:
+                  type: boolean
+                  default: true
+      responses:
+        '200':
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  valid:
+                    type: boolean
+                  errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ValidationError'
+                  normalized_config:
+                    type: object
+                    nullable: true
+        '413':
+            $ref: '#/components/responses/RequestTooLarge'
+        '429':
+            $ref: '#/components/responses/RateLimited'
+
+  /normalize:
+    post:
+      summary: Canonicalize configuration
+      operationId: normalizeConfig
+      description: Returns JCS-canonical JSON and its SHA256 digest.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [config]
+              properties:
+                config:
+                  type: object
+      responses:
+        '200':
+          description: Normalization result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  normalized_config:
+                    type: object
+                  config_digest:
+                    type: string
+                    pattern: "^[a-f0-9]{64}$"
+                    example: "d04b98f48e8f8bcc15c6ae5ac050801cd6dcfd428fb5f9e65c4e16e7807340fa"
+
+  /drafts:
+    post:
+      summary: Create a new draft
+      operationId: createDraft
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [config]
+              properties:
+                config:
+                  type: object
+                note:
+                  type: string
+      responses:
+        '200':
+          description: Draft created (or idempotent replay)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DraftMetadata'
+        '409':
+           $ref: '#/components/responses/Conflict'
+
+  /publish:
+    post:
+      summary: Publish a draft as active
+      operationId: publishDraft
+      parameters:
+         - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/json:
+             schema:
+               type: object
+               required: [draft_id]
+               properties:
+                 draft_id:
+                   type: string
+      responses:
+         '200':
+           description: Published successfully
+           content:
+             application/json:
+               schema:
+                 type: object
+                 properties:
+                    active_config_id:
+                      type: string
+                    active_config_digest:
+                      type: string
+
+  /history:
+    get:
+      summary: List config history
+      operationId: listHistory
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+            default: 50
+        - name: cursor
+          in: query
+          description: Opaque pagination cursor
+          schema:
+            type: string
+      responses:
+        '200':
+          description: History page
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                   items:
+                     type: array
+                     items:
+                       $ref: '#/components/schemas/ConfigRecord'
+                   next_cursor:
+                     type: string
+                     nullable: true
+                   has_more:
+                     type: boolean
+
+  /export:
+    post:
+       summary: Export configuration
+       operationId: exportConfig
+       requestBody:
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 source:
+                   type: string
+                   enum: [active, draft]
+                   default: active
+                 id:
+                   type: string
+                 format:
+                   type: string
+                   enum: [json, yaml]
+                   default: yaml
+                 redacted:
+                   type: boolean
+                   default: true
+       responses:
+         '200':
+           description: Exported file content
+           content:
+             application/json:
+               schema:
+                 type: object
+                 properties:
+                   content:
+                     type: string
+                   filename:
+                     type: string
+                   content_type:
+                     type: string
+
+  /health:
+      get:
+          summary: Health and metadata
+          operationId: healthCheck
+          responses:
+              '200':
+                  description: Service health
+                  content:
+                      application/json:
+                          schema:
+                              type: object
+                              properties:
+                                  status: { type: string, enum: [ok, degraded] }
+                                  contracts_version: { type: string }
+                                  version: { type: string }
+
+components:
+  parameters:
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema:
+        type: string
+        minLength: 10
+
+  schemas:
+    ValidationError:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          enum: [SCHEMA_VALIDATION_FAILED, REQUEST_TOO_LARGE, RATE_LIMITED]
+        message:
+          type: string
+        path:
+          type: string
+          description: JSON pointer to invalid field
+        
+    DraftMetadata:
+      type: object
+      required: [draft_id, config_digest, created_at]
+      properties:
+        draft_id: { type: string }
+        config_digest: { type: string }
+        created_at: { type: string, format: date-time }
+
+    ConfigRecord:
+      type: object
+      properties:
+         id: { type: string }
+         config_digest: { type: string }
+         created_at: { type: string, format: date-time }
+         redacted_config: { type: object }
+
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code: { type: string }
+            message: { type: string }
+            trace_id: { type: string }
+            details: { type: object }
+
+  responses:
+    RequestTooLarge:
+      description: Payload exceeds 256KB
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    RateLimited:
+      description: Too many requests
+      content:
+         application/json:
+           schema:
+             $ref: '#/components/schemas/Error'
+    Conflict:
+       description: Idempotency key conflict
+       content:
+           application/json:
+               schema:
+                   $ref: '#/components/schemas/Error'

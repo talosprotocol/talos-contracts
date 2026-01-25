@@ -1,0 +1,17 @@
+config_version: "1.0"
+global:
+  env: local
+  region: us-east-1
+  log_level: INFO
+
+gateway:
+  port: 8000
+  host: 0.0.0.0
+  disable_auth: true
+
+audit:
+  storage_backend: memory
+  retention_days: 1
+
+mcp_connector:
+  allowed_servers: []
