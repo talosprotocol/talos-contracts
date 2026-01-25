@@ -74,3 +74,5 @@ export {
 
 // Evidence bundle creation
 export { createEvidenceBundle } from "./domain/logic/evidence-bundle.js";
+
+export const VERSION = "1.2.0";
