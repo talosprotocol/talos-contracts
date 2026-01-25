@@ -3,6 +3,15 @@
     "action_request.schema.json",
     "supervisor_decision.schema.json",
     "tool_call.schema.json",
-    "tool_effect.schema.json"
+    "tool_effect.schema.json",
+    "execution_log_entry.schema.json",
+    "execution_state.schema.json",
+    "execution_checkpoint.schema.json",
+    "governance.authorize.v1.request.schema.json",
+    "governance.authorize.v1.response.schema.json",
+    "governance.log.v1.request.schema.json",
+    "governance.log.v1.response.schema.json",
+    "governance.recover.v1.request.schema.json",
+    "governance.recover.v1.response.schema.json"
   ]
 }

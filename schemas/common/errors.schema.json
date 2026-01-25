@@ -1,0 +1,65 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://talosprotocol.com/schemas/common/errors.schema.json",
+    "title": "Talos Shared Error Envelope",
+    "description": "Standard error shape for all Talos components with retryability support",
+    "type": "object",
+    "required": [
+        "code",
+        "message",
+        "retryable"
+    ],
+    "properties": {
+        "code": {
+            "type": "string",
+            "description": "Error code for programmatic handling",
+            "enum": [
+                "TALOS_DENIED",
+                "TALOS_INVALID_CAPABILITY",
+                "TALOS_PROTOCOL_MISMATCH",
+                "TALOS_FRAME_INVALID",
+                "TALOS_CRYPTO_ERROR",
+                "TALOS_INVALID_INPUT",
+                "TALOS_TRANSPORT_TIMEOUT",
+                "TALOS_TRANSPORT_ERROR",
+                "RBAC_DENIED",
+                "AUTH_REVOKED",
+                "AUTH_EXPIRED",
+                "AUTH_INVALID_SIGNATURE",
+                "NOT_FOUND",
+                "INTERNAL",
+                "TGA_INVALID_SIGNATURE",
+                "TGA_TOKEN_EXPIRED",
+                "TGA_CONSTRAINT_MISMATCH",
+                "TGA_SCHEMA_INVALID",
+                "TGA_RATE_LIMITED",
+                "TGA_EVENT_TOO_LARGE",
+                "TGA_HASH_CHAIN_BROKEN",
+                "TGA_DB_UNAVAILABLE"
+            ]
+        },
+        "message": {
+            "type": "string",
+            "description": "Human-readable message (non-empty, user-safe)",
+            "minLength": 1
+        },
+        "details": {
+            "type": "object",
+            "description": "Additional structured context (optional)",
+            "additionalProperties": true
+        },
+        "retryable": {
+            "type": "boolean",
+            "description": "Indicates if the operation can be safely retried"
+        },
+        "request_id": {
+            "type": "string",
+            "description": "Correlation ID if available (optional)"
+        },
+        "cause": {
+            "type": "string",
+            "description": "Underlying error message or details (optional)"
+        }
+    },
+    "additionalProperties": false
+}

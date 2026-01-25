@@ -27,30 +27,29 @@
     "schema_version": {
       "const": "tga.v1"
     },
-    "trace_id": {
-      "$ref": "#/$defs/uuidv7"
-    },
-    "plan_id": {
-      "$ref": "#/$defs/uuidv7"
-    },
-    "tool_call_id": {
-      "$ref": "#/$defs/uuidv7"
-    },
-    "supervisor_decision_id": {
-      "$ref": "#/$defs/uuidv7"
-    },
+    "trace_id": { "$ref": "../../common/uuidv7.schema.json" },
+    "plan_id": { "$ref": "../../common/uuidv7.schema.json" },
+    "tool_call_id": { "$ref": "../../common/uuidv7.schema.json" },
+    "session_id": { "$ref": "../../common/uuidv7.schema.json" },
+    "supervisor_decision_id": { "$ref": "../../common/uuidv7.schema.json" },
     "supervisor_decision_digest": {
       "type": "string",
-      "pattern": "^[0-9a-f]{64}$",
-      "description": "Digest of the SupervisorDecision that authorized this call."
+      "pattern": "^[a-zA-Z0-9_-]{43,44}$",
+      "description": "base64url SHA-256 of the SupervisorDecision that authorized this call."
     },
     "capability_digest": {
       "type": "string",
-      "pattern": "^[0-9a-f]{64}$",
-      "description": "Digest of the specific capability being exercised."
+      "pattern": "^[a-zA-Z0-9_-]{43,44}$",
+      "description": "base64url SHA-256 of the specific capability being exercised."
+    },
+    "args_digest": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{43,44}$",
+      "description": "base64url SHA-256 of the canonical tool arguments."
     },
     "ts": {
-      "$ref": "#/$defs/rfc3339_utc_ms"
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{3})?Z$"
     },
     "call": {
       "type": "object",
@@ -80,8 +79,8 @@
           },
           "hash": {
             "type": "string",
-            "pattern": "^[0-9a-f]{64}$",
-            "description": "SHA-256 lowercase hex"
+            "pattern": "^[a-zA-Z0-9_-]{43,44}$",
+            "description": "base64url SHA-256"
           }
         }
       },
@@ -92,11 +91,7 @@
       "minimum": 0,
       "description": "Total bytes across all document paths (executor-filled)"
     },
-    "idempotency_key": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 255
-    },
+    "idempotency_key": { "$ref": "../../common/uuidv7.schema.json" },
     "meta": {
       "type": "object",
       "additionalProperties": {
@@ -108,7 +103,7 @@
     },
     "_digest": {
       "type": "string",
-      "pattern": "^[0-9a-f]{64}$"
+      "pattern": "^[a-zA-Z0-9_-]{43,44}$"
     }
   },
   "$defs": {

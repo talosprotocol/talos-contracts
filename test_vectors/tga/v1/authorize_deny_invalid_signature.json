@@ -1,0 +1,24 @@
+{
+  "name": "authorize_deny_invalid_signature",
+  "description": "Authorization denied due to invalid cryptographic signature",
+  "input": {
+    "principal_id": "018d0a5a-5a5a-7a5a-8a5a-5a5a5a5a5a5a",
+    "tool_server": "github-server",
+    "tool_name": "create_issue",
+    "args": {
+      "title": "Illegal action",
+      "body": "Delete all repos"
+    },
+    "capability_token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3Qta2V5In0.eyJzdWIiOiIwMThkMGE1YS01YTVhLTdhNWEtOGE1YS01YTVhNWE1YTVhbiIsImV4cCI6MTc0MDY5NjM2MCwiYWxsb3dlZF90b29sX3NlcnZlciI6ImdpdGh1Yi1zZXJ2ZXIiLCJhbGxvd2VkX3Rvb2xfbmFtZSI6ImNyZWF0ZV9pc3N1ZSIsImFyZ3N_Y29uc3RyYWludHMiOnsiZGlnZXN0X2FsbG93bGlzdCI6WyJ4X19fIl19LCJqdGkiOiJtYWxpY2lvdXMtanR5In0.tampered_signature_placeholder_exactly_43_chars"
+  },
+  "expected": {
+    "error": {
+      "code": "TGA_INVALID_SIGNATURE",
+      "message": "Cryptographic signature verification failed",
+      "retryable": false,
+      "details": {
+        "reason": "Signature mismatch"
+      }
+    }
+  }
+}

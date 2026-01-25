@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://talosprotocol.com/schemas/tga/v1/governance.log.v1.request.schema.json",
+  "title": "TGA Log Request (v1)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "trace_id",
+    "principal_id",
+    "seq",
+    "timestamp",
+    "artifact_type",
+    "artifact_data",
+    "prev_entry_digest"
+  ],
+  "properties": {
+    "trace_id": { "$ref": "../../common/uuidv7.schema.json" },
+    "principal_id": { "$ref": "../../common/uuidv7.schema.json" },
+    "seq": { 
+      "type": "integer",
+      "minimum": 1,
+      "description": "Strictly monotonic sequence number per trace_id."
+    },
+    "timestamp": { 
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{3})?Z$",
+      "description": "UTC ISO 8601 timestamp."
+    },
+    "artifact_type": { 
+      "type": "string",
+      "enum": ["action_request", "supervisor_decision", "tool_call", "tool_effect"]
+    },
+    "artifact_data": { 
+      "type": "object",
+      "description": "Unredacted artifact data. Server will redact before storage."
+    },
+    "idempotency_key": { "$ref": "../../common/uuidv7.schema.json" },
+    "prev_entry_digest": { 
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{43,44}$",
+      "description": "base64url encoded SHA-256 of the previous entry. Genesis uses all zeros."
+    }
+  }
+}

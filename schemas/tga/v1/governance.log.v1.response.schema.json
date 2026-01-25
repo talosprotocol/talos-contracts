@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://talosprotocol.com/schemas/tga/v1/governance.log.v1.response.schema.json",
+  "title": "TGA Log Response (v1)",
+  "type": "object",
+  "properties": {
+    "entry": { "$ref": "execution_log_entry.schema.json" },
+    "error": { "$ref": "../../common/errors.schema.json" }
+  },
+  "additionalProperties": false,
+  "oneOf": [
+    { "required": ["entry"] },
+    { "required": ["error"] }
+  ]
+}

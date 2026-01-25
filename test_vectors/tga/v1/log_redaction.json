@@ -1,0 +1,46 @@
+{
+  "name": "log_redaction",
+  "description": "Ensures server redacts sensitive data before digesting and storing the log entry",
+  "input": {
+    "trace_id": "018d0a5a-5a5a-7a5a-8a5a-5a5a5a5a5a5a",
+    "principal_id": "018d0a5a-5a5a-7a5a-8a5a-5a5a5a5a5a5a",
+    "seq": 4,
+    "timestamp": "2026-01-24T15:05:00.000Z",
+    "artifact_type": "tool_call",
+    "artifact_data": {
+      "tool_server": "secrets-server",
+      "tool_name": "get_secret",
+      "args": {
+        "api_key": "secret-key-12345"
+      }
+    },
+    "idempotency_key": "018d0a5a-5a60-7a5a-8a5a-5a5a5a5a5a60",
+    "prev_entry_digest": "cHJldl9kaWdlc3RfX19fX19fX19fX19fX19fX19fX19fX18"
+  },
+  "expected": {
+    "entry": {
+      "schema_id": "talos.tga.execution_log_entry",
+      "schema_version": "v1",
+      "trace_id": "018d0a5a-5a5a-7a5a-8a5a-5a5a5a5a5a5a",
+      "principal_id": "018d0a5a-5a5a-7a5a-8a5a-5a5a5a5a5a5a",
+      "seq": 4,
+      "ts": "2026-01-24T15:05:00.000Z",
+      "prev_entry_digest": "cHJldl9kaWdlc3RfX19fX19fX19fX19fX19fX19fX19fX18",
+      "artifact_type": "tool_call",
+      "from_state": "AUTHORIZED",
+      "to_state": "EXECUTING",
+      "artifact_data": {
+        "tool_server": "secrets-server",
+        "tool_name": "get_secret",
+        "args": {
+          "api_key": "[REDACTED]"
+        }
+      },
+      "artifact_id": "018d0a5a-5a61-7a5a-8a5a-5a5a5a5a5a61",
+      "artifact_digest": "YXJ0aWZhY3RfZGlnZXN0X3JlZGFjdGVkX19fX19fX19fX18",
+      "tool_call_id": "018d0a5a-5a61-7a5a-8a5a-5a5a5a5a5a61",
+      "idempotency_key": "018d0a5a-5a60-7a5a-8a5a-5a5a5a5a5a60",
+      "entry_digest": "ZW50cnlfZGlnZXN0X2FmdGVyX3JlZGFjdGlvbl9fX19fX18"
+    }
+  }
+}

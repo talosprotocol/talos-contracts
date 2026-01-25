@@ -1,0 +1,41 @@
+{
+  "name": "authorize_session_cache_hit",
+  "description": "Successful authorization reusing an existing session (warm path)",
+  "input": {
+    "principal_id": "018d0a5a-5a5a-7a5a-8a5a-5a5a5a5a5a5a",
+    "tool_server": "github-server",
+    "tool_name": "create_issue",
+    "args": {
+      "title": "Bug report",
+      "body": "System is down"
+    },
+    "session_id": "018d0a5a-5a5d-7a5a-8a5a-5a5a5a5a5a5d"
+  },
+  "expected": {
+    "tool_call": {
+      "schema_id": "talos.tga.tool_call",
+      "schema_version": "tga.v1",
+      "trace_id": "018d0a5a-5a5a-7a5a-8a5a-5a5a5a5a5a5a",
+      "plan_id": "018d0a5a-5a5b-7a5a-8a5a-5a5a5a5a5a5b",
+      "tool_call_id": "018d0a5a-5a5c-7a5a-8a5a-5a5a5a5a5a5c",
+      "session_id": "018d0a5a-5a5d-7a5a-8a5a-5a5a5a5a5a5d",
+      "supervisor_decision_id": "018d0a5a-5a5e-7a5a-8a5a-5a5a5a5a5a5e",
+      "supervisor_decision_digest": "c3VwZXJ2aXNvcl9kZWNpc2lvbl9kaWdlc3RfX19fX19fX18",
+      "capability_digest": "Y2FwYWJpbGl0eV9kaWdlc3RfX19fX19fX19fX19fX19fX18",
+      "args_digest": "eGZxeXhfZHF4eHhfXzQzX2NoYXJzX2RpZ2VzdF9fX19fX19fX18",
+      "ts": "2026-01-24T15:01:00.000Z",
+      "call": {
+        "tool_server": "github-server",
+        "tool_name": "create_issue",
+        "args": {
+          "title": "Bug report",
+          "body": "System is down"
+        }
+      },
+      "tool_class": "write",
+      "idempotency_key": "018d0a5a-5a5f-7a5b-8a5a-5a5a5a5a5a5f",
+      "_digest_alg": "sha256",
+      "_digest": "ZmluYWxfdG9vbF9jYWxsX3dhcm1fcGF0aF9kaWdlc3RfX18"
+    }
+  }
+}

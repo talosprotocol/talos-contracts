@@ -9,7 +9,7 @@
     "schema_id",
     "schema_version",
     "trace_id",
-    "sequence_number",
+    "seq",
     "prev_entry_digest",
     "entry_digest",
     "ts",
@@ -23,29 +23,26 @@
     "schema_id": {
       "const": "talos.tga.execution_log_entry"
     },
-    "schema_version": {
-      "const": "v1"
-    },
-    "trace_id": {
-      "$ref": "#/$defs/uuidv7"
-    },
-    "sequence_number": {
+    "trace_id": { "$ref": "../../common/uuidv7.schema.json" },
+    "principal_id": { "$ref": "../../common/uuidv7.schema.json" },
+    "seq": {
       "type": "integer",
       "minimum": 1,
       "description": "Strictly monotonic sequence number per trace_id. Genesis = 1."
     },
     "prev_entry_digest": {
       "type": "string",
-      "pattern": "^[a-f0-9]{64}$",
-      "description": "SHA-256 of previous entry. Genesis entry uses 64 zeros."
+      "pattern": "^[a-zA-Z0-9_-]{43,44}$",
+      "description": "base64url SHA-256 of previous entry. Genesis entry uses all zeros."
     },
     "entry_digest": {
       "type": "string",
-      "pattern": "^[a-f0-9]{64}$",
-      "description": "SHA-256 of canonical JSON preimage (excluding entry_digest)."
+      "pattern": "^[a-zA-Z0-9_-]{43,44}$",
+      "description": "base64url SHA-256 of canonical JSON preimage (excluding entry_digest)."
     },
     "ts": {
-      "$ref": "#/$defs/rfc3339_utc_ms"
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{3})?Z$"
     },
     "from_state": {
       "$ref": "#/$defs/execution_state_enum"
@@ -58,28 +55,37 @@
       "enum": ["action_request", "supervisor_decision", "tool_call", "tool_effect"],
       "description": "Type of TGA artifact that triggered this transition."
     },
+    "artifact_data": {
+      "type": "object",
+      "description": "Redacted artifact data."
+    },
     "artifact_id": {
-      "$ref": "#/$defs/uuidv7",
+      "$ref": "../../common/uuidv7.schema.json",
       "description": "ID of the artifact (AR, SD, TC, or TE)."
     },
     "artifact_digest": {
       "type": "string",
-      "pattern": "^[a-f0-9]{64}$",
-      "description": "SHA-256 digest of the artifact."
+      "pattern": "^[a-zA-Z0-9_-]{43,44}$",
+      "description": "base64url SHA-256 digest of the artifact (unredacted or redacted depending on security policy, usually unredacted for internal integrity)."
     },
     "tool_call_id": {
       "oneOf": [
-        { "$ref": "#/$defs/uuidv7" },
+        { "$ref": "../../common/uuidv7.schema.json" },
         { "type": "null" }
       ],
       "description": "Present for tool_call and tool_effect entries."
     },
     "idempotency_key": {
       "oneOf": [
-        { "type": "string", "minLength": 1, "maxLength": 255 },
+        { "$ref": "../../common/uuidv7.schema.json" },
         { "type": "null" }
       ],
       "description": "Present for write-class tool_call and tool_effect entries."
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "v1",
+      "description": "Entry schema version for self-description."
     }
   },
   "$defs": {

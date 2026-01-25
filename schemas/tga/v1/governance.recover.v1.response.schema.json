@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://talosprotocol.com/schemas/tga/v1/governance.recover.v1.response.schema.json",
+  "title": "TGA Recover Response (v1)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "chain_valid",
+    "latest_entry_digest",
+    "entry_count",
+    "last_seq",
+    "recommended_action",
+    "re_dispatch_required"
+  ],
+  "properties": {
+    "chain_valid": { 
+      "type": "boolean",
+      "description": "True if the hash chain is fully intact up to the latest entry."
+    },
+    "divergence_point": { 
+      "type": "string",
+      "description": "The first sequence number or digest where a mismatch was detected."
+    },
+    "latest_entry_digest": { 
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{43,44}$",
+      "description": "The digest of the most recent valid entry."
+    },
+    "entry_count": { 
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total number of log entries for this trace."
+    },
+    "last_seq": { 
+      "type": "integer",
+      "minimum": 0,
+      "description": "Final sequence number in the log."
+    },
+    "missing_seq_ranges": { 
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["start_seq", "end_seq"],
+        "properties": {
+          "start_seq": { "type": "integer" },
+          "end_seq": { "type": "integer" }
+        }
+      },
+      "description": "Gaps detected in the sequence numbers."
+    },
+    "recommended_action": { 
+      "type": "string",
+      "enum": ["NONE", "REPLAY_FROM_DIVERGENCE", "FULL_REPLAY"],
+      "description": "Diagnostic recommendation for the Gateway."
+    },
+    "re_dispatch_required": { 
+      "type": "boolean",
+      "description": "Derived from recommended_action. True if client should resubmit."
+    }
+  }
+}
