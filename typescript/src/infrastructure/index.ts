@@ -7,6 +7,6 @@ export {
   base64urlDecodeToBytes,
   base64urlEncodeUtf8,
   base64urlDecodeToUtf8,
-} from "./base64url.js";
+} from "./base64url";
 
-export { isUuidV7, isCanonicalLowerUuid } from "./uuidv7.js";
+export { isUuidV7, isCanonicalLowerUuid } from "./uuidv7";

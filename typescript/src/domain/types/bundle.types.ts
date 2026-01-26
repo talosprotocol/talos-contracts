@@ -6,7 +6,7 @@ import type {
   AuditFilters,
   Outcome,
   RedactionLevel,
-} from "./event.types.js";
+} from "./event.types";
 
 export interface EvidenceBundleMetadata {
   schema_version: string;
@@ -47,5 +47,5 @@ export interface ContinuityCheckResult {
 }
 
 // Re-export for convenience (needed by EvidenceBundle)
-import type { GatewayStatus } from "./event.types.js";
+import type { GatewayStatus } from "./event.types";
 export type { GatewayStatus };

@@ -11,4 +11,4 @@ export {
   base64urlDecodeToBytes,
   base64urlEncodeUtf8,
   base64urlDecodeToUtf8,
-} from "./infrastructure/base64url.js";
+} from "./infrastructure/base64url";

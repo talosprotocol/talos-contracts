@@ -1,0 +1,107 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talosprotocol.com/schemas/config/v1/talos.config.schema.json",
+  "title": "Talos Configuration Schema v1.0",
+  "description": "Canonical configuration schema for Talos Protocol services.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["config_version", "global"],
+  "properties": {
+    "config_version": {
+      "type": "string",
+      "const": "1.0",
+      "description": "Schema version of the configuration file."
+    },
+    "contracts_version": {
+      "type": "string",
+      "description": "Informational version of the contracts library used to generate this config."
+    },
+    "global": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "env": {
+          "type": "string",
+          "enum": ["local", "dev", "test", "prod"],
+          "default": "local"
+        },
+        "region": {
+          "type": "string",
+          "default": "us-east-1"
+        },
+        "log_level": {
+          "type": "string",
+          "enum": ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+          "default": "INFO"
+        }
+      }
+    },
+    "gateway": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "port": {
+          "type": "integer",
+          "minimum": 1024,
+          "maximum": 65535,
+          "default": 8000
+        },
+        "host": {
+          "type": "string",
+          "default": "0.0.0.0"
+        },
+        "database_url_ref": {
+          "type": "string",
+          "description": "Reference to the database connection string secret."
+        },
+        "disable_auth": {
+            "type": "boolean",
+            "default": false,
+            "description": "Only allowed in dev mode."
+        }
+      }
+    },
+    "audit": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "storage_backend": {
+            "type": "string",
+            "enum": ["postgres", "sqlite", "memory"],
+            "default": "postgres"
+        },
+        "database_url_ref": {
+            "type": "string",
+            "description": "Reference to the database connection string secret."
+        },
+        "retention_days": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 365
+        }
+      }
+    },
+    "mcp_connector": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+            "allowed_servers": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "format": "uri"
+                }
+            },
+            "signing_key_ref": {
+                "type": "string",
+                "description": "Reference to the Ed25519 signing key for tool calls."
+            }
+        }
+    },
+    "extensions": {
+        "type": "object",
+        "description": "Reserved for future extensions without breaking strict validation.",
+        "additionalProperties": true
+    }
+  }
+}

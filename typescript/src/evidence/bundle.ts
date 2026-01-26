@@ -5,16 +5,16 @@
 /**
  * @deprecated Import from '@talosprotocol/contracts' root instead.
  */
-export { createEvidenceBundle } from "../domain/logic/evidence-bundle.js";
+export { createEvidenceBundle } from "../domain/logic/evidence-bundle";
 
 export type {
   AuditEvent,
   GatewayStatus,
   RedactionLevel,
-} from "../domain/types/event.types.js";
+} from "../domain/types/event.types";
 
 export type {
   EvidenceBundle,
   EvidenceBundleMetadata,
   IntegritySummary,
-} from "../domain/types/bundle.types.js";
+} from "../domain/types/bundle.types";

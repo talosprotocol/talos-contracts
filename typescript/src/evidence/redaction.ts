@@ -8,6 +8,6 @@
 export {
   redactEvent,
   redactGatewaySnapshot,
-} from "../domain/logic/redaction.js";
+} from "../domain/logic/redaction";
 
-export type { RedactionLevel } from "../domain/types/event.types.js";
+export type { RedactionLevel } from "../domain/types/event.types";

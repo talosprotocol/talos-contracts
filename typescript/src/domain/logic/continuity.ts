@@ -1,11 +1,11 @@
 // src/domain/logic/continuity.ts
 // Cursor continuity checking
 
-import { compareCursor } from "./cursor.js";
+import { compareCursor } from "./cursor";
 import type {
   CursorGap,
   ContinuityCheckResult,
-} from "../types/bundle.types.js";
+} from "../types/bundle.types";
 
 /**
  * Check cursor continuity based on contract-defined rules.

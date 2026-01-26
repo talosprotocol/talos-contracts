@@ -14,9 +14,9 @@ export {
   base64urlDecodeToBytes,
   base64urlEncodeUtf8,
   base64urlDecodeToUtf8,
-} from "./infrastructure/base64url.js";
+} from "./infrastructure/base64url";
 
-export { isUuidV7, isCanonicalLowerUuid } from "./infrastructure/uuidv7.js";
+export { isUuidV7, isCanonicalLowerUuid } from "./infrastructure/uuidv7";
 
 // ============================================================================
 // Domain Types
@@ -27,7 +27,7 @@ export type {
   CursorValidationReason,
   CursorValidationResult,
   DecodedCursor,
-} from "./domain/types/cursor.types.js";
+} from "./domain/types/cursor.types";
 
 // Event types
 export type {
@@ -37,7 +37,7 @@ export type {
   RedactionLevel,
   AuditFilters,
   Comparator,
-} from "./domain/types/event.types.js";
+} from "./domain/types/event.types";
 
 // Bundle types
 export type {
@@ -46,7 +46,7 @@ export type {
   EvidenceBundle,
   CursorGap,
   ContinuityCheckResult,
-} from "./domain/types/bundle.types.js";
+} from "./domain/types/bundle.types";
 
 // ============================================================================
 // Domain Logic
@@ -58,21 +58,21 @@ export {
   decodeCursor,
   compareCursor,
   assertCursorInvariant,
-} from "./domain/logic/cursor.js";
+} from "./domain/logic/cursor";
 
 // Continuity checking
-export { checkCursorContinuity } from "./domain/logic/continuity.js";
+export { checkCursorContinuity } from "./domain/logic/continuity";
 
 // Event ordering
-export { orderingCompare } from "./domain/logic/ordering.js";
+export { orderingCompare } from "./domain/logic/ordering";
 
 // Redaction
 export {
   redactEvent,
   redactGatewaySnapshot,
-} from "./domain/logic/redaction.js";
+} from "./domain/logic/redaction";
 
 // Evidence bundle creation
-export { createEvidenceBundle } from "./domain/logic/evidence-bundle.js";
+export { createEvidenceBundle } from "./domain/logic/evidence-bundle";
 
 export const VERSION = "1.2.0";

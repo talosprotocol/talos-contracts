@@ -5,4 +5,4 @@
 /**
  * @deprecated Import from '@talosprotocol/contracts' root instead.
  */
-export { isUuidV7, isCanonicalLowerUuid } from "./infrastructure/uuidv7.js";
+export { isUuidV7, isCanonicalLowerUuid } from "./infrastructure/uuidv7";

@@ -5,9 +5,9 @@
 /**
  * @deprecated Import from '@talosprotocol/contracts' root instead.
  */
-export { checkCursorContinuity } from "../domain/logic/continuity.js";
+export { checkCursorContinuity } from "../domain/logic/continuity";
 
 export type {
   CursorGap,
   ContinuityCheckResult,
-} from "../domain/types/bundle.types.js";
+} from "../domain/types/bundle.types";

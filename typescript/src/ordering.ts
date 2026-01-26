@@ -5,4 +5,4 @@
 /**
  * @deprecated Import from '@talosprotocol/contracts' root instead.
  */
-export { orderingCompare } from "./domain/logic/ordering.js";
+export { orderingCompare } from "./domain/logic/ordering";

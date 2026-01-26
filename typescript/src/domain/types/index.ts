@@ -5,7 +5,7 @@ export type {
   CursorValidationReason,
   CursorValidationResult,
   DecodedCursor,
-} from "./cursor.types.js";
+} from "./cursor.types";
 
 export type {
   AuditEvent,
@@ -14,7 +14,7 @@ export type {
   RedactionLevel,
   AuditFilters,
   Comparator,
-} from "./event.types.js";
+} from "./event.types";
 
 export type {
   EvidenceBundleMetadata,
@@ -22,4 +22,4 @@ export type {
   EvidenceBundle,
   CursorGap,
   ContinuityCheckResult,
-} from "./bundle.types.js";
+} from "./bundle.types";

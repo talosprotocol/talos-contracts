@@ -5,7 +5,7 @@ import type {
   AuditEvent,
   GatewayStatus,
   RedactionLevel,
-} from "../types/event.types.js";
+} from "../types/event.types";
 
 export function redactEvent(
   event: AuditEvent,

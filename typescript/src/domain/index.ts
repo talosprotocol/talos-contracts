@@ -17,7 +17,7 @@ export type {
   EvidenceBundle,
   CursorGap,
   ContinuityCheckResult,
-} from "./types/index.js";
+} from "./types/index";
 
 // Logic
 export {
@@ -30,6 +30,6 @@ export {
   redactEvent,
   redactGatewaySnapshot,
   createEvidenceBundle,
-} from "./logic/index.js";
+} from "./logic/index";
 
-export type { CreateEvidenceBundleParams } from "./logic/index.js";
+export type { CreateEvidenceBundleParams } from "./logic/index";

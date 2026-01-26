@@ -6,13 +6,13 @@ export {
   decodeCursor,
   compareCursor,
   assertCursorInvariant,
-} from "./cursor.js";
+} from "./cursor";
 
-export { checkCursorContinuity } from "./continuity.js";
+export { checkCursorContinuity } from "./continuity";
 
-export { orderingCompare } from "./ordering.js";
+export { orderingCompare } from "./ordering";
 
-export { redactEvent, redactGatewaySnapshot } from "./redaction.js";
+export { redactEvent, redactGatewaySnapshot } from "./redaction";
 
-export { createEvidenceBundle } from "./evidence-bundle.js";
-export type { CreateEvidenceBundleParams } from "./evidence-bundle.js";
+export { createEvidenceBundle } from "./evidence-bundle";
+export type { CreateEvidenceBundleParams } from "./evidence-bundle";

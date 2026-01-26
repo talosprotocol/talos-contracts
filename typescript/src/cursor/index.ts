@@ -10,10 +10,10 @@ export {
   decodeCursor,
   compareCursor,
   assertCursorInvariant,
-} from "../domain/logic/cursor.js";
+} from "../domain/logic/cursor";
 
 export type {
   CursorValidationReason,
   CursorValidationResult,
   DecodedCursor,
-} from "../domain/types/cursor.types.js";
+} from "../domain/types/cursor.types";

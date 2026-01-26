@@ -5,12 +5,12 @@
 import {
   base64urlDecodeToUtf8,
   base64urlEncodeUtf8,
-} from "../../infrastructure/base64url.js";
-import { isUuidV7, isCanonicalLowerUuid } from "../../infrastructure/uuidv7.js";
+} from "../../infrastructure/base64url";
+import { isUuidV7, isCanonicalLowerUuid } from "../../infrastructure/uuidv7";
 import type {
   CursorValidationResult,
   DecodedCursor,
-} from "../types/cursor.types.js";
+} from "../types/cursor.types";
 
 function isValidUnixSecondsInt(n: unknown): n is number {
   return (

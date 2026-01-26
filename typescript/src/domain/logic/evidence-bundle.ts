@@ -1,19 +1,19 @@
 // src/domain/logic/evidence-bundle.ts
 // Evidence bundle creation - pure deterministic transformation
 
-import { compareCursor } from "./cursor.js";
-import { redactEvent, redactGatewaySnapshot } from "./redaction.js";
+import { compareCursor } from "./cursor";
+import { redactEvent, redactGatewaySnapshot } from "./redaction";
 import type {
   AuditEvent,
   GatewayStatus,
   RedactionLevel,
   AuditFilters,
   Outcome,
-} from "../types/event.types.js";
+} from "../types/event.types";
 import type {
   EvidenceBundle,
   IntegritySummary,
-} from "../types/bundle.types.js";
+} from "../types/bundle.types";
 
 export interface CreateEvidenceBundleParams {
   events: AuditEvent[];
