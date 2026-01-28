@@ -60,3 +60,4 @@ Thumbs.db
 conformance.xml
 junit.xml
 artifacts/
+verify_output*.txt

@@ -1,0 +1,46 @@
+
+{
+  "registry_version": "1.0.0",
+  "tools": [
+    {
+      "tool_server": "filesystem",
+      "tool_name": "read_file",
+      "tool_class": "read",
+      "read_replay_safe": true,
+      "requires_idempotency_key": false,
+      "doc_outputs": ["/content"],
+      "doc_policy": {
+        "max_size_bytes": 1048576
+      }
+    },
+    {
+      "tool_server": "filesystem",
+      "tool_name": "write_file",
+      "tool_class": "write",
+      "read_replay_safe": false,
+      "requires_idempotency_key": true,
+      "doc_inputs": ["/content"],
+      "doc_policy": {
+        "max_size_bytes": 1048576
+      }
+    },
+    {
+      "tool_server": "filesystem",
+      "tool_name": "list_directories",
+      "tool_class": "read",
+      "read_replay_safe": true,
+      "requires_idempotency_key": false
+    },
+    {
+      "tool_server": "fetch",
+      "tool_name": "fetch",
+      "tool_class": "read",
+      "read_replay_safe": true,
+      "requires_idempotency_key": false,
+      "doc_outputs": ["/content"],
+      "doc_policy": {
+        "max_size_bytes": 1048576
+      }
+    }
+  ]
+}

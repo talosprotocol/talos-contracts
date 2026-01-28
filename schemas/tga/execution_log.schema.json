@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.security/schemas/tga/execution_log.schema.json",
+  "title": "Talos TGA Execution Log Entry",
+  "description": "Schema for append-only execution tracelog entries with normative hashing requirements.",
+  "type": "object",
+  "required": [
+    "trace_id",
+    "sequence_number",
+    "type",
+    "ts",
+    "entry_digest"
+  ],
+  "properties": {
+    "trace_id": {
+      "type": "string",
+      "description": "Unique UUID for the trace execution."
+    },
+    "sequence_number": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Monotonically increasing sequence number for the trace."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["plan", "tool_call", "tool_effect", "error", "observation"],
+      "description": "Type of execution event."
+    },
+    "payload": {
+      "type": "object",
+      "description": "The event payload (tool args, results, plan steps)."
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp (RFC 3339 UTC Required)."
+    },
+    "prev_entry_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "SHA-256 Hex Digest of the previous entry (or 64 zeros for seq=0)."
+    },
+    "entry_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "The SHA-256 JCS hash of this entry. Preimage: JCS({trace_id, seq, type, payload, ts, prev_digest})."
+    }
+  }
+}
