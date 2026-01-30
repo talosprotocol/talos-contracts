@@ -6,5 +6,8 @@ mypy>=1.0.0
 pytest>=7.0.0
 pytest-cov>=4.0.0
 
+# JSON Canonicalization Scheme (RFC 8785) for test vector generation
+jcs>=0.2.1
+
 # Install the local package in editable mode
 -e python/
