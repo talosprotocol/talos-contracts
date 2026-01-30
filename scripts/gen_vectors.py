@@ -4,20 +4,11 @@ import os
 import hashlib
 import json
 
-# Add parent dir to path to import jcs
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-try:
-    from jcs import canonicalize
-except ImportError:
-    # Fallback if running from wrong CWD
-    sys.path.append(os.path.abspath("contracts"))
-    from jcs import canonicalize
-
+from contracts.jcs import canonicalize
 def sha256_hex(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
-def generate():
+def generate() -> None:
     vectors = []
 
     # Case 1: Simple Tool Call
