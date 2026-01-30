@@ -29,3 +29,6 @@ Run the validation script from the root:
 ```bash
 python3 scripts/validate_contracts.py
 ```
+## License
+
+Licensed under the Apache License 2.0. See [LICENSE](LICENSE).
