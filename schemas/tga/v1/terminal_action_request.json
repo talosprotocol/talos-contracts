@@ -1,0 +1,134 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://talosprotocol.org/schemas/tga/v1/terminal_action_request.json",
+    "title": "TerminalActionRequest",
+    "description": "Action request for terminal operations requiring Supervisor approval",
+    "type": "object",
+    "required": [
+        "agent_id",
+        "risk_level",
+        "proposal",
+        "digest",
+        "signature"
+    ],
+    "properties": {
+        "agent_id": {
+            "type": "string",
+            "format": "uri",
+            "description": "DID of the requesting agent"
+        },
+        "trace_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Links to the LLM thought trace"
+        },
+        "plan_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the agent's plan/goal"
+        },
+        "action_request_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique ID for this request"
+        },
+        "ts": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Request timestamp (ISO 8601)"
+        },
+        "risk_level": {
+            "type": "string",
+            "enum": [
+                "READ",
+                "WRITE",
+                "HIGH_RISK"
+            ],
+            "description": "Risk classification"
+        },
+        "intent": {
+            "type": "string",
+            "description": "Human-readable description of intent"
+        },
+        "resources": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "path",
+                            "network",
+                            "env"
+                        ]
+                    },
+                    "value": {
+                        "type": "string"
+                    }
+                }
+            },
+            "description": "Resources being accessed"
+        },
+        "proposal": {
+            "type": "object",
+            "required": [
+                "tool",
+                "command"
+            ],
+            "properties": {
+                "tool": {
+                    "type": "string",
+                    "const": "terminal:execute"
+                },
+                "command": {
+                    "type": "string",
+                    "description": "Binary to execute"
+                },
+                "args": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Command arguments"
+                },
+                "cwd": {
+                    "type": "string",
+                    "description": "Working directory"
+                }
+            }
+        },
+        "digest": {
+            "type": "string",
+            "description": "SHA-256 hash of the proposal (canonical JSON)"
+        },
+        "signature": {
+            "type": "string",
+            "description": "Ed25519 signature by the Agent Identity"
+        }
+    },
+    "examples": [
+        {
+            "agent_id": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+            "trace_id": "550e8400-e29b-41d4-a716-446655440000",
+            "risk_level": "HIGH_RISK",
+            "intent": "Delete test fixtures directory",
+            "resources": [
+                {
+                    "type": "path",
+                    "value": "/projects/demo/tests/fixtures"
+                }
+            ],
+            "proposal": {
+                "tool": "terminal:execute",
+                "command": "rm",
+                "args": [
+                    "-rf",
+                    "tests/fixtures"
+                ]
+            },
+            "digest": "abc123...",
+            "signature": "def456..."
+        }
+    ]
+}

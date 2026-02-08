@@ -1,0 +1,116 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://talosprotocol.org/schemas/mcp/terminal/v1/scopes.json",
+    "title": "TerminalCapabilityScopes",
+    "description": "Capability scope definitions for the Terminal MCP Adapter",
+    "type": "object",
+    "properties": {
+        "scopes": {
+            "type": "object",
+            "properties": {
+                "terminal:*": {
+                    "type": "object",
+                    "properties": {
+                        "description": {
+                            "const": "Full terminal access (root only)"
+                        },
+                        "risk": {
+                            "const": "HIGH_RISK"
+                        },
+                        "includes": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "const": [
+                                "terminal:read",
+                                "terminal:write",
+                                "terminal:admin"
+                            ]
+                        }
+                    }
+                },
+                "terminal:read": {
+                    "type": "object",
+                    "properties": {
+                        "description": {
+                            "const": "Read-only terminal operations"
+                        },
+                        "risk": {
+                            "const": "READ"
+                        },
+                        "allowed_commands": {
+                            "type": "array",
+                            "const": [
+                                "ls",
+                                "cat",
+                                "head",
+                                "tail",
+                                "grep",
+                                "find",
+                                "pwd",
+                                "which",
+                                "echo",
+                                "git status",
+                                "git log",
+                                "git diff"
+                            ]
+                        }
+                    }
+                },
+                "terminal:write": {
+                    "type": "object",
+                    "properties": {
+                        "description": {
+                            "const": "Reversible write operations"
+                        },
+                        "risk": {
+                            "const": "WRITE"
+                        },
+                        "allowed_commands": {
+                            "type": "array",
+                            "const": [
+                                "mkdir",
+                                "touch",
+                                "cp",
+                                "mv",
+                                "git add",
+                                "git commit",
+                                "npm install",
+                                "pip install",
+                                "cargo build"
+                            ]
+                        }
+                    }
+                },
+                "terminal:admin": {
+                    "type": "object",
+                    "properties": {
+                        "description": {
+                            "const": "Destructive/sensitive operations (requires HIGH_RISK approval)"
+                        },
+                        "risk": {
+                            "const": "HIGH_RISK"
+                        },
+                        "allowed_commands": {
+                            "type": "array",
+                            "const": [
+                                "rm",
+                                "rmdir",
+                                "git push",
+                                "git reset",
+                                "curl",
+                                "wget",
+                                "ssh",
+                                "scp",
+                                "chmod",
+                                "chown",
+                                "sudo"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
