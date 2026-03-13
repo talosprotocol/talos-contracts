@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UcpDiscoverRequest",
+  "description": "Fetches the /.well-known/ucp manifest to discover merchant capabilities.",
+  "type": "object",
+  "required": ["merchant_did"],
+  "properties": {
+    "merchant_did": {
+      "type": "string",
+      "format": "did",
+      "description": "The decentralized identifier of the target merchant."
+    }
+  }
+}

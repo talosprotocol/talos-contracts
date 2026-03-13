@@ -34,8 +34,39 @@
       "properties": {
         "chat": { "type": "boolean" },
         "tools": { "type": "boolean" },
-        "history": { "type": "boolean" }
+        "history": { "type": "boolean" },
+        "ux": {
+          "type": "object",
+          "properties": {
+            "supported_surfaces": {
+              "type": "array",
+              "items": { "type": "string", "enum": ["iframe", "web_view", "native"] }
+            }
+          }
+        },
+        "multimedia": {
+          "type": "object",
+          "properties": {
+            "audio": { "type": "boolean" },
+            "video": { "type": "boolean" }
+          }
+        }
       }
+    },
+    "links": {
+      "type": "object",
+      "properties": {
+        "web": { "type": "string", "format": "uri" },
+        "docs": { "type": "string", "format": "uri" }
+      }
+    },
+    "onboarding": {
+      "type": "string",
+      "description": "Instructions or URL for onboarding."
+    },
+    "privacy_policy": {
+      "type": "string",
+      "format": "uri"
     },
     "auth": {
       "type": "object",
