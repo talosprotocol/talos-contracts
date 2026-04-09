@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/a2a/v1/task_status_update_event.schema.json",
+  "type": "object",
+  "required": ["taskId", "contextId", "status"],
+  "properties": {
+    "taskId": { "type": "string", "minLength": 1 },
+    "contextId": { "type": "string", "minLength": 1 },
+    "status": { "$ref": "task_status.schema.json" },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

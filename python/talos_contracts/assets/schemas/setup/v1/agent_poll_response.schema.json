@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.security/schemas/setup/v1/agent_poll_response.schema.json",
+  "title": "Agent Poll Response",
+  "type": "object",
+  "properties": {
+    "job": {
+      "$ref": "./job_create.schema.json",
+      "description": "New job to execute, or null if no work"
+    },
+    "commands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["command"],
+        "properties": {
+          "command": { 
+             "type": "string", 
+             "enum": ["cancel_job", "shutdown", "rotate_secret"]
+          },
+          "args": { "type": "object" }
+        }
+      },
+      "description": "Control commands from dashboard"
+    }
+  }
+}

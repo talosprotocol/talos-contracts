@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/a2a/v1/group.schema.json",
+  "title": "A2A Multi-Agent Group",
+  "type": "object",
+  "required": ["id", "owner_id", "state", "participants"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "owner_id": { "type": "string", "minLength": 1 },
+    "state": { "enum": ["active", "closed"] },
+    "participants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "role"],
+        "properties": {
+          "id": { "type": "string" },
+          "role": { "enum": ["orchestrator", "worker", "observer"] },
+          "joined_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "metadata": { "type": "object" },
+    "created_at": { "type": "string", "format": "date-time" }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://talosprotocol.com/schemas/tga/v1/governance.authorize.v1.response.schema.json",
+  "title": "TGA Authorize Response (v1)",
+  "type": "object",
+  "properties": {
+    "tool_call": { "$ref": "tool_call.schema.json" },
+    "error": { "$ref": "../../common/errors.schema.json" }
+  },
+  "additionalProperties": false,
+  "oneOf": [
+    { "required": ["tool_call"] },
+    { "required": ["error"] }
+  ]
+}

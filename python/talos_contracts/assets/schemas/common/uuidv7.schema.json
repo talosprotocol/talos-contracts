@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://talosprotocol.com/schemas/common/uuidv7.schema.json",
+  "title": "UUIDv7",
+  "type": "string",
+  "pattern": "^[0-9a-f-]{36}$",
+  "description": "Standard UUIDv7 shape."
+}

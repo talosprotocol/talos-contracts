@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.security/schemas/setup/v1/recipe.schema.json",
+  "title": "Talos Setup Recipe",
+  "description": "Definition of an allowlisted operation that the Setup Helper can execute.",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "description",
+    "type",
+    "parameters"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]+$",
+      "description": "Unique identifier for the recipe (e.g., 'infra.start_all')"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Short description of what this recipe does"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["docker_compose", "scaffold", "script"],
+      "description": "Type of execution engine required"
+    },
+    "parameters": {
+      "type": "object",
+      "description": "Schema definition for allowed parameters (Validation Schema)",
+      "properties": {
+        "properties": { "type": "object" },
+        "required": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "docker_compose": {
+      "type": "object",
+      "properties": {
+        "file": { "type": "string" },
+        "services": { "type": "array", "items": { "type": "string" } }
+      },
+      "description": "Configuration for docker_compose type recipes"
+    }
+  }
+}

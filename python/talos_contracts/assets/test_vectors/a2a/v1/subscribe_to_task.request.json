@@ -1,0 +1,10 @@
+{
+  "jsonrpc": "2.0",
+  "id": "req-subscribe-1",
+  "method": "SubscribeToTask",
+  "params": {
+    "id": "task-stream-1",
+    "historyLength": 1,
+    "includeArtifacts": true
+  }
+}

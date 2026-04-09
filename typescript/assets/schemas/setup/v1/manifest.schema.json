@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.security/schemas/setup/v1/manifest.schema.json",
+  "title": "Recipe Manifest",
+  "type": "object",
+  "required": [
+    "version",
+    "recipes"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Version of the manifest file itself"
+    },
+    "recipes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "version", "description", "digest", "args_schema"],
+        "properties": {
+          "id": { "type": "string" },
+          "version": { "type": "string" },
+          "description": { "type": "string" },
+          "digest": { "type": "string", "description": "SHA256 digest of the recipe definition" },
+          "args_schema": { "type": "object", "description": "JSON Schema for the recipe arguments" },
+          "dangerous": { "type": "boolean", "default": false }
+        }
+      }
+    }
+  }
+}

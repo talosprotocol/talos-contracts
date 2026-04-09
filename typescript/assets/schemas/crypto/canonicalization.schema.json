@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talosprotocol.com/schemas/crypto/canonicalization.schema.json",
+  "title": "Canonicalization Rules",
+  "description": "Rules for deterministic JSON serialization used in cryptographic signing.",
+  "type": "object",
+  "required": ["rules"],
+  "properties": {
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "sorted_keys",
+          "utf8_encoding",
+          "no_whitespace",
+          "integer_normalization",
+          "no_floating_point",
+          "base64url_no_padding"
+        ]
+      },
+      "default": [
+        "sorted_keys",
+        "utf8_encoding",
+        "no_whitespace",
+        "integer_normalization",
+        "base64url_no_padding"
+      ]
+    },
+    "implementation_notes": {
+      "type": "string",
+      "description": "Deterministic JSON (RFC 8785) is the preferred standard."
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "jsonrpc": "1.0",
+  "method": "tasks.send",
+  "id": 1,
+  "params": {}
+}

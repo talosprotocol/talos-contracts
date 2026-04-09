@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/ucp/2026-01-11/platform_profile.schema.json",
+  "title": "UCP Platform Profile",
+  "description": "Schema for the platform profile exposed to merchants",
+  "type": "object",
+  "required": ["version", "id", "signing_keys", "callback_endpoints"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "2026-01-11"
+    },
+    "id": {
+      "type": "string",
+      "description": "Platform Identifier (Talos Instance ID)"
+    },
+    "signing_keys": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "algorithm", "public_key"],
+        "properties": {
+           "id": { "type": "string" },
+           "algorithm": { "type": "string", "enum": ["ES256", "RS256"] },
+           "public_key": { "type": "string" }
+        }
+      }
+    },
+    "callback_endpoints": {
+      "type": "object",
+      "required": ["webhook"],
+      "properties": {
+        "webhook": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    }
+  }
+}

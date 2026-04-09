@@ -1,0 +1,10 @@
+{
+  "jsonrpc": "2.0",
+  "id": "req-list-1",
+  "method": "ListTasks",
+  "params": {
+    "contextId": "ctx-shared",
+    "status": "TASK_STATE_COMPLETED",
+    "pageSize": 1
+  }
+}

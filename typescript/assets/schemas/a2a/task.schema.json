@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/a2a/task.schema.json",
+  "type": "object",
+  "required": ["profile", "task_id", "status", "created_at", "updated_at"],
+  "properties": {
+    "profile": {
+      "$ref": "profile.schema.json"
+    },
+    "task_id": {
+      "type": "string",
+      "description": "Unique identifier, UUIDv7 preferred"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["queued", "running", "completed", "failed", "canceled"]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z|[+-]\\d{2}:\\d{2}$"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z|[+-]\\d{2}:\\d{2}$"
+    },
+    "input": {
+      "type": "array",
+      "items": { "$ref": "message.schema.json" }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": { "$ref": "artifact.schema.json" }
+    },
+    "error": {
+      "$ref": "jsonrpc_error.schema.json"
+    }
+  },
+  "additionalProperties": true
+}

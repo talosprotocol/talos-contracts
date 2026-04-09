@@ -1,0 +1,28 @@
+{
+  "jsonrpc": "2.0",
+  "id": "stream-1",
+  "result": {
+    "statusUpdate": {
+      "taskId": "task-stream-1",
+      "contextId": "ctx-stream-1",
+      "status": {
+        "state": "TASK_STATE_WORKING",
+        "timestamp": "2026-03-13T12:01:00Z",
+        "message": {
+          "messageId": "task-stream-1:status:TASK_STATE_WORKING",
+          "role": "agent",
+          "taskId": "task-stream-1",
+          "contextId": "ctx-stream-1",
+          "parts": [
+            { "text": "Task in progress" }
+          ]
+        }
+      },
+      "metadata": {
+        "eventId": "task-stream-1:2",
+        "final": false,
+        "version": 2
+      }
+    }
+  }
+}

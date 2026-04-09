@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/a2a/v1/task.schema.json",
+  "type": "object",
+  "required": ["id", "contextId", "status", "version"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "version": { "type": "string", "enum": ["1.0"] },
+    "contextId": { "type": "string", "minLength": 1 },
+    "status": { "$ref": "task_status.schema.json" },
+    "history": {
+      "type": "array",
+      "items": { "$ref": "message.schema.json" }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": { "$ref": "artifact.schema.json" }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

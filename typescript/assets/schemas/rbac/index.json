@@ -1,0 +1,12 @@
+{
+  "schemas": [
+    "principal.schema.json",
+    "org.schema.json",
+    "team.schema.json",
+    "role.schema.json",
+    "binding.schema.json",
+    "permission.schema.json",
+    "virtual_key_hashed.schema.json",
+    "secret_ref.schema.json"
+  ]
+}

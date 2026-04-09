@@ -1,0 +1,57 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://talosprotocol.org/schemas/mcp/terminal/v1/execute_response.json",
+    "title": "TerminalExecuteResponse",
+    "description": "Response from terminal:execute tool",
+    "type": "object",
+    "required": [
+        "session_id",
+        "audit_hash"
+    ],
+    "properties": {
+        "session_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Session ID for follow-up reads"
+        },
+        "exit_code": {
+            "type": [
+                "integer",
+                "null"
+            ],
+            "description": "Exit code (null if still running)"
+        },
+        "stdout": {
+            "type": "string",
+            "description": "Captured standard output"
+        },
+        "stderr": {
+            "type": "string",
+            "description": "Captured standard error"
+        },
+        "truncated": {
+            "type": "boolean",
+            "default": false,
+            "description": "True if output exceeded size limit"
+        },
+        "audit_hash": {
+            "type": "string",
+            "description": "SHA-256 hash of this action in the session tree"
+        },
+        "input_required": {
+            "type": "boolean",
+            "default": false,
+            "description": "True if command is awaiting stdin input"
+        }
+    },
+    "examples": [
+        {
+            "session_id": "550e8400-e29b-41d4-a716-446655440000",
+            "exit_code": 0,
+            "stdout": "total 24\ndrwxr-xr-x  5 user  staff  160 Feb  8 10:00 .\n",
+            "stderr": "",
+            "truncated": false,
+            "audit_hash": "abc123def456..."
+        }
+    ]
+}

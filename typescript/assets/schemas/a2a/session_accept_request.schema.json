@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://talosprotocol.com/schemas/a2a/session_accept_request.schema.json",
+  "title": "A2A Session Accept Request",
+  "description": "Request body for POST /a2a/sessions/{id}/accept",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version",
+    "ratchet_state_blob_b64u",
+    "ratchet_state_digest"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "talos.a2a.session_accept_request"
+    },
+    "schema_version": {
+      "const": "v1"
+    },
+    "ratchet_state_blob_b64u": {
+      "$ref": "#/$defs/base64url",
+      "description": "Encrypted ratchet state after accept (base64url)"
+    },
+    "ratchet_state_digest": {
+      "$ref": "#/$defs/sha256_hex",
+      "description": "SHA-256 digest of encrypted ratchet state blob"
+    }
+  },
+  "$defs": {
+    "base64url": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$",
+      "minLength": 1
+    },
+    "sha256_hex": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

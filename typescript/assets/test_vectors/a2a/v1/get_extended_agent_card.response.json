@@ -1,0 +1,58 @@
+{
+  "jsonrpc": "2.0",
+  "id": "card-1",
+  "result": {
+    "name": "Talos AI Gateway",
+    "description": "Talos-secured AI agent gateway with MCP and audit-backed orchestration.",
+    "version": "0.1.0",
+    "provider": {
+      "organization": "Talos Protocol",
+      "url": "https://talosprotocol.com"
+    },
+    "documentationUrl": "https://docs.talosprotocol.com",
+    "supportedInterfaces": [
+      {
+        "url": "https://gateway.example.com/rpc",
+        "protocolBinding": "JSONRPC",
+        "protocolVersion": "1.0"
+      }
+    ],
+    "defaultInputModes": ["text"],
+    "defaultOutputModes": ["text"],
+    "capabilities": {
+      "streaming": true,
+      "pushNotifications": true,
+      "extendedAgentCard": true,
+      "extensions": [
+        {
+          "uri": "https://talosprotocol.com/extensions/a2a/attestation/v1",
+          "description": "Talos attestation headers and request verification metadata."
+        },
+        {
+          "uri": "https://talosprotocol.com/extensions/a2a/secure-channels/v1",
+          "description": "Talos encrypted session and frame transport layered on top of A2A."
+        }
+      ]
+    },
+    "skills": [
+      {
+        "id": "talos-tool-orchestration",
+        "name": "Tool Orchestration",
+        "description": "Execute MCP-backed tasks with Talos audit and policy enforcement.",
+        "tags": ["mcp", "audit", "policy"],
+        "examples": ["Route a tenant-safe MCP tool call and return the audited result."],
+        "inputModes": ["text"],
+        "outputModes": ["text"],
+        "securityRequirements": [{"bearerAuth": []}]
+      }
+    ],
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "API key"
+      }
+    },
+    "securityRequirements": [{"bearerAuth": []}]
+  }
+}

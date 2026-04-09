@@ -1,0 +1,109 @@
+{
+  "tool_call_vectors": [
+    {
+      "description": "Standard Write Tool Call",
+      "input": {
+        "tool_server": "postgres",
+        "tool_name": "execute_query",
+        "capability": {
+          "read_only": false
+        },
+        "args": {
+          "query": "INSERT INTO users VALUES (1)",
+          "params": [
+            1
+          ]
+        }
+      },
+      "digest": "51a9d15fea97ffd6640fba4d3cd4dcb7e726c22a44323d68c7643035ed0a79a3"
+    },
+    {
+      "description": "Standard Read Tool Call",
+      "input": {
+        "tool_server": "postgres",
+        "tool_name": "execute_query",
+        "capability": {
+          "read_only": true
+        },
+        "args": {
+          "query": "SELECT * FROM users"
+        }
+      },
+      "digest": "be24b328b5519ce7f2bf63bcd499c640a27150f6e16f351ebd563daf87499355"
+    },
+    {
+      "description": "Empty Args Tool Call",
+      "input": {
+        "tool_server": "system",
+        "tool_name": "ping",
+        "capability": {
+          "read_only": true
+        },
+        "args": {}
+      },
+      "digest": "521d967cafaf20b90faaf8650740767e67a14c9989fd12403cd6a0e8182d1a5f"
+    }
+  ],
+  "document_vectors": [
+    {
+      "description": "Simple JSON Document",
+      "doc_type": "json",
+      "input": {
+        "foo": "bar",
+        "baz": 123
+      },
+      "digest": "fdf216617c29ad5894de2528e51f783392a864c38ab4d0411a0ac59435621afd"
+    },
+    {
+      "description": "Raw Bytes Document",
+      "doc_type": "bytes",
+      "input_b64": "SGVsbG8gV29ybGQ=",
+      "digest": "a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e"
+    }
+  ],
+  "negative_validation_vectors": [
+    {
+      "description": "Hash Mismatch (Write)",
+      "doc_spec": {
+        "write_content_pointers": ["/data"],
+        "max_write_bytes": 100,
+        "content_encoding": "utf8"
+      },
+      "args": { "data": "test" },
+      "expected_hashes": [
+        { "pointer": "/data", "hash": "badhash" }
+      ],
+      "error_code": "DOC_HASH_MISMATCH"
+    },
+    {
+      "description": "Size Exceeded (Write)",
+      "doc_spec": {
+        "write_content_pointers": ["/data"],
+        "max_write_bytes": 3,
+        "content_encoding": "utf8"
+      },
+      "args": { "data": "test" },
+      "error_code": "DOC_SIZE_EXCEEDED"
+    },
+    {
+      "description": "Invalid Base64 Encoding",
+      "doc_spec": {
+        "write_content_pointers": ["/data"],
+        "max_write_bytes": 100,
+        "content_encoding": "base64"
+      },
+      "args": { "data": "not-base-64!" },
+      "error_code": "DOC_ENCODING_INVALID"
+    },
+    {
+      "description": "Missing Pointer",
+      "doc_spec": {
+        "write_content_pointers": ["/missing"],
+        "max_write_bytes": 100,
+        "content_encoding": "utf8"
+      },
+      "args": { "exists": "true" },
+      "error_code": "DOC_POINTER_INVALID"
+    }
+  ]
+}

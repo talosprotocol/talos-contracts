@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.security/schemas/mcp/tool_registry.schema.json",
+  "title": "Talos MCP Tool Registry",
+  "description": "Registry of allowed MCP tools, their classification (read/write), and security policies.",
+  "type": "object",
+  "required": [
+    "registry_version",
+    "generated_at",
+    "tools"
+  ],
+  "properties": {
+    "registry_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Semantic version of this registry file."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of registry generation (RFC3339 UTC)."
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ToolItem"
+      }
+    }
+  },
+  "definitions": {
+    "ToolItem": {
+      "type": "object",
+      "required": [
+        "tool_server",
+        "tool_name",
+        "tool_class",
+        "requires_idempotency_key"
+      ],
+      "properties": {
+        "tool_server": {
+          "type": "string",
+          "pattern": "^[a-z0-9_-]+$",
+          "description": "Normalized server identifier (lowercase, no spaces)."
+        },
+        "tool_name": {
+          "type": "string",
+          "pattern": "^[a-z0-9_./-]+$",
+          "description": "Normalized tool name (lowercase, dots/slashes allowed)."
+        },
+        "tool_class": {
+          "type": "string",
+          "enum": [
+            "read",
+            "write"
+          ],
+          "description": "Security classification of the tool."
+        },
+        "requires_idempotency_key": {
+          "type": "boolean",
+          "description": "MUST be true if tool_class is 'write'."
+        },
+        "read_replay_safe": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, this read tool is safe to re-execute during recovery."
+        },
+        "doc_policy": {
+          "$ref": "#/definitions/DocPolicy"
+        },
+        "doc_inputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "JSON pointers to document input fields (e.g. '/args/doc')."
+        },
+        "doc_outputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "JSON pointers to document output fields in result."
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "if": {
+        "properties": { "tool_class": { "const": "write" } }
+      },
+      "then": {
+        "properties": { "requires_idempotency_key": { "const": true } },
+        "required": ["requires_idempotency_key"]
+      }
+    },
+    "DocPolicy": {
+      "type": "object",
+      "properties": {
+        "max_size_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "allowed_content_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -32,14 +32,28 @@ Every SDK **MUST** export these constants:
 # Python
 SDK_VERSION = "1.0.0"
 SUPPORTED_PROTOCOL_RANGE = ("1.0", "1.x")
-CONTRACT_MANIFEST_HASH = "sha256:abc123..."
+CONTRACT_MANIFEST_HASH = "AbCdEf123..."
 ```
 
 ```typescript
 // TypeScript
 export const SDK_VERSION = "1.0.0";
 export const SUPPORTED_PROTOCOL_RANGE = ["1.0", "1.x"];
-export const CONTRACT_MANIFEST_HASH = "sha256:abc123...";
+export const CONTRACT_MANIFEST_HASH = "AbCdEf123...";
+```
+
+```go
+// Go
+const SDK_VERSION = "1.0.0"
+var SUPPORTED_PROTOCOL_RANGE = [2]string{"1.0", "1.x"}
+const CONTRACT_MANIFEST_HASH = "AbCdEf123..."
+```
+
+```rust
+// Rust
+pub const SDK_VERSION: &str = "1.0.0";
+pub const SUPPORTED_PROTOCOL_RANGE: (&str, &str) = ("1.0", "1.x");
+pub const CONTRACT_MANIFEST_HASH: &str = "AbCdEf123...";
 ```
 
 ---
@@ -53,7 +67,7 @@ export const CONTRACT_MANIFEST_HASH = "sha256:abc123...";
 
 ### SDK → Contracts
 - SDK pins to a specific contracts version at build time
-- `CONTRACT_MANIFEST_HASH` proves which contract was used
+- `CONTRACT_MANIFEST_HASH` is the Base64URL SHA-256 digest of the canonical `contract_manifest.json`
 - Breaking contract changes require SDK major bump
 
 ---

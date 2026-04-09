@@ -1,0 +1,21 @@
+{
+  "name": "authorize_deny_constraint_mismatch_args",
+  "description": "Authorization denied because the tool arguments do not match token constraints (digest mismatch)",
+  "input": {
+    "principal_id": "018d0a5a-5a5a-7a5a-8a5a-5a5a5a5a5a5a",
+    "tool_server": "github-server",
+    "tool_name": "create_issue",
+    "args": {
+      "title": "Bug report",
+      "body": "Illegal content"
+    },
+    "capability_token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3Qta2V5In0.eyJzdWIiOiIwMThkMGE1YS01YTVhLTdhNWEtOGE1YS01YTVhNWE1YTVhbiIsImFsbG93ZWRfdG9vbF9zZXJ2ZXIiOiJnaXRodWItc2VydmVyIiwiYWxsb3dlZF90b29sX25hbWUiOiJjcmVhdGVfaXNzdWUiLCJhcmdzX2NvbnN0cmFpbnRzIjp7ImRpZ2VzdF9hbGxvd2xpc3QiOlsidGhlX2V4cGVjdGVkX2RpZ2VzdF9fX19fX19fX19fX19fX19fXzQzIl19LCJqdGkiOiJhcmdzLW1pc21hdGNoIn0.sig"
+  },
+  "expected": {
+    "error": {
+      "code": "TGA_CONSTRAINT_MISMATCH",
+      "message": "Tool arguments digest 'actual_digest_here' does not match any allowed digest in capability",
+      "retryable": false
+    }
+  }
+}

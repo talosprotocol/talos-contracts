@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/a2a/artifact.schema.json",
+  "type": "object",
+  "required": ["artifact_id", "type"],
+  "properties": {
+    "artifact_id": { "type": "string" },
+    "type": { "type": "string" },
+    "name": { "type": "string" },
+    "content": { "$ref": "part.schema.json" }
+  },
+  "additionalProperties": true
+}

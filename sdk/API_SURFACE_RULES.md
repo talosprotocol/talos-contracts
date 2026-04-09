@@ -103,4 +103,4 @@ The conformance runner validates:
 Each SDK must export:
 - `SDK_VERSION`: semver string
 - `SUPPORTED_PROTOCOL_RANGE`: `["1.0", "1.x"]`
-- `CONTRACT_MANIFEST_HASH`: SHA256 of `api_surface.json` at build time
+- `CONTRACT_MANIFEST_HASH`: Base64URL SHA-256 of canonical `contract_manifest.json` at build time

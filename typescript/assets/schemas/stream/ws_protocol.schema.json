@@ -17,19 +17,9 @@
       "properties": {
         "type": { "const": "init" },
         "version": { "type": "integer", "const": 1 },
-        "capability": {
-          "type": "string",
-          "description": "Base64 encoded capability token"
-        },
-        "nonce": {
-          "type": "string",
-          "description": "Unique random string for replay protection"
-        },
-        "ts": {
-          "type": "string",
-          "format": "date-time",
-          "description": "ISO 8601 timestamp"
-        }
+        "capability": { "type": "string", "description": "Base64 encoded capability token" },
+        "nonce": { "type": "string", "description": "Unique random string for replay protection" },
+        "ts": { "type": "string", "format": "date-time", "description": "ISO 8601 timestamp" }
       }
     },
     "InitAckMessage": {
@@ -65,17 +55,7 @@
       "required": ["type", "code", "message"],
       "properties": {
         "type": { "const": "error" },
-        "code": {
-          "type": "string",
-          "enum": [
-            "AUTH_FAILED",
-            "CAPABILITY_EXPIRED",
-            "INVALID_MESSAGE",
-            "RATE_LIMITED",
-            "SLOW_CONSUMER",
-            "INTERNAL_ERROR"
-          ]
-        },
+        "code": { "type": "string", "enum": ["AUTH_FAILED", "CAPABILITY_EXPIRED", "INVALID_MESSAGE", "RATE_LIMITED", "SLOW_CONSUMER", "INTERNAL_ERROR"] },
         "message": { "type": "string" },
         "details": { "type": "object" }
       }

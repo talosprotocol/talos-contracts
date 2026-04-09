@@ -1,0 +1,23 @@
+{
+  "jsonrpc": "2.0",
+  "id": "req-subscribe-1",
+  "result": {
+    "artifactUpdate": {
+      "taskId": "task-stream-1",
+      "contextId": "ctx-stream-1",
+      "artifact": {
+        "artifactId": "artifact-stream-1",
+        "name": "response.txt",
+        "parts": [
+          { "text": "stream complete" }
+        ]
+      },
+      "append": false,
+      "lastChunk": true,
+      "metadata": {
+        "eventId": "task-stream-1:3",
+        "version": 3
+      }
+    }
+  }
+}

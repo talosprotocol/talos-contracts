@@ -1,0 +1,78 @@
+{
+  "name": "Talos AI Gateway",
+  "description": "Talos-secured AI agent gateway with MCP and audit-backed orchestration.",
+  "version": "0.1.0",
+  "provider": {
+    "organization": "Talos Protocol",
+    "url": "https://talosprotocol.com"
+  },
+  "documentationUrl": "https://docs.talosprotocol.com",
+  "supportedInterfaces": [
+    {
+      "url": "https://gateway.example.com/rpc",
+      "protocolBinding": "JSONRPC",
+      "protocolVersion": "1.0"
+    }
+  ],
+  "defaultInputModes": ["text"],
+  "defaultOutputModes": ["text"],
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": true,
+    "extendedAgentCard": true,
+    "extensions": [
+      {
+        "uri": "https://talosprotocol.com/extensions/a2a/attestation/v1",
+        "description": "Talos attestation headers and request verification metadata."
+      },
+      {
+        "uri": "https://talosprotocol.com/extensions/a2a/secure-channels/v1",
+        "description": "Talos encrypted session and frame transport layered on top of A2A."
+      },
+      {
+        "uri": "https://talosprotocol.com/extensions/a2a/compat-jsonrpc/v0",
+        "description": "Legacy Talos A2A JSON-RPC compatibility endpoint during migration."
+      }
+    ]
+  },
+  "skills": [
+    {
+      "id": "talos-tool-orchestration",
+      "name": "Tool Orchestration",
+      "description": "Execute MCP-backed tasks with Talos audit and policy enforcement.",
+      "tags": ["mcp", "audit", "policy"],
+      "examples": ["Route a tenant-safe MCP tool call and return the audited result."],
+      "inputModes": ["text"],
+      "outputModes": ["text"],
+      "securityRequirements": [{"bearerAuth": []}]
+    },
+    {
+      "id": "talos-secure-agent-coordination",
+      "name": "Secure Agent Coordination",
+      "description": "Coordinate multi-agent workflows with Talos attestation and secure-channel extensions.",
+      "tags": ["security", "attestation", "a2a"],
+      "examples": ["Create an audited handoff between two agents using Talos secure-channel extensions."],
+      "inputModes": ["text"],
+      "outputModes": ["text"],
+      "securityRequirements": [{"bearerAuth": []}]
+    },
+    {
+      "id": "talos-governed-admin-operations",
+      "name": "Governed Admin Operations",
+      "description": "Operate Talos admin and governance surfaces with RBAC and audit constraints.",
+      "tags": ["admin", "governance", "rbac"],
+      "examples": ["List available MCP servers for the current tenant and explain policy constraints."],
+      "inputModes": ["text"],
+      "outputModes": ["text"],
+      "securityRequirements": [{"bearerAuth": []}]
+    }
+  ],
+  "securitySchemes": {
+    "bearerAuth": {
+      "type": "http",
+      "scheme": "bearer",
+      "bearerFormat": "API key"
+    }
+  },
+  "securityRequirements": [{"bearerAuth": []}]
+}

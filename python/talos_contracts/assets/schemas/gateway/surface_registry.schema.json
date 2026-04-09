@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://talosprotocol.com/schemas/gateway/surface_registry.schema.json",
+  "title": "Gateway Surface Registry",
+  "description": "A manifest mapping all external Gateway routes to RBAC permissions and scope derivation templates.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version",
+    "routes"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "talos.gateway.surface_registry"
+    },
+    "schema_version": {
+      "const": "v1"
+    },
+    "routes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/route_entry"
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "List of mapped routes"
+    }
+  },
+  "$defs": {
+    "route_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "path_template",
+        "permission",
+        "scope_template"
+      ],
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"],
+          "description": "HTTP Method"
+        },
+        "path_template": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^/.*$",
+          "description": "URL path template (e.g. /v1/secrets/{secret_id})"
+        },
+        "permission": {
+          "type": "string",
+          "minLength": 3,
+          "pattern": "^[a-z0-9_*]+:[a-z0-9_*]+(:[a-z0-9_*]+)?$",
+          "description": "Required RBAC permission (e.g. secrets:read)"
+        },
+        "scope_template": {
+          "$ref": "#/$defs/scope_template"
+        },
+        "public": {
+          "type": "boolean",
+          "description": "If true, bypasses RBAC check (use carefully)"
+        }
+      }
+    },
+    "scope_template": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope_type", "attributes"],
+      "properties": {
+        "scope_type": {
+          "type": "string",
+          "enum": ["global", "team", "repo", "path", "secret", "trace"],
+          "description": "Type of scope to derive"
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "description": "Value can be a literal string or a template variable like '{secret_id}'"
+          },
+          "description": "Attributes to derive from the request path/query"
+        }
+      }
+    }
+  }
+}

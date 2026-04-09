@@ -10,12 +10,12 @@
       "type": "string",
       "const": "1.0"
     },
-    "items": {
-      "type": "array",
       "items": {
-        "type": "object",
-        "required": ["id", "type", "required_scopes", "attestation_required", "audit_action", "data_classification"],
-        "properties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id", "type", "attestation_required", "audit_action", "data_classification"],
+          "properties": {
           "id": {
             "type": "string",
             "description": "Unique Opcode (Dot-notation)",
@@ -51,7 +51,38 @@
             "minItems": 1,
             "items": {
               "type": "string",
-              "pattern": "^[a-z0-9]+\\.[a-z0-9]+(\\.([a-z0-9]+|\\*))*$"
+              "pattern": "^[a-z0-9_]+\\.[a-z0-9_]+(\\.([a-z0-9_]+|\\*))*$"
+            }
+          },
+          "rpc_methods": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "object",
+              "required": ["required_scopes", "audit_action"],
+              "properties": {
+                "required_scopes": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9_]+\\.[a-z0-9_]+(\\.([a-z0-9_]+|\\*))*$"
+                  }
+                },
+                "audit_action": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(\\.[a-z0-9]+)*$"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "aliases": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
             }
           },
           "attestation_required": {
@@ -69,12 +100,32 @@
             "type": "string"
           }
         },
-        "if": {
-          "properties": { "type": { "const": "http" } }
-        },
-        "then": {
-          "required": ["http_match"]
-        }
+        "allOf": [
+          {
+            "if": {
+              "properties": { "type": { "const": "http" } }
+            },
+            "then": {
+              "required": ["http_match"],
+              "anyOf": [
+                { "required": ["required_scopes"] },
+                { "required": ["rpc_methods"] }
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "enum": ["mcp_tool", "ws_frame"]
+                }
+              }
+            },
+            "then": {
+              "required": ["required_scopes"]
+            }
+          }
+        ]
       }
     }
   }

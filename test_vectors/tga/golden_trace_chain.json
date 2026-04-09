@@ -23,7 +23,7 @@
       }
     },
     "_digest_alg": "sha256",
-    "_digest": "c3VwZXJ2aXNvcl9kZWNpc2lvbl9kaWdlc3RfX19fX19fX18"
+    "_digest": "2324025c70403e13382cfcd81abfabd77fb99163b23835088f7aceec54d8cf71"
   },
   "supervisor_decision": {
     "schema_id": "talos.tga.supervisor_decision",
@@ -32,13 +32,13 @@
     "plan_id": "01946896-1234-7567-89ab-000000000011",
     "supervisor_decision_id": "01946896-1234-7567-89ab-000000000014",
     "action_request_id": "01946896-1234-7567-89ab-000000000012",
-    "action_request_digest": "c3VwZXJ2aXNvcl9kZWNpc2lvbl9kaWdlc3RfX19fX19fX18",
+    "action_request_digest": "2324025c70403e13382cfcd81abfabd77fb99163b23835088f7aceec54d8cf71",
     "ts": "2026-01-15T14:50:00.000Z",
     "decision": "APPROVE",
     "rationale": "Approved",
     "minted_capability": "ey...",
     "_digest_alg": "sha256",
-    "_digest": "c3VwZXJ2aXNvcl9kZWNpc2lvbl9kaWdlc3RfX19fX19fX18"
+    "_digest": "6693053f45301214ff15e9ea7b1ab7d683c7b848af6f08edd9be2b91aac3e7af"
   },
   "tool_call": {
     "schema_id": "talos.tga.tool_call",
@@ -48,7 +48,7 @@
     "tool_call_id": "01946896-1234-7567-89ab-000000000015",
     "session_id": "01946896-1234-7567-89ab-000000000016",
     "supervisor_decision_id": "01946896-1234-7567-89ab-000000000014",
-    "supervisor_decision_digest": "c3VwZXJ2aXNvcl9kZWNpc2lvbl9kaWdlc3RfX19fX19fX18",
+    "supervisor_decision_digest": "6693053f45301214ff15e9ea7b1ab7d683c7b848af6f08edd9be2b91aac3e7af",
     "capability_digest": "c3VwZXJ2aXNvcl9kZWNpc2lvbl9kaWdlc3RfX19fX19fX18",
     "args_digest": "c3VwZXJ2aXNvcl9kZWNpc2lvbl9kaWdlc3RfX19fX19fX18",
     "ts": "2026-01-15T14:55:00.000Z",
@@ -61,7 +61,7 @@
     },
     "idempotency_key": "01946896-1234-7567-89ab-000000000017",
     "_digest_alg": "sha256",
-    "_digest": "c3VwZXJ2aXNvcl9kZWNpc2lvbl9kaWdlc3RfX19fX19fX18"
+    "_digest": "4b2525328b1bd4790f211f69e9b2700e2561261e6e39e242bcb6b7ae3a8c1ad1"
   },
   "tool_effect": {
     "schema_id": "talos.tga.tool_effect",
@@ -70,13 +70,13 @@
     "plan_id": "01946896-1234-7567-89ab-000000000011",
     "tool_effect_id": "01946896-1234-7567-89ab-000000000018",
     "tool_call_id": "01946896-1234-7567-89ab-000000000015",
-    "tool_call_digest": "c3VwZXJ2aXNvcl9kZWNpc2lvbl9kaWdlc3RfX19fX19fX18",
+    "tool_call_digest": "4b2525328b1bd4790f211f69e9b2700e2561261e6e39e242bcb6b7ae3a8c1ad1",
     "ts": "2026-01-15T14:57:00.000Z",
     "outcome": {
       "status": "SUCCESS",
       "summary": "Done"
     },
     "_digest_alg": "sha256",
-    "_digest": "c3VwZXJ2aXNvcl9kZWNpc2lvbl9kaWdlc3RfX19fX19fX18"
+    "_digest": "fcbee14c2f8459744b195e577cff091e014e7879776d1710ddd717c6912d41cd"
   }
 }

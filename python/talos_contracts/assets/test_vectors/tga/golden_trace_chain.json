@@ -1,0 +1,82 @@
+{
+  "action_request": {
+    "schema_id": "talos.tga.action_request",
+    "schema_version": "tga.v1",
+    "trace_id": "01946896-1234-7567-89ab-000000000010",
+    "plan_id": "01946896-1234-7567-89ab-000000000011",
+    "action_request_id": "01946896-1234-7567-89ab-000000000012",
+    "agent_id": "01946896-1234-7567-89ab-000000000013",
+    "ts": "2026-01-15T14:45:00.000Z",
+    "risk_level": "WRITE",
+    "intent": "Apply security patch to the authentication module branch.",
+    "resources": [
+      {
+        "kind": "repo",
+        "id": "talosprotocol/talos-ai-gateway"
+      }
+    ],
+    "proposal": {
+      "tool_server": "mcp-github",
+      "tool_name": "create-branch",
+      "args": {
+        "name": "fix/auth-vuln-1"
+      }
+    },
+    "_digest_alg": "sha256",
+    "_digest": "c3VwZXJ2aXNvcl9kZWNpc2lvbl9kaWdlc3RfX19fX19fX18"
+  },
+  "supervisor_decision": {
+    "schema_id": "talos.tga.supervisor_decision",
+    "schema_version": "tga.v1",
+    "trace_id": "01946896-1234-7567-89ab-000000000010",
+    "plan_id": "01946896-1234-7567-89ab-000000000011",
+    "supervisor_decision_id": "01946896-1234-7567-89ab-000000000014",
+    "action_request_id": "01946896-1234-7567-89ab-000000000012",
+    "action_request_digest": "c3VwZXJ2aXNvcl9kZWNpc2lvbl9kaWdlc3RfX19fX19fX18",
+    "ts": "2026-01-15T14:50:00.000Z",
+    "decision": "APPROVE",
+    "rationale": "Approved",
+    "minted_capability": "ey...",
+    "_digest_alg": "sha256",
+    "_digest": "c3VwZXJ2aXNvcl9kZWNpc2lvbl9kaWdlc3RfX19fX19fX18"
+  },
+  "tool_call": {
+    "schema_id": "talos.tga.tool_call",
+    "schema_version": "tga.v1",
+    "trace_id": "01946896-1234-7567-89ab-000000000010",
+    "plan_id": "01946896-1234-7567-89ab-000000000011",
+    "tool_call_id": "01946896-1234-7567-89ab-000000000015",
+    "session_id": "01946896-1234-7567-89ab-000000000016",
+    "supervisor_decision_id": "01946896-1234-7567-89ab-000000000014",
+    "supervisor_decision_digest": "c3VwZXJ2aXNvcl9kZWNpc2lvbl9kaWdlc3RfX19fX19fX18",
+    "capability_digest": "c3VwZXJ2aXNvcl9kZWNpc2lvbl9kaWdlc3RfX19fX19fX18",
+    "args_digest": "c3VwZXJ2aXNvcl9kZWNpc2lvbl9kaWdlc3RfX19fX19fX18",
+    "ts": "2026-01-15T14:55:00.000Z",
+    "call": {
+      "tool_server": "mcp-github",
+      "tool_name": "create-branch",
+      "args": {
+        "name": "fix/auth-vuln-1"
+      }
+    },
+    "idempotency_key": "01946896-1234-7567-89ab-000000000017",
+    "_digest_alg": "sha256",
+    "_digest": "c3VwZXJ2aXNvcl9kZWNpc2lvbl9kaWdlc3RfX19fX19fX18"
+  },
+  "tool_effect": {
+    "schema_id": "talos.tga.tool_effect",
+    "schema_version": "tga.v1",
+    "trace_id": "01946896-1234-7567-89ab-000000000010",
+    "plan_id": "01946896-1234-7567-89ab-000000000011",
+    "tool_effect_id": "01946896-1234-7567-89ab-000000000018",
+    "tool_call_id": "01946896-1234-7567-89ab-000000000015",
+    "tool_call_digest": "c3VwZXJ2aXNvcl9kZWNpc2lvbl9kaWdlc3RfX19fX19fX18",
+    "ts": "2026-01-15T14:57:00.000Z",
+    "outcome": {
+      "status": "SUCCESS",
+      "summary": "Done"
+    },
+    "_digest_alg": "sha256",
+    "_digest": "c3VwZXJ2aXNvcl9kZWNpc2lvbl9kaWdlc3RfX19fX19fX18"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "profile": {
+    "profile_id": "a2a-compat",
+    "profile_version": "0.1",
+    "spec_source": "a2a-protocol"
+  },
+  "name": "Secure Agent",
+  "description": "A Talos-secured agent",
+  "capabilities": {
+    "chat": true,
+    "tools": true
+  },
+  "auth": {
+    "type": "bearer"
+  },
+  "x_talos": {
+    "supports_talos_attestation": true,
+    "supported_surfaces": ["a2a", "mcp"],
+    "public_key": "ed25519:aabbcc..."
+  }
+}

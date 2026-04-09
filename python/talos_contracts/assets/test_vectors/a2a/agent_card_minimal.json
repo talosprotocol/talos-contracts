@@ -1,0 +1,15 @@
+{
+  "profile": {
+    "profile_id": "a2a-compat",
+    "profile_version": "0.1",
+    "spec_source": "a2a-protocol"
+  },
+  "name": "Minimal Agent",
+  "description": "An agent that does things",
+  "capabilities": {
+    "chat": true
+  },
+  "auth": {
+    "type": "none"
+  }
+}

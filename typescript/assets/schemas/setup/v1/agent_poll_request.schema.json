@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.security/schemas/setup/v1/agent_poll_request.schema.json",
+  "title": "Agent Poll Request",
+  "type": "object",
+  "required": [
+    "agent_id",
+    "status"
+  ],
+  "properties": {
+    "agent_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["idle", "busy", "error"],
+      "description": "Current status of the agent"
+    },
+    "current_job_id": {
+      "type": "string",
+      "description": "ID of the job currently being executed, if any"
+    }
+  }
+}

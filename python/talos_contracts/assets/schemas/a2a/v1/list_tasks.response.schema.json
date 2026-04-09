@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/a2a/v1/list_tasks.response.schema.json",
+  "type": "object",
+  "required": ["tasks", "pageSize", "totalSize"],
+  "properties": {
+    "tasks": {
+      "type": "array",
+      "items": { "$ref": "task.schema.json" }
+    },
+    "nextPageToken": { "type": "string", "minLength": 1 },
+    "pageSize": { "type": "integer", "minimum": 1, "maximum": 100 },
+    "totalSize": { "type": "integer", "minimum": 0 }
+  },
+  "additionalProperties": false
+}

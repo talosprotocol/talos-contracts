@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talosprotocol.com/schemas/ai_gateway/error.schema.json",
+  "title": "Gateway Error",
+  "description": "Standardized error response for AI Gateway.",
+  "type": "object",
+  "required": ["error"],
+  "properties": {
+    "error": {
+      "type": "object",
+      "required": ["code", "message"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "AUTH_INVALID",
+            "AUTH_REVOKED",
+            "RBAC_DENIED",
+            "POLICY_DENIED",
+            "MODEL_NOT_ALLOWED",
+            "RATE_LIMITED",
+            "BUDGET_EXCEEDED",
+            "UPSTREAM_TIMEOUT",
+            "UPSTREAM_5XX",
+            "MCP_PROTOCOL",
+            "SCHEMA_MISMATCH",
+            "STREAMING_NOT_SUPPORTED",
+            "INTERNAL"
+          ],
+          "description": "Stable error category."
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable error message."
+        },
+        "type": {
+          "type": "string",
+          "description": "OpenAI-compatible error type (optional)."
+        },
+        "param": {
+          "type": "string",
+          "description": "Parameter that caused the error (optional)."
+        }
+      }
+    }
+  }
+}

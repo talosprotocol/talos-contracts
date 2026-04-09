@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talosprotocol.com/schemas/mcp/policy.schema.json",
+  "title": "MCP Policy",
+  "description": "Team allowlist policy for MCP access.",
+  "type": "object",
+  "required": ["id", "team_id"],
+  "properties": {
+    "id": { "type": "string" },
+    "team_id": { "type": "string" },
+    "allowed_servers": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of allowed MCP server IDs. Empty means all."
+    },
+    "allowed_tools": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "description": "Map of server_id -> list of allowed tool names."
+    },
+    "deny_by_default": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

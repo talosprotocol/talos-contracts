@@ -1,0 +1,17 @@
+{
+  "description": "Replay Nonce Test Vectors",
+  "tests": [
+    {
+      "nonce": "nonce-used-1",
+      "timestamp": 1768178601,
+      "status": "first_seen",
+      "expected": "accept"
+    },
+    {
+      "nonce": "nonce-used-1",
+      "timestamp": 1768178602,
+      "status": "replayed",
+      "expected": "reject"
+    }
+  ]
+}

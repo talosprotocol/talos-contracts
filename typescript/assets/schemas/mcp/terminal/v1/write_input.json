@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://talosprotocol.org/schemas/mcp/terminal/v1/write_input.json",
+    "title": "TerminalWriteInputRequest",
+    "description": "Send stdin input to a running terminal session",
+    "type": "object",
+    "required": [
+        "session_id",
+        "data"
+    ],
+    "properties": {
+        "session_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Session to send input to"
+        },
+        "data": {
+            "type": "string",
+            "description": "Data to write to stdin"
+        }
+    },
+    "examples": [
+        {
+            "session_id": "550e8400-e29b-41d4-a716-446655440000",
+            "data": "yes\n"
+        }
+    ]
+}

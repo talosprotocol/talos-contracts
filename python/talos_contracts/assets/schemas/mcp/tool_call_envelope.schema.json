@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.app/schemas/mcp/tool_call_envelope.schema.json",
+  "title": "Tool Call Envelope",
+  "description": "Canonical envelope for tool call digest computation. MUST use JCS (RFC 8785) for hashing.",
+  "type": "object",
+  "required": [
+    "tool_server",
+    "tool_name",
+    "capability",
+    "args"
+  ],
+  "properties": {
+    "tool_server": {
+      "type": "string",
+      "description": "Normalized tool server name (lowercase, no spaces).",
+      "pattern": "^[a-z0-9-_]+$"
+    },
+    "tool_name": {
+      "type": "string",
+      "description": "Normalized tool name (lowercase, no spaces).",
+      "pattern": "^[a-z0-9-_./]+$"
+    },
+    "capability": {
+      "$ref": "./capability.schema.json"
+    },
+    "args": {
+      "type": "object",
+      "description": "The arguments passed to the tool."
+    },
+    "meta": {
+      "type": "object",
+      "description": "Metadata not included in primary logic but potentially useful for audit.",
+      "properties": {
+        "iat": { "type": "integer" },
+        "jti": { "type": "string" }
+      }
+    }
+  },
+  "additionalProperties": false
+}

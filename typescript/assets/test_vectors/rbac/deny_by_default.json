@@ -1,0 +1,29 @@
+{
+  "description": "RBAC Deny-by-Default Test Vectors",
+  "tests": [
+    {
+      "name": "no_identity",
+      "identity": null,
+      "action": "llm.invoke",
+      "expected": "deny"
+    },
+    {
+      "name": "missing_scope",
+      "identity": {
+        "principal_id": "p1",
+        "scopes": []
+      },
+      "action": "admin.write",
+      "expected": "deny"
+    },
+    {
+      "name": "revoked_key",
+      "identity": {
+        "principal_id": "p1",
+        "status": "revoked"
+      },
+      "action": "llm.invoke",
+      "expected": "deny"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/a2a/v1/session.schema.json",
+  "title": "A2A Secure Session",
+  "type": "object",
+  "required": ["session_id", "state", "initiator_id", "responder_id"],
+  "properties": {
+    "session_id": { "type": "string", "format": "uuid" },
+    "state": { "enum": ["pending", "active", "closed"] },
+    "initiator_id": { "type": "string" },
+    "responder_id": { "type": "string" },
+    "ratchet_digest": { "type": "string" },
+    "expires_at": { "type": "string", "format": "date-time" },
+    "created_at": { "type": "string", "format": "date-time" }
+  }
+}

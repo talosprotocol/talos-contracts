@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talosprotocol.com/schemas/crypto/attestation.schema.json",
+  "title": "Crypto Attestation",
+  "description": "Cryptographic proof for a payload or request.",
+  "type": "object",
+  "required": ["nonce", "timestamp", "signature", "key_id", "algo"],
+  "properties": {
+    "nonce": {
+      "type": "string",
+      "description": "Unique base64-encoded nonce (at least 16 bytes entropy)."
+    },
+    "timestamp": {
+      "type": "integer",
+      "description": "Unix timestamp in seconds (must be within skew window)."
+    },
+    "signature": {
+      "type": "string",
+      "description": "Base64-encoded signature over canonical payload."
+    },
+    "key_id": {
+      "type": "string",
+      "description": "Identifier for the public key used to sign (DID or hex fingerprint)."
+    },
+    "algo": {
+      "type": "string",
+      "enum": ["ed25519"],
+      "default": "ed25519"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^v[0-9]+(\\.[0-9]+)*$",
+      "default": "v1"
+    }
+  }
+}

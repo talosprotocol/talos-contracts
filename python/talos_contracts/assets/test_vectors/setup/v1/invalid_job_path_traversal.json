@@ -1,0 +1,12 @@
+{
+  "description": "Job creation request with path traversal in arguments",
+  "valid": false,
+  "schema": "schemas/setup/v1/job_create.schema.json",
+  "data": {
+    "recipe_id": "talos-sdk-init",
+    "args": {
+      "project_name": "../../../etc/passwd",
+      "language": "typescript"
+    }
+  }
+}

@@ -1,0 +1,59 @@
+[
+  {
+    "description": "Deterministic weighted hash routing",
+    "input": {
+      "policy_version": 1,
+      "model_group_id": "gpt-4-turbo",
+      "request_id": "req-abc123",
+      "deployments": [
+        { "upstream_id": "openai-us", "weight": 50 },
+        { "upstream_id": "azure-eu", "weight": 50 }
+      ],
+      "cooldown_state": {}
+    },
+    "expected": {
+      "selected_upstream": "openai-us",
+      "deterministic": true
+    }
+  },
+  {
+    "description": "Cooldown skips failing upstream",
+    "input": {
+      "policy_version": 1,
+      "model_group_id": "gpt-4-turbo",
+      "request_id": "req-def456",
+      "deployments": [
+        { "upstream_id": "openai-us", "weight": 50 },
+        { "upstream_id": "azure-eu", "weight": 50 }
+      ],
+      "cooldown_state": {
+        "openai-us": { "until": "2026-01-10T12:00:00Z" }
+      }
+    },
+    "expected": {
+      "selected_upstream": "azure-eu",
+      "reason": "cooldown_skip"
+    }
+  },
+  {
+    "description": "Fallback after all deployments cooled down",
+    "input": {
+      "policy_version": 1,
+      "model_group_id": "gpt-4-turbo",
+      "request_id": "req-ghi789",
+      "deployments": [
+        { "upstream_id": "openai-us", "weight": 50 },
+        { "upstream_id": "azure-eu", "weight": 50 }
+      ],
+      "cooldown_state": {
+        "openai-us": { "until": "2026-01-10T12:00:00Z" },
+        "azure-eu": { "until": "2026-01-10T12:00:00Z" }
+      },
+      "fallback_groups": ["gpt-3.5-turbo"]
+    },
+    "expected": {
+      "fallback_triggered": true,
+      "fallback_to": "gpt-3.5-turbo"
+    }
+  }
+]

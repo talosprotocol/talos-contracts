@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/a2a/v1/methods/get_task.request.schema.json",
+  "type": "object",
+  "required": ["jsonrpc", "method", "params", "id"],
+  "properties": {
+    "jsonrpc": { "const": "2.0" },
+    "method": { "const": "GetTask" },
+    "id": { "type": ["string", "integer"] },
+    "params": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "historyLength": { "type": "integer", "minimum": 0 },
+        "includeArtifacts": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

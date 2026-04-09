@@ -57,6 +57,11 @@ describe("A2A Schema Validation", () => {
       valid: true,
     },
     {
+      file: "v1/agent_card_authenticated.json",
+      schema: "v1/agent_card.schema.json",
+      valid: true,
+    },
+    {
       file: "tasks_send_sync.json",
       schema: "methods/tasks_send.request.schema.json",
       valid: true,
@@ -74,6 +79,116 @@ describe("A2A Schema Validation", () => {
     {
       file: "tasks_resubscribe.json",
       schema: "methods/tasks_resubscribe.request.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/get_extended_agent_card.request.json",
+      schema: "v1/methods/get_extended_agent_card.request.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/get_extended_agent_card.response.json",
+      schema: "v1/methods/get_extended_agent_card.response.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/send_message.request.json",
+      schema: "v1/methods/send_message.request.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/send_message.response.json",
+      schema: "v1/methods/send_message.response.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/send_streaming_message.request.json",
+      schema: "v1/methods/send_streaming_message.request.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/send_streaming_message.response.json",
+      schema: "v1/methods/send_streaming_message.response.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/get_task.request.json",
+      schema: "v1/methods/get_task.request.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/get_task.response.json",
+      schema: "v1/methods/get_task.response.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/list_tasks.request.json",
+      schema: "v1/methods/list_tasks.request.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/list_tasks.response.json",
+      schema: "v1/methods/list_tasks.response.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/cancel_task.request.json",
+      schema: "v1/methods/cancel_task.request.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/cancel_task.response.json",
+      schema: "v1/methods/cancel_task.response.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/subscribe_to_task.request.json",
+      schema: "v1/methods/subscribe_to_task.request.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/subscribe_to_task.response.json",
+      schema: "v1/methods/subscribe_to_task.response.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/create_task_push_notification_config.request.json",
+      schema: "v1/methods/create_task_push_notification_config.request.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/create_task_push_notification_config.response.json",
+      schema: "v1/methods/create_task_push_notification_config.response.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/get_task_push_notification_config.request.json",
+      schema: "v1/methods/get_task_push_notification_config.request.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/get_task_push_notification_config.response.json",
+      schema: "v1/methods/get_task_push_notification_config.response.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/list_task_push_notification_configs.request.json",
+      schema: "v1/methods/list_task_push_notification_configs.request.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/list_task_push_notification_configs.response.json",
+      schema: "v1/methods/list_task_push_notification_configs.response.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/delete_task_push_notification_config.request.json",
+      schema: "v1/methods/delete_task_push_notification_config.request.schema.json",
+      valid: true,
+    },
+    {
+      file: "v1/delete_task_push_notification_config.response.json",
+      schema: "v1/methods/delete_task_push_notification_config.response.schema.json",
       valid: true,
     },
     {

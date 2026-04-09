@@ -41,6 +41,33 @@
         "built_in": false
       },
       "error_code": "pattern"
+    },
+    {
+      "description": "Role ID as null",
+      "input": {
+        "role_id": null,
+        "permissions": [],
+        "built_in": false
+      },
+      "error_code": "type"
+    },
+    {
+      "description": "Role ID Uppercase UUID",
+      "input": {
+        "role_id": "01946896-1234-7567-89AB-000000000001",
+        "permissions": ["audit:read"],
+        "built_in": false
+      },
+      "error_code": "pattern"
+    },
+    {
+      "description": "Role with Null Permissions (Absent Parity)",
+      "input": {
+        "role_id": "01946896-1234-7567-89ab-000000000001",
+        "permissions": null,
+        "built_in": false
+      },
+      "error_code": "type"
     }
   ],
   "valid_bindings": [
@@ -96,6 +123,26 @@
       "error_code": "required"
     },
     {
+      "description": "Principal ID as null",
+      "input": {
+        "schema_id": "talos.rbac.binding",
+        "schema_version": "v1",
+        "principal_id": null,
+        "bindings": []
+      },
+      "error_code": "type"
+    },
+    {
+      "description": "Principal ID Uppercase UUID",
+      "input": {
+        "schema_id": "talos.rbac.binding",
+        "schema_version": "v1",
+        "principal_id": "user_01946896-1234-7567-89AB-000000000200",
+        "bindings": []
+      },
+      "error_code": "pattern"
+    },
+    {
       "description": "Invalid scope_type enum",
       "input": {
         "schema_id": "talos.rbac.binding",
@@ -113,6 +160,25 @@
         ]
       },
       "error_code": "enum"
+    },
+    {
+      "description": "Binding with Null Attributes (Absent Parity)",
+      "input": {
+        "schema_id": "talos.rbac.binding",
+        "schema_version": "v1",
+        "principal_id": "user_01946896-1234-7567-89ab-000000000200",
+        "bindings": [
+          {
+            "binding_id": "bind_01946896-1234-7567-89ab-000000000100",
+            "role_id": "role_01946896-1234-7567-89ab-000000000001",
+            "scope": {
+              "scope_type": "global",
+              "attributes": null
+            }
+          }
+        ]
+      },
+      "error_code": "type"
     }
   ]
 }

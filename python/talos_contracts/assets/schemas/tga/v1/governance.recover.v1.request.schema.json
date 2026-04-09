@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://talosprotocol.com/schemas/tga/v1/governance.recover.v1.request.schema.json",
+  "title": "TGA Recover Request (v1)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["trace_id"],
+  "properties": {
+    "trace_id": { "$ref": "../../common/uuidv7.schema.json" }
+  }
+}

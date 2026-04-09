@@ -1,0 +1,8 @@
+{
+  "description": "Valid Heartbeat message",
+  "data": {
+    "type": "heartbeat",
+    "last_cursor": "MTIzNDU2Nzg5MDp1dWlkLXY3",
+    "interval_ms": 30000
+  }
+}

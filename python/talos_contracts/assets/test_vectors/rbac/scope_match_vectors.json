@@ -1,0 +1,75 @@
+{
+  "description": "Test vectors for RBAC Scope Matching logic (Specificity: Exact > Wildcard > Global)",
+  "vectors": [
+    {
+      "id": "exact_match",
+      "description": "Should match when scope type and all attributes match exactly",
+      "required_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "talosprotocol/talos" }
+      },
+      "binding_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "talosprotocol/talos" }
+      },
+      "should_match": true,
+      "specificity": 2
+    },
+    {
+      "id": "type_mismatch",
+      "description": "Should NOT match if scope types differ",
+      "required_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "talosprotocol/talos" }
+      },
+      "binding_scope": {
+        "scope_type": "team",
+        "attributes": { "team": "platform" }
+      },
+      "should_match": false,
+      "specificity": 0
+    },
+    {
+      "id": "attr_mismatch",
+      "description": "Should NOT match if attributes differ",
+      "required_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "talosprotocol/talos" }
+      },
+      "binding_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "talosprotocol/other" }
+      },
+      "should_match": false,
+      "specificity": 0
+    },
+    {
+      "id": "wildcard_match",
+      "description": "Should match if binding has wildcard attribute",
+      "required_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "talosprotocol/talos" }
+      },
+      "binding_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "*" }
+      },
+      "should_match": true,
+      "specificity": 1
+    },
+    {
+      "id": "global_scope",
+      "description": "Global binding matches everything",
+      "required_scope": {
+        "scope_type": "repo",
+        "attributes": { "repo": "talosprotocol/talos" }
+      },
+      "binding_scope": {
+        "scope_type": "global",
+        "attributes": {}
+      },
+      "should_match": true,
+      "specificity": 0
+    }
+  ]
+}

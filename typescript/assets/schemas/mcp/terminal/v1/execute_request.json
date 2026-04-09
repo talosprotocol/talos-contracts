@@ -1,0 +1,81 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://talosprotocol.org/schemas/mcp/terminal/v1/execute_request.json",
+    "title": "TerminalExecuteRequest",
+    "description": "Request to execute a command via the Terminal MCP Adapter",
+    "type": "object",
+    "required": [
+        "command",
+        "session_id"
+    ],
+    "properties": {
+        "command": {
+            "type": "string",
+            "description": "Binary to execute. MUST NOT contain shell operators (&&, |, ;, etc.)",
+            "pattern": "^[a-zA-Z0-9_\\-\\.]+$"
+        },
+        "args": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "Arguments passed directly to execve to prevent injection"
+        },
+        "cwd": {
+            "type": "string",
+            "description": "Working directory, sandboxed to project root",
+            "pattern": "^/projects/.*"
+        },
+        "env": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            },
+            "description": "Environment variable overrides"
+        },
+        "timeout_ms": {
+            "type": "integer",
+            "minimum": 1000,
+            "maximum": 300000,
+            "default": 30000,
+            "description": "Max execution time in milliseconds"
+        },
+        "session_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID linking this execution to a shell session"
+        },
+        "risk_level": {
+            "type": "string",
+            "enum": [
+                "READ",
+                "WRITE",
+                "HIGH_RISK"
+            ],
+            "description": "Declared risk level for supervisor routing"
+        },
+        "idempotency_key": {
+            "type": "string",
+            "description": "Idempotency key for write operations"
+        }
+    },
+    "examples": [
+        {
+            "command": "ls",
+            "args": [
+                "-la"
+            ],
+            "session_id": "550e8400-e29b-41d4-a716-446655440000",
+            "risk_level": "READ"
+        },
+        {
+            "command": "git",
+            "args": [
+                "status"
+            ],
+            "cwd": "/projects/my-app",
+            "session_id": "550e8400-e29b-41d4-a716-446655440001",
+            "risk_level": "READ"
+        }
+    ]
+}

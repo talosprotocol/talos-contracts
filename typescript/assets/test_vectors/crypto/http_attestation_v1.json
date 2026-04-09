@@ -1,0 +1,127 @@
+{
+  "description": "Test vectors for HTTP Attestation v1 signature verification.",
+  "vectors": [
+    {
+      "description": "Valid request with JSON body",
+      "input": {
+        "method": "POST",
+        "raw_path_query": "/v1/chat/completions?version=2023-01-01",
+        "raw_body_json": {
+          "model": "gpt-4",
+          "messages": [
+            {
+              "role": "user",
+              "content": "hi"
+            }
+          ]
+        },
+        "nonce": "test-nonce-123",
+        "timestamp": 1700000000,
+        "opcode": "llm.chat.completions",
+        "private_key": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+      },
+      "expected": {
+        "signing_input_hex": "7b226d65737361676573223a5b7b22636f6e74656e74223a226869222c22726f6c65223a2275736572227d5d2c226d6f64656c223a226770742d34227d0a504f53540a2f76312f636861742f636f6d706c6574696f6e733f76657273696f6e3d323032332d30312d30310a746573742d6e6f6e63652d3132330a313730303030303030300a6c6c6d2e636861742e636f6d706c6574696f6e73",
+        "signature": "KM7ncFpV_LEMnyym8W5loCh9JSUPqbJl7RxR6WV46v5iF9dNlCxxay5OJ-xLgYXnktOdcflpxKQ0xynu3PqxAg",
+        "valid": true
+      }
+    },
+    {
+      "description": "Valid request with empty body",
+      "input": {
+        "method": "GET",
+        "raw_path_query": "/v1/health",
+        "raw_body_json": null,
+        "nonce": "nonce-456",
+        "timestamp": 1700000000,
+        "opcode": "sys.health",
+        "private_key": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+      },
+      "expected": {
+        "signing_input_hex": "0a4745540a2f76312f6865616c74680a6e6f6e63652d3435360a313730303030303030300a7379732e6865616c7468",
+        "signature": "vIy-miWrrIxOdmsSaXGG2eBKlOgrm1hEMtj9cOmmTQLyBMyKMXnyO9ac5PrfkddEaPidoywbYQdtxH5cscOeDg",
+        "valid": true
+      }
+    },
+    {
+      "description": "Valid request with empty JSON object body",
+      "input": {
+        "method": "POST",
+        "raw_path_query": "/v1/submit",
+        "raw_body_json": {},
+        "nonce": "nonce-789",
+        "timestamp": 1700000000,
+        "opcode": "app.submit",
+        "private_key": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+      },
+      "expected": {
+        "signing_input_hex": "7b7d0a504f53540a2f76312f7375626d69740a6e6f6e63652d3738390a313730303030303030300a6170702e7375626d6974",
+        "signature": "vEoLJmBAurhNsTHAeweTfIUHxGCokz90yiNjnhGVWCdgNytOiF2OaSU5BlMHO2Yt9AM5Dx4277rkKZgicYUuBQ",
+        "valid": true
+      }
+    },
+    {
+      "description": "Invalid: Query order mismatch (Server raw string validation)",
+      "input": {
+        "method": "GET",
+        "raw_path_query": "/v1/search?q=foo&t=bar",
+        "raw_body_json": null,
+        "nonce": "nonce-mismatch",
+        "timestamp": 1700000000,
+        "opcode": "app.search",
+        "private_key": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+      },
+      "verify_context": {
+        "received_path_query": "/v1/search?t=bar&q=foo"
+      },
+      "expected": {
+        "valid": false,
+        "error": "AUTH_INVALID",
+        "signing_input_hex": "0a4745540a2f76312f7365617263683f713d666f6f26743d6261720a6e6f6e63652d6d69736d617463680a313730303030303030300a6170702e736561726368",
+        "signature": "hz2RTjeTNKmxs2hQ4IpztSlKtImmLV5iy7Pwy1NqTSz6y6wQmsRKrUmYBV-G4IEfQwNjV3rCG6MTnxCUdTzoAw"
+      }
+    },
+    {
+      "description": "Invalid: Wrong Opcode",
+      "input": {
+        "method": "POST",
+        "raw_path_query": "/v1/admin",
+        "raw_body_json": {},
+        "nonce": "nonce-opcode",
+        "timestamp": 1700000000,
+        "opcode": "sys.admin",
+        "private_key": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+      },
+      "verify_context": {
+        "server_derived_opcode": "sys.user"
+      },
+      "expected": {
+        "valid": false,
+        "error": "AUTH_INVALID",
+        "signing_input_hex": "7b7d0a504f53540a2f76312f61646d696e0a6e6f6e63652d6f70636f64650a313730303030303030300a7379732e61646d696e",
+        "signature": "izhpoMksjZjKOCvweFalxgYinRFQvHF6YhEgm9JR5tcHxuQ5toig-6-HJaIXXE8QlvjSXOEREFVIBjc8iL4MDw"
+      }
+    },
+    {
+      "description": "Invalid: Padded Base64 Signature",
+      "input": {
+        "method": "GET",
+        "raw_path_query": "/v1/x",
+        "raw_body_json": null,
+        "nonce": "nonce-pad",
+        "timestamp": 1700000000,
+        "opcode": "sys.x",
+        "private_key": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+      },
+      "tamper": {
+        "signature_format": "base64_padded"
+      },
+      "expected": {
+        "valid": false,
+        "error": "SCHEMA_VALIDATION_ERROR",
+        "signing_input_hex": "0a4745540a2f76312f780a6e6f6e63652d7061640a313730303030303030300a7379732e78",
+        "signature": "qU2qvSuWFJj4oq7YPYVmxGaAMShB5fkJg280Cd5TvzLi2UAqOybswyc6ACCFfhizwA06Vm0uY_mSkRbOkT1QCA"
+      }
+    }
+  ]
+}

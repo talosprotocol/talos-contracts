@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.security/schemas/setup/v1/job_create.schema.json",
+  "title": "Talos Setup Job Request",
+  "description": "Request payload to create a new setup job.",
+  "type": "object",
+  "required": [
+    "recipe_id",
+    "arguments"
+  ],
+  "properties": {
+    "recipe_id": {
+      "type": "string",
+      "description": "ID of the allowlisted recipe to execute"
+    },
+    "arguments": {
+      "type": "object",
+      "description": "Arguments for the recipe, must match the recipe's parameter schema"
+    },
+    "client_token": {
+      "type": "string",
+      "description": "Optional idempotency token"
+    }
+  }
+}

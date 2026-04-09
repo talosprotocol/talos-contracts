@@ -1,0 +1,196 @@
+{
+  "description": "Phase 10 A2A session and frame test vectors",
+  "valid_sessions": [
+    {
+      "description": "Active session with both parties",
+      "input": {
+        "schema_id": "talos.a2a.session",
+        "schema_version": "v1",
+        "session_id": "01946896-1234-7567-89ab-000000000001",
+        "initiator_id": "user_alice",
+        "responder_id": "user_bob",
+        "state": "active",
+        "ratchet_state_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "created_at": "2026-01-16T00:00:00.000Z",
+        "expires_at": "2026-01-17T00:00:00.000Z"
+      }
+    },
+    {
+      "description": "Pending session awaiting accept",
+      "input": {
+        "schema_id": "talos.a2a.session",
+        "schema_version": "v1",
+        "session_id": "01946896-1234-7567-89ab-000000000002",
+        "initiator_id": "agent_github",
+        "responder_id": "agent_docs",
+        "state": "pending",
+        "created_at": "2026-01-16T00:00:00.000Z"
+      }
+    }
+  ],
+  "invalid_sessions": [
+    {
+      "description": "Invalid session state",
+      "input": {
+        "schema_id": "talos.a2a.session",
+        "schema_version": "v1",
+        "session_id": "01946896-1234-7567-89ab-000000000001",
+        "initiator_id": "user_alice",
+        "responder_id": "user_bob",
+        "state": "invalid_state",
+        "created_at": "2026-01-16T00:00:00.000Z"
+      },
+      "error_code": "enum"
+    },
+    {
+      "description": "Missing responder_id",
+      "input": {
+        "schema_id": "talos.a2a.session",
+        "schema_version": "v1",
+        "session_id": "01946896-1234-7567-89ab-000000000001",
+        "initiator_id": "user_alice",
+        "state": "pending",
+        "created_at": "2026-01-16T00:00:00.000Z"
+      },
+      "error_code": "required"
+    }
+  ],
+  "valid_session_events": [
+    {
+      "description": "Session opened event",
+      "input": {
+        "schema_id": "talos.a2a.session_event",
+        "schema_version": "v1",
+        "event_id": "01946896-1234-7567-89ab-000000000100",
+        "session_id": "01946896-1234-7567-89ab-000000000001",
+        "actor_id": "user_alice",
+        "event_type": "session_opened",
+        "ts": "2026-01-16T00:00:00.000Z",
+        "event_digest": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+      }
+    },
+    {
+      "description": "Session accepted event with previous",
+      "input": {
+        "schema_id": "talos.a2a.session_event",
+        "schema_version": "v1",
+        "event_id": "01946896-1234-7567-89ab-000000000101",
+        "session_id": "01946896-1234-7567-89ab-000000000001",
+        "actor_id": "user_bob",
+        "event_type": "session_accepted",
+        "ts": "2026-01-16T00:01:00.000Z",
+        "event_digest": "b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3",
+        "previous_digest": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+      }
+    }
+  ],
+  "valid_encrypted_frames": [
+    {
+      "description": "Valid encrypted frame with all fields",
+      "input": {
+        "schema_id": "talos.a2a.encrypted_frame",
+        "schema_version": "v1",
+        "session_id": "01946896-1234-7567-89ab-000000000001",
+        "sender_id": "user_alice",
+        "sender_seq": 0,
+        "header_b64u": "SGVsbG8gV29ybGQ",
+        "ciphertext_b64u": "ZW5jcnlwdGVkX2RhdGFfaGVyZQ",
+        "frame_digest": "c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4",
+        "ciphertext_hash": "d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5",
+        "created_at": "2026-01-16T00:02:00.000Z"
+      }
+    },
+    {
+      "description": "Frame with higher sequence",
+      "input": {
+        "schema_id": "talos.a2a.encrypted_frame",
+        "schema_version": "v1",
+        "session_id": "01946896-1234-7567-89ab-000000000001",
+        "sender_id": "user_alice",
+        "sender_seq": 42,
+        "header_b64u": "aGVhZGVyX2RhdGE",
+        "ciphertext_b64u": "bW9yZV9lbmNyeXB0ZWRfZGF0YQ",
+        "frame_digest": "e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6",
+        "ciphertext_hash": "f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1",
+        "created_at": "2026-01-16T00:03:00.000Z"
+      }
+    }
+  ],
+  "invalid_encrypted_frames": [
+    {
+      "description": "Negative sender_seq",
+      "input": {
+        "schema_id": "talos.a2a.encrypted_frame",
+        "schema_version": "v1",
+        "session_id": "01946896-1234-7567-89ab-000000000001",
+        "sender_id": "user_alice",
+        "sender_seq": -1,
+        "header_b64u": "aGVhZGVy",
+        "ciphertext_b64u": "Y2lwaGVy",
+        "frame_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+        "ciphertext_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+        "created_at": "2026-01-16T00:00:00.000Z"
+      },
+      "error_code": "minimum"
+    },
+    {
+      "description": "Invalid base64url header (contains padding)",
+      "input": {
+        "schema_id": "talos.a2a.encrypted_frame",
+        "schema_version": "v1",
+        "session_id": "01946896-1234-7567-89ab-000000000001",
+        "sender_id": "user_alice",
+        "sender_seq": 0,
+        "header_b64u": "SGVsbG8=",
+        "ciphertext_b64u": "Y2lwaGVy",
+        "frame_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+        "ciphertext_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+        "created_at": "2026-01-16T00:00:00.000Z"
+      },
+      "error_code": "pattern"
+    }
+  ],
+  "valid_groups": [
+    {
+      "description": "Active group",
+      "input": {
+        "schema_id": "talos.a2a.group",
+        "schema_version": "v1",
+        "group_id": "01946896-1234-7567-89ab-000000000200",
+        "owner_id": "user_alice",
+        "state": "active",
+        "created_at": "2026-01-16T00:00:00.000Z"
+      }
+    }
+  ],
+  "valid_group_events": [
+    {
+      "description": "Group created event",
+      "input": {
+        "schema_id": "talos.a2a.group_event",
+        "schema_version": "v1",
+        "event_id": "01946896-1234-7567-89ab-000000000300",
+        "group_id": "01946896-1234-7567-89ab-000000000200",
+        "actor_id": "user_alice",
+        "event_type": "group_created",
+        "ts": "2026-01-16T00:00:00.000Z",
+        "event_digest": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+      }
+    },
+    {
+      "description": "Member added event",
+      "input": {
+        "schema_id": "talos.a2a.group_event",
+        "schema_version": "v1",
+        "event_id": "01946896-1234-7567-89ab-000000000301",
+        "group_id": "01946896-1234-7567-89ab-000000000200",
+        "actor_id": "user_alice",
+        "target_id": "user_bob",
+        "event_type": "member_added",
+        "ts": "2026-01-16T00:01:00.000Z",
+        "event_digest": "b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3",
+        "previous_digest": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+      }
+    }
+  ]
+}

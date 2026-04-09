@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/a2a/v1/methods/list_tasks.response.schema.json",
+  "type": "object",
+  "required": ["jsonrpc", "id", "result"],
+  "properties": {
+    "jsonrpc": { "const": "2.0" },
+    "id": { "type": ["string", "integer", "null"] },
+    "result": { "$ref": "../list_tasks.response.schema.json" }
+  },
+  "additionalProperties": false
+}

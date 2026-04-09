@@ -1,0 +1,62 @@
+[
+  {
+    "description": "Viewer cannot create key (403)",
+    "input": {
+      "principal_id": "user-viewer-1",
+      "bindings": [
+        { "role_id": "TeamViewer", "scope": { "type": "team", "team_id": "team-1" } }
+      ],
+      "required_permission": "keys.write",
+      "required_scope": { "type": "team", "team_id": "team-1" }
+    },
+    "expected": { "allowed": false, "reason": "RBAC_DENIED" }
+  },
+  {
+    "description": "TeamAdmin can create key (allowed)",
+    "input": {
+      "principal_id": "user-admin-1",
+      "bindings": [
+        { "role_id": "TeamAdmin", "scope": { "type": "team", "team_id": "team-1" } }
+      ],
+      "required_permission": "keys.write",
+      "required_scope": { "type": "team", "team_id": "team-1" }
+    },
+    "expected": { "allowed": true }
+  },
+  {
+    "description": "OrgAdmin granted via parent scope (allowed)",
+    "input": {
+      "principal_id": "user-org-admin",
+      "bindings": [
+        { "role_id": "OrgAdmin", "scope": { "type": "org", "org_id": "org-1" } }
+      ],
+      "required_permission": "team.write",
+      "required_scope": { "type": "team", "team_id": "team-1", "org_id": "org-1" }
+    },
+    "expected": { "allowed": true }
+  },
+  {
+    "description": "Cross-org access denied",
+    "input": {
+      "principal_id": "user-org-admin-other",
+      "bindings": [
+        { "role_id": "OrgAdmin", "scope": { "type": "org", "org_id": "org-2" } }
+      ],
+      "required_permission": "team.write",
+      "required_scope": { "type": "team", "team_id": "team-1", "org_id": "org-1" }
+    },
+    "expected": { "allowed": false, "reason": "RBAC_DENIED" }
+  },
+  {
+    "description": "PlatformAdmin overrides all",
+    "input": {
+      "principal_id": "user-platform-admin",
+      "bindings": [
+        { "role_id": "PlatformAdmin", "scope": { "type": "platform" } }
+      ],
+      "required_permission": "mcp.admin",
+      "required_scope": { "type": "team", "team_id": "team-1" }
+    },
+    "expected": { "allowed": true }
+  }
+]

@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talosprotocol.com/schemas/ui/v1/view_models.schema.json",
+  "title": "Talos TUI View Models",
+  "description": "Schemas for view-state objects used in Talos UIs (TUI/Web).",
+  "type": "object",
+  "definitions": {
+    "VersionInfo": {
+      "type": "object",
+      "required": ["service_version", "git_sha", "contracts_version", "api_version"],
+      "properties": {
+        "service_version": { "type": "string" },
+        "git_sha": { "type": "string" },
+        "contracts_version": { "type": "string" },
+        "api_version": { "type": "string" }
+      }
+    },
+    "Peer": {
+        "type": "object",
+        "required": ["peer_id", "services"],
+        "properties": {
+            "peer_id": { "type": "string" },
+            "services": { "type": "array", "items": { "type": "string" } }
+        }
+    },
+    "AuditEvent": {
+        "type": "object",
+        "required": ["id", "ts", "event_type", "payload"],
+        "properties": {
+            "id": { "type": "string" },
+            "ts": { "type": "string", "format": "date-time" },
+            "event_type": { "type": "string" },
+            "payload": { "type": "object" }
+        }
+    }
+  }
+}

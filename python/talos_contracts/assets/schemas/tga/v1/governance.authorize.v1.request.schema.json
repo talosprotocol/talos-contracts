@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://talosprotocol.com/schemas/tga/v1/governance.authorize.v1.request.schema.json",
+  "title": "TGA Authorize Request (v1)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["principal_id", "tool_server", "tool_name", "args"],
+  "properties": {
+    "principal_id": { "$ref": "../../common/uuidv7.schema.json" },
+    "tool_server": { 
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255,
+      "pattern": "^[a-zA-Z0-9.-]+$"
+    },
+    "tool_name": { 
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255,
+      "pattern": "^[a-zA-Z0-9._-]+$"
+    },
+    "args": { 
+      "type": "object",
+      "additionalProperties": true
+    },
+    "capability_token": { 
+      "type": "string",
+      "description": "JWS capability token for the cold path."
+    },
+    "session_id": { "$ref": "../../common/uuidv7.schema.json" }
+  },
+  "oneOf": [
+    {
+      "description": "Cold path: requires capability_token, session_id is optional.",
+      "required": ["capability_token"]
+    },
+    {
+      "description": "Warm path: requires session_id, capability_token MUST NOT be present.",
+      "required": ["session_id"],
+      "not": { "required": ["capability_token"] }
+    }
+  ]
+}

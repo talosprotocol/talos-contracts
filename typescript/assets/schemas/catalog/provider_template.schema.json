@@ -1,0 +1,98 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talosprotocol.com/schemas/catalog/provider_template.schema.json",
+  "title": "Provider Template",
+  "description": "Schema for LLM provider templates in the Talos catalog",
+  "type": "object",
+  "required": ["provider_key", "display_name", "category", "default_base_url", "auth_style"],
+  "properties": {
+    "provider_key": {
+      "type": "string",
+      "description": "Stable lowercase identifier for the provider",
+      "pattern": "^[a-z][a-z0-9_-]*$"
+    },
+    "display_name": {
+      "type": "string",
+      "description": "Human-readable display name"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["direct_provider", "gateway", "cloud_platform", "self_hosted", "aggregator"],
+      "description": "Provider category type"
+    },
+    "tier_tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["free_tier", "trial_credits", "paid", "enterprise"]
+      },
+      "description": "Pricing tier tags"
+    },
+    "default_base_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Default API base URL"
+    },
+    "auth_style": {
+      "type": "string",
+      "enum": ["bearer", "header_api_key", "none", "custom"],
+      "description": "Authentication style"
+    },
+    "auth_header_name": {
+      "type": "string",
+      "description": "Custom header name for header_api_key auth style"
+    },
+    "secret_ref_hints": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Example secret references (env:VAR or secret:name)"
+    },
+    "docs_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Documentation URL"
+    },
+    "console_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Provider console/dashboard URL"
+    },
+    "notes": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Human-readable notes and warnings"
+    },
+    "risk_flags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "terms_change_often",
+          "phone_verification",
+          "data_training_opt_in",
+          "shared_quota",
+          "regional_policy",
+          "rate_limited",
+          "context_limited"
+        ]
+      },
+      "description": "Risk and limitation flags"
+    },
+    "deprecated": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this provider is deprecated"
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "upstream_name": {"type": "string"},
+        "upstream_url": {"type": "string", "format": "uri"},
+        "upstream_commit": {"type": "string"},
+        "imported_at": {"type": "string", "format": "date-time"}
+      },
+      "description": "Source attribution for catalog imports"
+    }
+  },
+  "additionalProperties": false
+}

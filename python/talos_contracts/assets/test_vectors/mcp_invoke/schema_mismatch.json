@@ -1,0 +1,23 @@
+{
+  "description": "Invocation failed due to schema mismatch",
+  "input": {
+    "server_id": "local-git",
+    "tool_name": "git_commit",
+    "input": {
+      "msg": "wrong field name"
+    },
+    "request_id": "req-000"
+  },
+  "expected": {
+    "request_id": "req-000",
+    "error": {
+      "code": 400,
+      "message": "Input does not match schema: required property 'message' missing",
+      "category": "SCHEMA_MISMATCH",
+      "details": {
+        "validation_errors": ["required property 'message' missing"]
+      },
+      "retryable": false
+    }
+  }
+}

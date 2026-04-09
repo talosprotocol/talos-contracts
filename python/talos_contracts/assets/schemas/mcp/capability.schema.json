@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.app/schemas/mcp/capability.schema.json",
+  "title": "Tool Capability",
+  "description": "Describes the capability context under which a tool is executed.",
+  "type": "object",
+  "properties": {
+    "read_only": {
+      "type": "boolean",
+      "description": "Whether the caller has read-only permission."
+    }
+  },
+  "required": ["read_only"],
+  "additionalProperties": false
+}

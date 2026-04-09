@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/a2a/v1/task_push_notification_config.schema.json",
+  "type": "object",
+  "required": ["url"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "taskId": { "type": "string", "minLength": 1 },
+    "url": { "type": "string", "format": "uri" },
+    "token": { "type": "string" },
+    "authentication": {
+      "type": "object",
+      "required": ["scheme"],
+      "properties": {
+        "scheme": { "type": "string", "minLength": 1 },
+        "credentials": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -25,11 +25,16 @@ from talos_contracts.infrastructure import (
     Base64UrlError,
     base64url_decode,
     base64url_encode,
+    calculate_digest,
+    canonical_json_bytes,
     is_canonical_lower_uuid,
     is_uuid_v7,
 )
 
 __all__ = [
+    # Infrastructure: Canonicalization
+    "canonical_json_bytes",
+    "calculate_digest",
     # Infrastructure: Base64url
     "Base64UrlError",
     "base64url_encode",

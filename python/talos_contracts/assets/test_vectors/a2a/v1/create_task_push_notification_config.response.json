@@ -1,0 +1,14 @@
+{
+  "jsonrpc": "2.0",
+  "id": "req-push-create-1",
+  "result": {
+    "id": "config-123",
+    "taskId": "task-push-1",
+    "url": "https://client.example.com/a2a/push",
+    "token": "push-token",
+    "authentication": {
+      "scheme": "Bearer",
+      "credentials": "[REDACTED]"
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "invalid_digests": [
+    {
+      "description": "Invalid Digest Hex Pattern",
+      "input": {
+        "schema_id": "talos.tga.action_request",
+        "schema_version": "tga.v1",
+        "trace_id": "01946896-1234-7567-89ab-000000000000",
+        "plan_id": "01946896-1234-7567-89ab-000000000001",
+        "action_request_id": "01946896-1234-7567-89ab-000000001000",
+        "agent_id": "01946896-1234-7567-89ab-00000000000a",
+        "ts": "2026-01-15T14:45:00.000Z",
+        "risk_level": "WRITE",
+        "intent": "valid intent here...",
+        "resources": [{"kind": "repo", "id": "test"}],
+        "proposal": {
+          "tool_server": "mcp",
+          "tool_name": "test",
+          "args": {}
+        },
+        "_digest_alg": "sha256",
+        "_digest": "NOT_HEX_CHARS_AT_ALL_SHOULD_FAIL_PATTERN_VALIDATION_IMMEDIATELY"
+      },
+      "error_code": "pattern"
+    }
+  ],
+  "unicode_confusables": [
+    {
+      "description": "Cyrillic 'а' in tool_name",
+      "input": {
+        "schema_id": "talos.tga.action_request",
+        "schema_version": "tga.v1",
+        "trace_id": "01946896-1234-7567-89ab-000000000000",
+        "plan_id": "01946896-1234-7567-89ab-000000000001",
+        "action_request_id": "01946896-1234-7567-89ab-000000001000",
+        "agent_id": "01946896-1234-7567-89ab-00000000000a",
+        "ts": "2026-01-15T14:45:00.000Z",
+        "risk_level": "WRITE",
+        "intent": "valid intent here...",
+        "resources": [{"kind": "repo", "id": "test"}],
+        "proposal": {
+          "tool_server": "mcp",
+          "tool_name": "reаl-tool",
+          "args": {}
+        },
+        "_digest_alg": "sha256",
+        "_digest": "f00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00d"
+      },
+      "error_code": "pattern"
+    }
+  ],
+  "additional_properties_trap": [
+    {
+      "description": "Forbidden additional property in proposal",
+      "input": {
+        "schema_id": "talos.tga.action_request",
+        "schema_version": "tga.v1",
+        "trace_id": "01946896-1234-7567-89ab-000000000000",
+        "plan_id": "01946896-1234-7567-89ab-000000000001",
+        "action_request_id": "01946896-1234-7567-89ab-000000001000",
+        "agent_id": "01946896-1234-7567-89ab-00000000000a",
+        "ts": "2026-01-15T14:45:00.000Z",
+        "risk_level": "WRITE",
+        "intent": "valid intent here...",
+        "resources": [{"kind": "repo", "id": "test"}],
+        "proposal": {
+          "tool_server": "mcp",
+          "tool_name": "test",
+          "args": {},
+          "extra_field": "should be denied by additionalProperties: false"
+        },
+        "_digest_alg": "sha256",
+        "_digest": "f00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00d"
+      },
+      "error_code": "additionalProperties"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/a2a/v1/task_artifact_update_event.schema.json",
+  "type": "object",
+  "required": ["taskId", "contextId", "artifact"],
+  "properties": {
+    "taskId": { "type": "string", "minLength": 1 },
+    "contextId": { "type": "string", "minLength": 1 },
+    "artifact": { "$ref": "artifact.schema.json" },
+    "append": { "type": "boolean" },
+    "lastChunk": { "type": "boolean" },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

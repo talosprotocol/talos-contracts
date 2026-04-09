@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.security/schemas/setup/v1/agent_heartbeat.schema.json",
+  "title": "Agent Heartbeat",
+  "type": "object",
+  "required": [
+    "agent_id",
+    "timestamp",
+    "uptime_seconds"
+  ],
+  "properties": {
+    "agent_id": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "uptime_seconds": {
+      "type": "number"
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": { "type": "number" }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/a2a/v1/methods/get_extended_agent_card.request.schema.json",
+  "type": "object",
+  "required": ["jsonrpc", "method", "params", "id"],
+  "properties": {
+    "jsonrpc": { "const": "2.0" },
+    "method": { "const": "GetExtendedAgentCard" },
+    "id": { "type": ["string", "integer"] },
+    "params": {
+      "type": "object",
+      "maxProperties": 0,
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

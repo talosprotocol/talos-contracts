@@ -1,0 +1,37 @@
+{
+  "jsonrpc": "2.0",
+  "id": "req-get-1",
+  "result": {
+    "id": "task-123",
+    "contextId": "ctx-123",
+    "status": {
+      "state": "TASK_STATE_COMPLETED",
+      "timestamp": "2026-03-13T12:00:01Z"
+    },
+    "history": [
+      {
+        "messageId": "msg-1",
+        "role": "user",
+        "taskId": "task-123",
+        "contextId": "ctx-123",
+        "parts": [
+          { "text": "Hello" }
+        ]
+      }
+    ],
+    "artifacts": [
+      {
+        "artifactId": "artifact-1",
+        "name": "response.txt",
+        "parts": [
+          { "text": "Hello from A2A v1" }
+        ]
+      }
+    ],
+    "metadata": {
+      "originSurface": "a2a_v1",
+      "requestId": "req-send-1",
+      "version": 2
+    }
+  }
+}

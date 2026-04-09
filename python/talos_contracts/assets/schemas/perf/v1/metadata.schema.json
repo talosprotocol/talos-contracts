@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Performance Metadata Schema v1",
+  "type": "object",
+  "required": ["schema_version", "git_sha", "timestamp", "os", "cpu", "ram_gb"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "git_sha": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "git_sha_short": { "type": "string", "pattern": "^[a-f0-9]{8,40}$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "os": {
+      "type": "object",
+      "required": ["system", "release", "version"],
+      "properties": {
+        "system": { "type": "string" },
+        "release": { "type": "string" },
+        "version": { "type": "string" },
+        "description": { "type": "string" }
+      }
+    },
+    "cpu": {
+      "type": "object",
+      "required": ["model", "cores"],
+      "properties": {
+        "model": { "type": "string" },
+        "cores": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "ram_gb": { "type": "integer", "minimum": 1 },
+    "python": {
+      "type": "object",
+      "properties": {
+        "version": { "type": "string" },
+        "implementation": { "type": "string" },
+        "packages": { "type": "object" }
+      }
+    },
+    "on_battery": { "type": "boolean" },
+    "power_mode": { "type": "string", "enum": ["low_power", "normal", "high_performance", "unknown"] },
+    "thermal_state": { "type": "string", "enum": ["nominal", "fair", "serious", "critical", "unknown"] },
+    "containerized": { "type": "boolean" },
+    "is_non_baseline": { "type": "boolean" }
+  },
+  "additionalProperties": false
+}

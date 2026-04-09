@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.security/schemas/setup/v1/agent_register_response.schema.json",
+  "title": "Agent Register Response",
+  "type": "object",
+  "required": [
+    "agent_id",
+    "agent_secret",
+    "workspace_root"
+  ],
+  "properties": {
+    "agent_id": {
+      "type": "string",
+      "description": "Unique ID assigned to this agent"
+    },
+    "agent_secret": {
+      "type": "string",
+      "description": "Secret token for authenticating subsequent requests"
+    },
+    "workspace_root": {
+      "type": "string",
+      "description": "Confirmed workspace root path (for verification)"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "description": "Invocation denied due to missing capability",
+  "input": {
+    "server_id": "sensitive-ops",
+    "tool_name": "delete_database",
+    "input": { "confirm": true },
+    "request_id": "req-456"
+  },
+  "expected": {
+    "request_id": "req-456",
+    "error": {
+      "code": 403,
+      "message": "Missing capability for tool: delete_database",
+      "category": "TOOL_DENIED",
+      "retryable": false
+    }
+  }
+}

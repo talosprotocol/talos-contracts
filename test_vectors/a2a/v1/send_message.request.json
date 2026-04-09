@@ -1,0 +1,18 @@
+{
+  "jsonrpc": "2.0",
+  "id": "req-send-1",
+  "method": "SendMessage",
+  "params": {
+    "message": {
+      "messageId": "msg-1",
+      "role": "user",
+      "parts": [
+        { "text": "Hello" }
+      ]
+    },
+    "configuration": {
+      "historyLength": 1,
+      "acceptedOutputModes": ["text"]
+    }
+  }
+}

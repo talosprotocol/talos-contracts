@@ -1,0 +1,8 @@
+{
+  "jsonrpc": "2.0",
+  "id": "req-push-list-1",
+  "method": "ListTaskPushNotificationConfigs",
+  "params": {
+    "taskId": "task-push-1"
+  }
+}

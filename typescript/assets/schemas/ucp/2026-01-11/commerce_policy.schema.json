@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://talos.network/schemas/ucp/2026-01-11/commerce_policy.schema.json",
+  "title": "UCP Commerce Policy",
+  "description": "Constraints for commerce operations",
+  "type": "object",
+  "properties": {
+    "allowed_merchants": {
+      "type": "array",
+      "items": { "type": "string", "format": "hostname" },
+      "description": "Allowlist of merchant domains"
+    },
+    "max_spend_minor": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Maximum spend per transaction in minor units"
+    },
+    "allowed_currencies": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 3, "maxLength": 3 },
+      "description": "Approved ISO 4217 currency codes"
+    },
+    "require_buyer_consent": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

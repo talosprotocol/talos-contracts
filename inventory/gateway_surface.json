@@ -44,7 +44,7 @@
       "description": "Call an MCP Tool"
     },
     {
-      "id": "a2a.jsonrpc",
+      "id": "a2a.compat.rpc",
       "type": "http",
       "http_match": {
         "method": "POST",
@@ -55,7 +55,184 @@
       "audit_action": "a2a.invoke",
       "data_classification": "sensitive",
       "audit_meta_allowlist": ["method", "id", "latency_ms", "error"],
-      "description": "Agent-to-Agent JSON-RPC Endpoint"
+      "description": "Legacy Talos A2A compatibility JSON-RPC endpoint"
+    },
+    {
+      "id": "a2a.v1.rpc",
+      "type": "http",
+      "http_match": {
+        "method": "POST",
+        "path_template": "/rpc"
+      },
+      "attestation_required": true,
+      "audit_action": "a2a.rpc.invoke",
+      "data_classification": "sensitive",
+      "audit_meta_allowlist": ["method", "id", "latency_ms", "error"],
+      "description": "A2A v1 JSON-RPC endpoint with method-level authorization metadata",
+      "rpc_methods": {
+        "GetExtendedAgentCard": {
+          "required_scopes": ["a2a.discovery.read"],
+          "audit_action": "a2a.discovery.read",
+          "aliases": ["agent/getAuthenticatedExtendedCard"],
+          "description": "Fetch the authenticated extended Agent Card"
+        },
+        "SendMessage": {
+          "required_scopes": ["a2a.send"],
+          "audit_action": "a2a.send",
+          "aliases": ["message.send", "message/send"],
+          "description": "Create or continue a task via the A2A v1 message surface"
+        },
+        "SendStreamingMessage": {
+          "required_scopes": ["a2a.send", "a2a.subscribe"],
+          "audit_action": "a2a.send",
+          "aliases": ["message.stream", "message/stream"],
+          "description": "Create a task and stream task updates over SSE"
+        },
+        "GetTask": {
+          "required_scopes": ["a2a.get"],
+          "audit_action": "a2a.get",
+          "aliases": ["tasks.get", "tasks/get"],
+          "description": "Fetch a previously created task"
+        },
+        "CancelTask": {
+          "required_scopes": ["a2a.cancel"],
+          "audit_action": "a2a.cancel",
+          "aliases": ["tasks.cancel", "tasks/cancel"],
+          "description": "Cancel a non-terminal task"
+        },
+        "ListTasks": {
+          "required_scopes": ["a2a.list"],
+          "audit_action": "a2a.list",
+          "aliases": ["tasks.list", "tasks/list"],
+          "description": "List tasks visible to the caller"
+        },
+        "SubscribeToTask": {
+          "required_scopes": ["a2a.subscribe"],
+          "audit_action": "a2a.subscribe",
+          "aliases": ["tasks.resubscribe", "tasks/resubscribe"],
+          "description": "Subscribe to task status and artifact updates"
+        },
+        "CreateTaskPushNotificationConfig": {
+          "required_scopes": ["a2a.push_config.write"],
+          "audit_action": "a2a.push.config.write",
+          "aliases": ["tasks.pushNotificationConfig.set", "tasks/pushNotificationConfig/set"],
+          "description": "Create or update a task push-notification destination"
+        },
+        "GetTaskPushNotificationConfig": {
+          "required_scopes": ["a2a.push_config.read"],
+          "audit_action": "a2a.push.config.read",
+          "aliases": ["tasks.pushNotificationConfig.get", "tasks/pushNotificationConfig/get"],
+          "description": "Read a task push-notification destination"
+        },
+        "ListTaskPushNotificationConfigs": {
+          "required_scopes": ["a2a.push_config.read"],
+          "audit_action": "a2a.push.config.read",
+          "aliases": ["tasks.pushNotificationConfig.list", "tasks/pushNotificationConfig/list"],
+          "description": "List task push-notification destinations"
+        },
+        "DeleteTaskPushNotificationConfig": {
+          "required_scopes": ["a2a.push_config.write"],
+          "audit_action": "a2a.push.config.write",
+          "aliases": ["tasks.pushNotificationConfig.delete", "tasks/pushNotificationConfig/delete"],
+          "description": "Delete a task push-notification destination"
+        }
+      }
+    },
+    {
+      "id": "admin.llm.upstreams.list",
+      "type": "http",
+      "http_match": {
+        "method": "GET",
+        "path_template": "/admin/v1/llm/upstreams"
+      },
+      "required_scopes": ["llm.read"],
+      "audit_action": "llm.upstream.list",
+      "data_classification": "sensitive",
+      "description": "List all LLM upstreams"
+    },
+    {
+      "id": "admin.llm.upstreams.create",
+      "type": "http",
+      "http_match": {
+        "method": "POST",
+        "path_template": "/admin/v1/llm/upstreams"
+      },
+      "required_scopes": ["llm.admin"],
+      "audit_action": "llm.upstream.create",
+      "data_classification": "sensitive",
+      "description": "Create a new LLM upstream"
+    },
+    {
+      "id": "admin.llm.model-groups.list",
+      "type": "http",
+      "http_match": {
+        "method": "GET",
+        "path_template": "/admin/v1/llm/model-groups"
+      },
+      "required_scopes": ["llm.read"],
+      "audit_action": "llm.model_group.list",
+      "data_classification": "sensitive",
+      "description": "List all LLM model groups"
+    },
+    {
+      "id": "admin.llm.model-groups.create",
+      "type": "http",
+      "http_match": {
+        "method": "POST",
+        "path_template": "/admin/v1/llm/model-groups"
+      },
+      "required_scopes": ["llm.admin"],
+      "audit_action": "llm.model_group.create",
+      "data_classification": "sensitive",
+      "description": "Create a new LLM model group"
+    },
+    {
+      "id": "admin.mcp.servers.list",
+      "type": "http",
+      "http_match": {
+        "method": "GET",
+        "path_template": "/admin/v1/mcp/servers"
+      },
+      "required_scopes": ["mcp.read"],
+      "audit_action": "mcp.server.list",
+      "data_classification": "sensitive",
+      "description": "List all registered MCP servers"
+    },
+    {
+      "id": "admin.keys.secrets.list",
+      "type": "http",
+      "http_match": {
+        "method": "GET",
+        "path_template": "/admin/v1/secrets"
+      },
+      "required_scopes": ["keys.read"],
+      "audit_action": "secret.list",
+      "data_classification": "sensitive",
+      "description": "List all secrets (names only)"
+    },
+    {
+      "id": "admin.keys.secrets.rotate",
+      "type": "http",
+      "http_match": {
+        "method": "POST",
+        "path_template": "/admin/v1/secrets/rotate-all"
+      },
+      "required_scopes": ["keys.write"],
+      "audit_action": "secret.rotate_all",
+      "data_classification": "sensitive",
+      "description": "Trigger background secret rotation"
+    },
+    {
+      "id": "admin.telemetry.stats",
+      "type": "http",
+      "http_match": {
+        "method": "GET",
+        "path_template": "/admin/v1/telemetry/stats"
+      },
+      "required_scopes": ["audit.read"],
+      "audit_action": "telemetry.stats.read",
+      "data_classification": "sensitive",
+      "description": "Get aggregated telemetry stats"
     }
   ]
 }

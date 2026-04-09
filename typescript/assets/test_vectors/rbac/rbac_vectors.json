@@ -1,0 +1,118 @@
+{
+  "valid_roles": [
+    {
+      "description": "Standard Role",
+      "input": {
+        "schema_id": "talos.rbac.role",
+        "schema_version": "v1",
+        "role_id": "01946896-1234-7567-89ab-000000000001",
+        "name": "AuditViewer",
+        "permissions": ["audit:read", "audit:export"],
+        "built_in": false
+      }
+    },
+    {
+      "description": "System Role",
+      "input": {
+        "schema_id": "talos.rbac.role",
+        "schema_version": "v1",
+        "role_id": "01946896-1234-7567-89ab-000000000002",
+        "name": "SuperAdmin",
+        "permissions": ["*:*"],
+        "built_in": true
+      }
+    }
+  ],
+  "invalid_roles": [
+    {
+      "description": "Invalid UUIDv7",
+      "input": {
+        "role_id": "bad-uuid",
+        "permissions": [],
+        "built_in": false
+      },
+      "error_code": "pattern"
+    },
+    {
+      "description": "Invalid Permission Format",
+      "input": {
+        "role_id": "01946896-1234-7567-89ab-000000000001",
+        "permissions": ["audit"],
+        "built_in": false
+      },
+      "error_code": "pattern"
+    }
+  ],
+  "valid_bindings": [
+    {
+      "description": "Platform Scope (Global)",
+      "input": {
+        "schema_id": "talos.rbac.binding",
+        "schema_version": "v1",
+        "principal_id": "user_01946896-1234-7567-89ab-000000000200",
+        "bindings": [
+          {
+            "binding_id": "bind_01946896-1234-7567-89ab-000000000100",
+            "role_id": "role_01946896-1234-7567-89ab-000000000001",
+            "scope": {
+              "scope_type": "global",
+              "attributes": {}
+            }
+          }
+        ]
+      }
+    },
+    {
+      "description": "Team Scope",
+      "input": {
+        "schema_id": "talos.rbac.binding",
+        "schema_version": "v1",
+        "principal_id": "user_01946896-1234-7567-89ab-000000000200",
+        "team_id": "team_01946896-1234-7567-89ab-000000000400",
+        "bindings": [
+          {
+            "binding_id": "bind_01946896-1234-7567-89ab-000000000101",
+            "role_id": "role_01946896-1234-7567-89ab-000000000001",
+            "scope": {
+              "scope_type": "team",
+              "attributes": {
+                "org_id": "org_01946896-1234-7567-89ab-000000000300",
+                "team_id": "team_01946896-1234-7567-89ab-000000000400"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "invalid_bindings": [
+    {
+      "description": "Missing principal_id",
+      "input": {
+        "schema_id": "talos.rbac.binding",
+        "schema_version": "v1",
+        "bindings": []
+      },
+      "error_code": "required"
+    },
+    {
+      "description": "Invalid scope_type enum",
+      "input": {
+        "schema_id": "talos.rbac.binding",
+        "schema_version": "v1",
+        "principal_id": "user_123",
+        "bindings": [
+          {
+            "binding_id": "bind_001",
+            "role_id": "role_001",
+            "scope": {
+              "scope_type": "invalid_type",
+              "attributes": {}
+            }
+          }
+        ]
+      },
+      "error_code": "enum"
+    }
+  ]
+}

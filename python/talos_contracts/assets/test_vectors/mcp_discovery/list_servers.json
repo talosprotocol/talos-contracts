@@ -1,0 +1,26 @@
+{
+  "description": "Happy path listing of MCP servers",
+  "input": {},
+  "expected": {
+    "servers": [
+      {
+        "id": "local-git",
+        "name": "Local Git Server",
+        "transport": "stdio",
+        "endpoint": "git-mcp-server",
+        "metadata": {
+          "repo": "/tmp/test-repo"
+        }
+      },
+      {
+        "id": "remote-weather",
+        "name": "Weather Service",
+        "transport": "http",
+        "endpoint": "https://api.weather.mcp.talos.network",
+        "metadata": {
+          "region": "us-east"
+        }
+      }
+    ]
+  }
+}

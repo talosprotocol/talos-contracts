@@ -1,0 +1,10 @@
+{
+  "jsonrpc": "2.0",
+  "id": "req-get-1",
+  "method": "GetTask",
+  "params": {
+    "id": "task-123",
+    "historyLength": 1,
+    "includeArtifacts": true
+  }
+}

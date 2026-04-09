@@ -1,0 +1,26 @@
+{
+  "jsonrpc": "2.0",
+  "id": "req-cancel-1",
+  "result": {
+    "id": "task-cancel-1",
+    "contextId": "ctx-cancel-1",
+    "status": {
+      "state": "TASK_STATE_CANCELED",
+      "timestamp": "2026-03-13T12:05:00Z",
+      "message": {
+        "messageId": "task-cancel-1:status:TASK_STATE_CANCELED",
+        "role": "agent",
+        "taskId": "task-cancel-1",
+        "contextId": "ctx-cancel-1",
+        "parts": [
+          { "text": "Task canceled" }
+        ]
+      }
+    },
+    "metadata": {
+      "originSurface": "a2a_v1",
+      "requestId": "req-cancel-1",
+      "version": 2
+    }
+  }
+}

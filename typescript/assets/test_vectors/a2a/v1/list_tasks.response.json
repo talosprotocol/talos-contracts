@@ -1,0 +1,24 @@
+{
+  "jsonrpc": "2.0",
+  "id": "req-list-1",
+  "result": {
+    "tasks": [
+      {
+        "id": "task-3",
+        "contextId": "ctx-shared",
+        "status": {
+          "state": "TASK_STATE_COMPLETED",
+          "timestamp": "2026-03-13T12:03:00Z"
+        },
+        "metadata": {
+          "originSurface": "a2a_v1",
+          "requestId": "req-3",
+          "version": 3
+        }
+      }
+    ],
+    "nextPageToken": "eyJpZCI6InRhc2stMyIsInVwZGF0ZWRfYXQiOiIyMDI2LTAzLTEzVDEyOjAzOjAwWiJ9",
+    "pageSize": 1,
+    "totalSize": 2
+  }
+}
