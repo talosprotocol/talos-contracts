@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Literal, TypedDict
+from typing import Literal, TypedDict, Union
 
 CursorValidationReason = Literal["CURSOR_MISMATCH", "INVALID_FRAME"]
 
@@ -22,7 +22,7 @@ class CursorBad(TypedDict):
     reason: CursorValidationReason
 
 
-CursorValidationResult = CursorOk | CursorBad
+CursorValidationResult = Union[CursorOk, CursorBad]
 
 
 class DecodedCursor(TypedDict):

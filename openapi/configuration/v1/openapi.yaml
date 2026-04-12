@@ -1,332 +1,714 @@
-openapi: 3.1.0
-info:
-  title: Talos Configuration Control Plane
-  version: 1.0.0
-  description: |
-    Backend-for-Frontend (BFF) API for the Talos Configuration Service.
-    Enables validation, redaction, normalization, and draft management.
-
-servers:
-  - url: /api/config
-
-paths:
-  /contracts-version:
-    get:
-      summary: Get supported contracts version
-      operationId: getContractsVersion
-      responses:
-        '200':
-          description: Version information
-          content:
-            application/json:
-              schema:
-                type: "object"
-                properties:
-                  contracts_version:
-                    type: string
-                    example: "1.2.3"
-                  config_version_supported:
-                    type: array
-                    items:
-                      type: string
-                    example: ["1.0"]
-
-  /schema:
-    get:
-      summary: Get the active JSON Schema
-      operationId: getSchema
-      responses:
-        '200':
-          description: The full JSON Schema draft-07 document
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties: true
-
-  /validate:
-    post:
-      summary: Validate configuration object
-      operationId: validateConfig
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [config]
-              properties:
-                config:
-                  type: object
-                strict:
-                  type: boolean
-                  default: true
-      responses:
-        '200':
-          description: Validation result
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  valid:
-                    type: boolean
-                  errors:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ValidationError'
-                  normalized_config:
-                    type: object
-                    nullable: true
-        '413':
-            $ref: '#/components/responses/RequestTooLarge'
-        '429':
-            $ref: '#/components/responses/RateLimited'
-
-  /normalize:
-    post:
-      summary: Canonicalize configuration
-      operationId: normalizeConfig
-      description: Returns JCS-canonical JSON and its SHA256 digest.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [config]
-              properties:
-                config:
-                  type: object
-      responses:
-        '200':
-          description: Normalization result
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  normalized_config:
-                    type: object
-                  config_digest:
-                    type: string
-                    pattern: "^[a-f0-9]{64}$"
-                    example: "d04b98f48e8f8bcc15c6ae5ac050801cd6dcfd428fb5f9e65c4e16e7807340fa"
-
-  /drafts:
-    post:
-      summary: Create a new draft
-      operationId: createDraft
-      parameters:
-        - $ref: '#/components/parameters/IdempotencyKey'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [config]
-              properties:
-                config:
-                  type: object
-                note:
-                  type: string
-      responses:
-        '200':
-          description: Draft created (or idempotent replay)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DraftMetadata'
-        '409':
-           $ref: '#/components/responses/Conflict'
-
-  /publish:
-    post:
-      summary: Publish a draft as active
-      operationId: publishDraft
-      parameters:
-         - $ref: '#/components/parameters/IdempotencyKey'
-      requestBody:
-        content:
-          application/json:
-             schema:
-               type: object
-               required: [draft_id]
-               properties:
-                 draft_id:
-                   type: string
-      responses:
-         '200':
-           description: Published successfully
-           content:
-             application/json:
-               schema:
-                 type: object
-                 properties:
-                    active_config_id:
-                      type: string
-                    active_config_digest:
-                      type: string
-
-  /history:
-    get:
-      summary: List config history
-      operationId: listHistory
-      parameters:
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 200
-            default: 50
-        - name: cursor
-          in: query
-          description: Opaque pagination cursor
-          schema:
-            type: string
-      responses:
-        '200':
-          description: History page
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                   items:
-                     type: array
-                     items:
-                       $ref: '#/components/schemas/ConfigRecord'
-                   next_cursor:
-                     type: string
-                     nullable: true
-                   has_more:
-                     type: boolean
-
-  /export:
-    post:
-       summary: Export configuration
-       operationId: exportConfig
-       requestBody:
-         content:
-           application/json:
-             schema:
-               type: object
-               properties:
-                 source:
-                   type: string
-                   enum: [active, draft]
-                   default: active
-                 id:
-                   type: string
-                 format:
-                   type: string
-                   enum: [json, yaml]
-                   default: yaml
-                 redacted:
-                   type: boolean
-                   default: true
-       responses:
-         '200':
-           description: Exported file content
-           content:
-             application/json:
-               schema:
-                 type: object
-                 properties:
-                   content:
-                     type: string
-                   filename:
-                     type: string
-                   content_type:
-                     type: string
-
-  /health:
-      get:
-          summary: Health and metadata
-          operationId: healthCheck
-          responses:
-              '200':
-                  description: Service health
-                  content:
-                      application/json:
-                          schema:
-                              type: object
-                              properties:
-                                  status: { type: string, enum: [ok, degraded] }
-                                  contracts_version: { type: string }
-                                  version: { type: string }
-
 components:
-  parameters:
-    IdempotencyKey:
-      name: Idempotency-Key
-      in: header
-      required: true
-      schema:
-        type: string
-        minLength: 10
-
   schemas:
-    ValidationError:
-      type: object
-      required: [code, message]
+    AuditEventCreate:
+      description: Request model for creating audit events.
       properties:
-        code:
+        action:
+          title: Action
           type: string
-          enum: [SCHEMA_VALIDATION_FAILED, REQUEST_TOO_LARGE, RATE_LIMITED]
-        message:
+        actor:
+          title: Actor
           type: string
-        path:
+        event_type:
+          title: Event Type
           type: string
-          description: JSON pointer to invalid field
-        
-    DraftMetadata:
+        metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Metadata
+        resource:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Resource
+      required:
+      - event_type
+      - actor
+      - action
+      title: AuditEventCreate
       type: object
-      required: [draft_id, config_digest, created_at]
+    AuditEventResponse:
+      description: Response model for audit events.
       properties:
-        draft_id: { type: string }
-        config_digest: { type: string }
-        created_at: { type: string, format: date-time }
-
-    ConfigRecord:
+        action:
+          title: Action
+          type: string
+        actor:
+          title: Actor
+          type: string
+        event_id:
+          title: Event Id
+          type: string
+        event_type:
+          title: Event Type
+          type: string
+        integrity_hash:
+          title: Integrity Hash
+          type: string
+        resource:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Resource
+        timestamp:
+          title: Timestamp
+          type: number
+      required:
+      - event_id
+      - timestamp
+      - event_type
+      - actor
+      - action
+      - integrity_hash
+      title: AuditEventResponse
       type: object
+    ChatRequest:
       properties:
-         id: { type: string }
-         config_digest: { type: string }
-         created_at: { type: string, format: date-time }
-         redacted_config: { type: object }
-
-    Error:
+        capability:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Capability
+        client_request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Client Request Id
+        max_tokens:
+          default: 512
+          title: Max Tokens
+          type: integer
+        messages:
+          items:
+            additionalProperties: true
+            type: object
+          title: Messages
+          type: array
+        model:
+          title: Model
+          type: string
+        session_id:
+          title: Session Id
+          type: string
+        temperature:
+          default: 0.7
+          title: Temperature
+          type: number
+        timeout_ms:
+          default: 60000
+          title: Timeout Ms
+          type: integer
+      required:
+      - session_id
+      - model
+      - messages
+      title: ChatRequest
       type: object
-      required: [error]
+    HTTPValidationError:
       properties:
-        error:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          title: Detail
+          type: array
+      title: HTTPValidationError
+      type: object
+    ToolCallRequest:
+      properties:
+        input:
+          additionalProperties: true
+          title: Input
           type: object
-          required: [code, message]
-          properties:
-            code: { type: string }
-            message: { type: string }
-            trace_id: { type: string }
-            details: { type: object }
+      required:
+      - input
+      title: ToolCallRequest
+      type: object
+    ValidationError:
+      properties:
+        ctx:
+          title: Context
+          type: object
+        input:
+          title: Input
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          title: Location
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+      type: object
+info:
+  description: API Gateway for Talos Protocol audit events
+  title: Talos Gateway
+  version: 0.1.0
+openapi: 3.1.0
+paths:
+  /admin/v1/audit/stats:
+    get:
+      description: "Get audit event statistics for time window.\n\nArgs:\n    window_hours:\
+        \ Time window in hours (default 24)\n\nReturns:\n    Audit event aggregates"
+      operationId: audit_stats_admin_v1_audit_stats_get
+      parameters:
+      - in: query
+        name: window_hours
+        required: false
+        schema:
+          default: 24
+          title: Window Hours
+          type: integer
+      - in: header
+        name: authorization
+        required: false
+        schema:
+          title: Authorization
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                title: Response Audit Stats Admin V1 Audit Stats Get
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Audit Stats
+      tags:
+      - admin
+  /admin/v1/me:
+    get:
+      description: "Get current user profile.\n\nReturns:\n    User profile with id,\
+        \ email, name\n\nErrors:\n    401: Unauthorized (missing or invalid auth)"
+      operationId: get_current_user_admin_v1_me_get
+      parameters:
+      - in: header
+        name: authorization
+        required: false
+        schema:
+          title: Authorization
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                title: Response Get Current User Admin V1 Me Get
+                type: object
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Get Current User
+      tags:
+      - admin
+  /admin/v1/secrets:
+    get:
+      description: "List secret keys (metadata only, not values).\n\nReturns:\n  \
+        \  List of secret metadata"
+      operationId: list_secrets_admin_v1_secrets_get
+      parameters:
+      - in: header
+        name: authorization
+        required: false
+        schema:
+          title: Authorization
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                title: Response List Secrets Admin V1 Secrets Get
+                type: object
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: List Secrets
+      tags:
+      - admin
+  /admin/v1/telemetry/stats:
+    get:
+      description: "Get telemetry statistics for time window.\n\nArgs:\n    window_hours:\
+        \ Time window in hours (default 24)\n\nReturns:\n    Aggregated metrics"
+      operationId: telemetry_stats_admin_v1_telemetry_stats_get
+      parameters:
+      - in: query
+        name: window_hours
+        required: false
+        schema:
+          default: 24
+          title: Window Hours
+          type: integer
+      - in: header
+        name: authorization
+        required: false
+        schema:
+          title: Authorization
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                title: Response Telemetry Stats Admin V1 Telemetry Stats Get
+                type: object
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Telemetry Stats
+      tags:
+      - admin
+  /api/events:
+    get:
+      description: List recent audit events with filters.
+      operationId: list_events_api_events_get
+      parameters:
+      - in: query
+        name: limit
+        required: false
+        schema:
+          default: 100
+          title: Limit
+          type: integer
+      - in: query
+        name: cursor
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Cursor
+      - in: query
+        name: session_id
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Session Id
+      - in: query
+        name: correlation_id
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Correlation Id
+      - in: query
+        name: outcome
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Outcome
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                title: Response List Events Api Events Get
+                type: object
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: List Events
+    post:
+      description: Create a new audit event (Proxies to Audit Service).
+      operationId: create_event_api_events_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuditEventCreate'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditEventResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Create Event
+  /api/events/stats:
+    get:
+      description: Get audit statistics.
+      operationId: get_event_stats_api_events_stats_get
+      parameters:
+      - in: query
+        name: from
+        required: true
+        schema:
+          title: From
+          type: number
+      - in: query
+        name: to
+        required: true
+        schema:
+          title: To
+          type: number
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                title: Response Get Event Stats Api Events Stats Get
+                type: object
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Get Event Stats
+  /api/gateway/status:
+    get:
+      description: Gateway status endpoint for integration tests.
+      operationId: gateway_status_api_gateway_status_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                title: Response Gateway Status Api Gateway Status Get
+                type: object
+          description: Successful Response
+      summary: Gateway Status
+  /events:
+    get:
+      description: 'Server-Sent Events endpoint for dashboard audit stream.
 
-  responses:
-    RequestTooLarge:
-      description: Payload exceeds 256KB
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    RateLimited:
-      description: Too many requests
-      content:
-         application/json:
-           schema:
-             $ref: '#/components/schemas/Error'
-    Conflict:
-       description: Idempotency key conflict
-       content:
-           application/json:
-               schema:
-                   $ref: '#/components/schemas/Error'
+        Compatible with Talos Audit Service protocol.'
+      operationId: sse_audit_stream_events_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+      summary: Sse Audit Stream
+  /health:
+    get:
+      description: Health check endpoint (deprecated, use /healthz)
+      operationId: health_check_health_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                title: Response Health Check Health Get
+                type: object
+          description: Successful Response
+      summary: Health Check
+  /health/ollama:
+    get:
+      description: Proxy health check to Ollama backend.
+      operationId: health_ollama_health_ollama_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                title: Response Health Ollama Health Ollama Get
+          description: Successful Response
+      summary: Health Ollama
+  /health/tga:
+    get:
+      description: Proxy health check to Governance Agent.
+      operationId: health_tga_health_tga_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                title: Response Health Tga Health Tga Get
+          description: Successful Response
+      summary: Health Tga
+  /healthz:
+    get:
+      description: Liveness probe - no dependency checks
+      operationId: healthz_healthz_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                title: Response Healthz Healthz Get
+                type: object
+          description: Successful Response
+      summary: Healthz
+  /mcp/tools/chat:
+    post:
+      description: Secure, audited chat tool endpoint.
+      operationId: chat_tool_mcp_tools_chat_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                title: Response Chat Tool Mcp Tools Chat Post
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Chat Tool
+  /metrics:
+    get:
+      operationId: metrics_metrics_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+      summary: Metrics
+  /metrics/summary:
+    get:
+      description: Summary metrics for TUI/Dashboard
+      operationId: metrics_summary_metrics_summary_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                title: Response Metrics Summary Metrics Summary Get
+                type: object
+          description: Successful Response
+      summary: Metrics Summary
+  /readyz:
+    get:
+      description: Readiness probe - checks critical dependencies
+      operationId: readyz_readyz_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                title: Response Readyz Readyz Get
+          description: Successful Response
+      summary: Readyz
+  /v1/mcp/servers:
+    get:
+      description: List available MCP servers (gated by capability).
+      operationId: list_servers_v1_mcp_servers_get
+      parameters:
+      - in: header
+        name: authorization
+        required: false
+        schema:
+          title: Authorization
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                title: Response List Servers V1 Mcp Servers Get
+                type: object
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: List Servers
+      tags:
+      - mcp
+  /v1/mcp/servers/{server_id}/tools:
+    get:
+      description: List tools for a specific server (proxied).
+      operationId: list_tools_v1_mcp_servers__server_id__tools_get
+      parameters:
+      - in: path
+        name: server_id
+        required: true
+        schema:
+          title: Server Id
+          type: string
+      - in: header
+        name: authorization
+        required: false
+        schema:
+          title: Authorization
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                title: Response List Tools V1 Mcp Servers  Server Id  Tools Get
+                type: object
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: List Tools
+      tags:
+      - mcp
+  /v1/mcp/servers/{server_id}/tools/{tool_name}/schema:
+    get:
+      description: Get schema for a specific tool.
+      operationId: get_tool_schema_v1_mcp_servers__server_id__tools__tool_name__schema_get
+      parameters:
+      - in: path
+        name: server_id
+        required: true
+        schema:
+          title: Server Id
+          type: string
+      - in: path
+        name: tool_name
+        required: true
+        schema:
+          title: Tool Name
+          type: string
+      - in: header
+        name: authorization
+        required: false
+        schema:
+          title: Authorization
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                title: Response Get Tool Schema V1 Mcp Servers  Server Id  Tools  Tool
+                  Name  Schema Get
+                type: object
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Get Tool Schema
+      tags:
+      - mcp
+  /v1/mcp/servers/{server_id}/tools/{tool_name}:call:
+    post:
+      description: Invoke a tool (proxied).
+      operationId: call_tool_v1_mcp_servers__server_id__tools__tool_name__call_post
+      parameters:
+      - in: path
+        name: server_id
+        required: true
+        schema:
+          title: Server Id
+          type: string
+      - in: path
+        name: tool_name
+        required: true
+        schema:
+          title: Tool Name
+          type: string
+      - in: header
+        name: authorization
+        required: false
+        schema:
+          title: Authorization
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToolCallRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                title: Response Call Tool V1 Mcp Servers  Server Id  Tools  Tool Name  Call
+                  Post
+                type: object
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Call Tool
+      tags:
+      - mcp
+  /version:
+    get:
+      description: Version information endpoint
+      operationId: version_version_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                title: Response Version Version Get
+                type: object
+          description: Successful Response
+      summary: Version
