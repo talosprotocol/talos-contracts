@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://talos.security/schemas/inventory/surface_inventory.schema.json",
+  "$id": "https://talosprotocol.com/schemas/inventory/surface_inventory.schema.json",
   "title": "Talos Surface Inventory",
   "description": "Defines the inventory of all secure surfaces (HTTP endpoints, MCP tools, etc.)",
   "type": "object",
@@ -19,7 +19,7 @@
           "id": {
             "type": "string",
             "description": "Unique Opcode (Dot-notation)",
-            "pattern": "^[a-z0-9]+(\\.[a-z0-9]+)*$"
+            "pattern": "^[a-z0-9-]+(\\.[a-z0-9-]+)*$"
           },
           "type": {
             "type": "string",
@@ -71,7 +71,7 @@
                 },
                 "audit_action": {
                   "type": "string",
-                  "pattern": "^[a-z0-9]+(\\.[a-z0-9]+)*$"
+                  "pattern": "^[a-z0-9_]+(\\.[a-z0-9_]+)*$"
                 },
                 "description": {
                   "type": "string"
@@ -90,7 +90,7 @@
           },
           "audit_action": {
             "type": "string",
-            "pattern": "^[a-z0-9]+(\\.[a-z0-9]+)*$"
+            "pattern": "^[a-z0-9_]+(\\.[a-z0-9_]+)*$"
           },
           "data_classification": {
             "type": "string",

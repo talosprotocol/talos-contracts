@@ -3,6 +3,16 @@ import json
 from typing import Any
 
 
+def _normalize_numbers(data: Any) -> Any:
+    if isinstance(data, dict):
+        return {key: _normalize_numbers(value) for key, value in data.items()}
+    if isinstance(data, list):
+        return [_normalize_numbers(value) for value in data]
+    if isinstance(data, float) and data.is_integer():
+        return int(data)
+    return data
+
+
 def canonical_json_bytes(data: Any) -> bytes:
     """
     Serializes a value to canonical JSON bytes according to RFC 8785.
@@ -10,7 +20,8 @@ def canonical_json_bytes(data: Any) -> bytes:
     - No whitespace in separators.
     - UTF-8 encoding.
     """
-    return json.dumps(data, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode(
+    normalized = _normalize_numbers(data)
+    return json.dumps(normalized, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode(
         "utf-8"
     )
 

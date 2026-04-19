@@ -146,6 +146,7 @@
         "path_template": "/admin/v1/llm/upstreams"
       },
       "required_scopes": ["llm.read"],
+      "attestation_required": false,
       "audit_action": "llm.upstream.list",
       "data_classification": "sensitive",
       "description": "List all LLM upstreams"
@@ -158,6 +159,7 @@
         "path_template": "/admin/v1/llm/upstreams"
       },
       "required_scopes": ["llm.admin"],
+      "attestation_required": false,
       "audit_action": "llm.upstream.create",
       "data_classification": "sensitive",
       "description": "Create a new LLM upstream"
@@ -170,6 +172,7 @@
         "path_template": "/admin/v1/llm/model-groups"
       },
       "required_scopes": ["llm.read"],
+      "attestation_required": false,
       "audit_action": "llm.model_group.list",
       "data_classification": "sensitive",
       "description": "List all LLM model groups"
@@ -182,6 +185,7 @@
         "path_template": "/admin/v1/llm/model-groups"
       },
       "required_scopes": ["llm.admin"],
+      "attestation_required": false,
       "audit_action": "llm.model_group.create",
       "data_classification": "sensitive",
       "description": "Create a new LLM model group"
@@ -194,6 +198,7 @@
         "path_template": "/admin/v1/mcp/servers"
       },
       "required_scopes": ["mcp.read"],
+      "attestation_required": false,
       "audit_action": "mcp.server.list",
       "data_classification": "sensitive",
       "description": "List all registered MCP servers"
@@ -206,6 +211,7 @@
         "path_template": "/admin/v1/secrets"
       },
       "required_scopes": ["keys.read"],
+      "attestation_required": false,
       "audit_action": "secret.list",
       "data_classification": "sensitive",
       "description": "List all secrets (names only)"
@@ -218,6 +224,7 @@
         "path_template": "/admin/v1/secrets/rotate-all"
       },
       "required_scopes": ["keys.write"],
+      "attestation_required": false,
       "audit_action": "secret.rotate_all",
       "data_classification": "sensitive",
       "description": "Trigger background secret rotation"
@@ -230,6 +237,7 @@
         "path_template": "/admin/v1/telemetry/stats"
       },
       "required_scopes": ["audit.read"],
+      "attestation_required": false,
       "audit_action": "telemetry.stats.read",
       "data_classification": "sensitive",
       "description": "Get aggregated telemetry stats"

@@ -15,6 +15,9 @@ class TestPublicAPI:
             "Base64UrlError",
             "base64url_encode",
             "base64url_decode",
+            # Infrastructure: Canonicalization
+            "canonical_json_bytes",
+            "calculate_digest",
             # Infrastructure: UUIDv7
             "is_uuid_v7",
             "is_canonical_lower_uuid",
