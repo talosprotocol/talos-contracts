@@ -1,6 +1,6 @@
 import hashlib
 import json
-from typing import Any
+from typing import Any, Optional, List
 
 
 def _normalize_numbers(data: Any) -> Any:
@@ -26,7 +26,7 @@ def canonical_json_bytes(data: Any) -> bytes:
     )
 
 
-def calculate_digest(data: dict[str, Any], exclude_fields: list[str] | None = None) -> str:
+def calculate_digest(data: dict[str, Any], exclude_fields: Optional[List[str]] = None) -> str:
     """
     Calculates SHA-256 digest of an object after canonicalization.
     Optionally excludes specific fields (e.g., '_digest').
