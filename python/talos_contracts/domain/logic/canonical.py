@@ -1,6 +1,6 @@
 """Canonical JSON logic."""
 
-from typing import Any, Dict, List
+from typing import Any
 
 def strip_nulls(data: Any) -> Any:
     """

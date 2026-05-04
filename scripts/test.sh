@@ -74,7 +74,17 @@ run_unit() {
 
 run_smoke() {
     echo "--- Running Smoke Tests ---"
-    PYTHONPATH="$PYTHONPATH_BASE" "$PYTHON_BIN" -m pytest python/tests/ -m smoke --maxfail=1 -q || run_unit
+    set +e
+    PYTHONPATH="$PYTHONPATH_BASE" "$PYTHON_BIN" -m pytest python/tests/ -m smoke --maxfail=1 -q
+    local status=$?
+    set -e
+    if [[ $status -eq 0 || $status -eq 5 ]]; then
+        if [[ $status -eq 5 ]]; then
+            echo "No smoke tests collected. Skipping."
+        fi
+        return 0
+    fi
+    return "$status"
 }
 
 run_integration() {
