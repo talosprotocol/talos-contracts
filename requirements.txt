@@ -4,7 +4,7 @@
 # Development dependencies for type checking and testing
 mypy>=1.0.0
 pytest>=7.0.0
-pytest-cov>=4.0.0
+pytest-cov>=4.1.0
 
 # JSON Canonicalization Scheme (RFC 8785) for test vector generation
 jcs>=0.2.1
