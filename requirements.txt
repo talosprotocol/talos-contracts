@@ -2,7 +2,7 @@
 # For contract validation and type checking
 
 # Development dependencies for type checking and testing
-mypy>=1.0.0
+mypy>=2.3.1
 pytest>=7.0.0
 pytest-cov>=4.0.0
 
