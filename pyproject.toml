@@ -9,7 +9,7 @@ description = "Talos Protocol Contracts"
 authors = [{name = "Talos Protocol"}]
 requires-python = ">=3.9"
 dependencies = [
-    "jsonschema>=4.0.0",
+    "jsonschema>=4.26.0",
     "jcs>=0.2.1",
 ]
 
